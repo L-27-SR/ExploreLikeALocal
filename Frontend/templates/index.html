@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="section">
+            <br>
+            <br>
+            <form action="https://www.google.com/search" method="get">
+                <input type="search" id="srchhmpg" autofocus name="q" onkeyup="myFunction()" placeholder="Search the web!" autocomplete="off">
+            </form>
+            <br>
+            <br>
+            <button id="cord" onclick="getLocation()">Click for Coordinates!</button>
+
+            <p id="demo"></p>
+            <script>
+            var x = document.getElementById("demo");
+
+            function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+            }
+
+            function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude +
+            "<br>Longitude: " + position.coords.longitude;
+            }
+            </script>
+            <h2>List of Nuclear Countries</h2>
+            <hr>
+            <table data-toggle="table" id="navy_table">
+                <thead>
+                    <tr>
+                        <th data-sortable="true">Country</th>
+                        <th data-sortable="true">Total</th>
+                        <th data-sortable="true">Active</th>
+                        <th data-sortable="true">Available</th>
+                        <th data-sortable="true">Retired</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in nuclear %}
+                        <tr>
+                            <td>{{ i.country }}</td>
+                            <td>{{ i.totalWeapons }}</td>
+                            <td>{{ i.activelyDeployed }}</td>
+                            <td>{{ i.available }}</td>
+                            <td>{{ i.retired }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+{% endblock %}
