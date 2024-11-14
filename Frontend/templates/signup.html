@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sea Savvy</title>
+    <link rel="stylesheet" href="/src/css/signup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&family=Glacial+Indifference:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo"><a href="/" class="nav-brand">Sea Savvy</a></div>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-links" id="nav-links">
+            <button class="btn login-btn" onclick="navigateTo('/login')">Login</button>
+            <button class="btn signup-btn" onclick="navigateTo('/signup')">Signup</button>
+        </div>
+        <script>
+            function navigateTo(route) {
+                fetch(route, { method: 'GET' })
+                    .then(response => response.text())
+                    .then(html => {
+                        document.open();
+                        document.write(html);
+                        document.close();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        </script>              
+    </nav>
+    <div class="split-container">
+        <!-- Left side for login form -->
+        <div class="left-half1">
+            <div class="signup-content">
+                <h2>Join Sea Savvy and start your ocean exploration!</h2>
+                <div class="login-form">
+                    <form class="signup-form" action="/signup" method="post">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" placeholder="Create your username" required>
+                        <label for="name">Display Name:</label>
+                        <input type="text" id="displayName" name="displayName" placeholder="Enter your name"required>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                        <label for="role">Choose your role:</label>
+                        <select id="role" name="role" required>
+                            <option value="fisherman">Fisherman</option>
+                            <option value="gamer">Gamer</option>
+                            <option value="tourist">Tourist</option>
+                        </select>
+                        <button type="submit" class="submit-btn"><b>Signup</b></button>
+                    </form>
+                    <p class="signup-text">Already have a Sea Savvy account? <a href="login.html">Login</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right side for background image -->
+        <div class="right-half1">
+            <div id="signup-image-box">
+                <img src="/images/signup.png" alt="Ocean Image">
+            </div>
+        </div>
+    </div>
+    <section class="about-us">
+        <div class="contact-info-container">
+            <a href="mailto:seasavvy@example.com" class="email-link">
+                <i class="fas fa-envelope"></i> seasavvy@gmail.com
+            </a>
+            <div class="social-media">
+                <a href="https://facebook.com" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="https://instagram.com" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://linkedin.com" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </section>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+    
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+    </script>
+</body>
