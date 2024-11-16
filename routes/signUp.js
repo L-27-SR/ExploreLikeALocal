@@ -12,22 +12,14 @@ const __dirname = dirname(__filename);
 
 const router = express.Router();
 
-mongoose.connect("mongodb://localhost/seasavvy")
+mongoose.connect("mongodb://localhost/tourism")
     .then(()=> console.log("Connected to database"))
     .catch((err)=> console.log(`Error : ${err}`));
 
-router.get("/", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../../Frontend/public/signup.html"));
-});
-
 router.post("/", 
-body("username")
+body("name")
 .notEmpty()
-.withMessage("Username cannot be empty")
-.isLength({ min: 5, max: 16 })
-.withMessage("Username must be between 5 and 16 characters long")
-.isAlphanumeric()
-.withMessage("Username must only contain letters and numbers"),
+.withMessage("Name cannot be empty"),
 
 body("email")
 .notEmpty()
@@ -56,9 +48,9 @@ async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
     const {body} = req;
-    const {username, email} = req.body;    
+    const {name, email} = req.body;    
     try {
-        const findUsername = await user.findOne({username : username});
+        const findUsername = await user.findOne({name : name});
         const findEmail = await user.findOne({email : email});
         if(findUsername) {
             return res.status(400).json({message : "Username already exists"});
@@ -70,7 +62,7 @@ async (req, res) => {
         await newUser.save();
         req.session.userId = newUser._id;
         res.redirect("/home");
-        console.log("User has been signed in and redirected to /main");
+        console.log("User has been signed in and redirected to /home");
     }
     catch(err) {
         console.log(`Error : ${err}`);
