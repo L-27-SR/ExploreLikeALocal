@@ -5,143 +5,146 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TravelMapper - Explore</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <link rel="stylesheet" href="tourism.css">
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <style>
         body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background: #fdfdfd;
             overflow-x: hidden;
         }
 
-        .search-bar {
+        nav {
+            background: #4a90e2;
+            color: white;
+            padding: 1rem 2rem;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            margin: 20px 0;
-            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .search-container {
+            padding: 1rem 2rem;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .search-bar {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
         }
 
         .search-bar input {
-            width: 70%;
-            padding: 15px;
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
             font-size: 1rem;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            outline: none;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s;
         }
 
         .search-bar input:focus {
+            outline: none;
             border-color: #4a90e2;
-            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
         }
 
         .search-bar button {
-            margin-left: 10px;
-            padding: 15px 20px;
-            border: none;
+            padding: 0.75rem 1.5rem;
             background: #4a90e2;
             color: white;
-            font-size: 1rem;
-            border-radius: 10px;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            font-weight: 500;
+            transition: background-color 0.3s;
         }
 
         .search-bar button:hover {
-            background: #357ab8;
+            background: #357abd;
         }
 
         .map-container {
-            margin: 20px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            height: 60vh;
+            margin: 1rem 2rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         #map {
+            height: 100%;
             width: 100%;
-            height: 50vh;
-            border-radius: 15px;
         }
 
-        .content-section {
-            padding: 40px 20px;
-            background: linear-gradient(to bottom, #ffffff, #f0f4ff);
-            animation: fadeIn 1s ease-out;
+        .location-info {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .content-section h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #2a2a2a;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        .location-info h2 {
+            color: #2d3748;
+            margin-bottom: 1rem;
         }
 
-        .content-section p {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: #555;
-            margin-bottom: 20px;
-            animation: slideIn 1s ease-out;
+        .location-info p {
+            color: #4a5568;
+            line-height: 1.6;
         }
 
-        .pricing-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .pricing-card {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .pricing-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
-        .pricing-card p {
-            font-size: 1rem;
-            color: #666;
-        }
-
-        .pricing-card span {
-            font-size: 1.8rem;
-            font-weight: bold;
+        .category-label {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #ebf4ff;
             color: #4a90e2;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .leaflet-popup-content {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(-100%);
-            }
-            to {
-                transform: translateX(0);
-            }
+        .leaflet-popup-content h3 {
+            margin: 0 0 0.5rem 0;
+            color: #2d3748;
+        }
+
+        .leaflet-popup-content p {
+            margin: 0;
+            color: #4a5568;
+        }
+
+        .location-type {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: #e2e8f0;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
         }
     </style>
 </head>
@@ -153,41 +156,26 @@
         </div>
     </nav>
 
-    <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search location (e.g., 'Paris')" />
-        <button id="searchSubmitBtn">Search</button>
+    <div class="search-container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for a location..." />
+            <button id="searchSubmitBtn">Search</button>
+        </div>
     </div>
 
     <div class="map-container">
         <div id="map"></div>
     </div>
 
-    <div class="content-section">
-        <h2>Explore Beautiful Destinations</h2>
+    <div class="location-info">
+        <div id="categoryDisplay" class="category-label"></div>
+        <h2>Nearby Locations</h2>
         <p id="locationInfo">
-            Find your dream destination and uncover the hidden gems it offers. From bustling cities to serene landscapes, we help you map your next adventure.
+            Searching for interesting places nearby...
         </p>
-
-        <div class="pricing-section">
-            <div class="pricing-card">
-                <h3>Luxury Hotel</h3>
-                <p>5-star hotel with scenic views and premium amenities.</p>
-                <span>$250/night</span>
-            </div>
-            <div class="pricing-card">
-                <h3>Adventure Package</h3>
-                <p>Guided tours and outdoor activities.</p>
-                <span>$180/day</span>
-            </div>
-            <div class="pricing-card">
-                <h3>Local Cuisine</h3>
-                <p>Enjoy authentic dishes made by local chefs.</p>
-                <span>$50/person</span>
-            </div>
-        </div>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="map.js"></script>
 </body>
 </html>
