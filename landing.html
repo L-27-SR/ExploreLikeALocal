@@ -12,21 +12,29 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <!-- Login Form -->
-            <form id="loginForm" class="auth-form">
+            <form id="loginForm" class="auth-form" action="/login" method="post">
                 <h2>Login</h2>
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Password" required>
+                <label for="loginEmail">Email:</label>
+                <input type="email" id="loginEmail" name="email" placeholder="Email" required>
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" name="password" placeholder="Password" required>
                 <button type="submit" class="btn-primary">Login</button>
                 <p>Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
             </form>
             <!-- Signup Form -->
-            <form id="signupForm" class="auth-form hidden">
+            <form id="signupForm" class="auth-form hidden" action="/signup" method="post">
                 <h2>Sign Up</h2>
-                <input type="text" placeholder="Full Name" required>
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Password" required>
-                <input type="password" placeholder="Confirm Password" required>
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="name" placeholder="Full Name" required>
+                
+                <label for="signupEmail">Email:</label>
+                <input type="email" id="signupEmail" name="email" placeholder="Email" required>
+                
+                <label for="signupPassword">Password:</label>
+                <input type="password" id="signupPassword" name="password" placeholder="Password" required>
+                
                 <button type="submit" class="btn-primary">Sign Up</button>
+                
                 <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
             </form>
         </div>
