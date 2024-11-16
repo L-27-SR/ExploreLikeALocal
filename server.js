@@ -5,21 +5,33 @@ import bodyParser from "body-parser";
 import morgan from "morgan";
 import fs from "fs";
 import path from "path";
-
+import signupRouter from "./routes/signUp.js";
+import loginRouter from "./routes/login.js";
+import homeRouter from "./routes/home.js";
+import profileRouter from "./routes/profile.js";
+import eduRouter from "./routes/seascholar.js";
 import {
     GoogleGenerativeAI,
     HarmCategory,
     HarmBlockThreshold,
 } from "@google/generative-ai";
 import cookieParser from "cookie-parser";
+import session from "express-session";
+import connectMongoDBSession from "connect-mongodb-session";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
+const router = express.Router();
 const port = 3004;
-
+const MongoDBStore = connectMongoDBSession(session);
+const store = new MongoDBStore({
+  uri : "mongodb://localhost:27017/tourism",
+  collection : "sessions",
+});
 store.on('error', function(error) {
   console.error(error);
 });
+
 const logDirectory = path.join(__dirname, './log');
 const logFile = path.join(logDirectory, 'access.log');
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
@@ -79,11 +91,41 @@ const generationConfig = {
     console.log(result.response.text());
   }
   
+app.use(session({
+  secret : "s3cUr3$K3y@123!",
+  saveUninitialized : false,
+  resave : false,
+  cookie : {
+    maxAge: 182 * 24 * 60 * 60 * 1000,
+  },
+  store: store,
+}));
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(express.static(path.join(__dirname, "../Frontend")));
+app.use(express.static(__dirname));
 
 app.use(morgan('combined', { stream: accessLogStream }));
 app.use(bodyParser.json());
+
+
+
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, ",/index.html"));
+    const sessionUserId = req.session.userId;
+    if(sessionUserId) {
+        res.redirect("/home");
+        return;
+    }
+    res.sendFile(path.join(__dirname, "./landing.html"));
+});
+
+app.use("/signup", signupRouter);
+app.use("/login", loginRouter);
+app.use("/home", homeRouter);
+app.use("/profile", profileRouter);
+app.get('/logout', (req, res) => {
+  req.session.destroy(err => {
+      if (err) {
+          return res.status(500).send('Error logging out');
+      }
+      res.redirect("/");
+  });
 });
