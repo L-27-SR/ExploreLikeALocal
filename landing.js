@@ -105,7 +105,7 @@ loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(loginForm);
     try {
-        const response = await fetch('/api/login', {
+        const response = await fetch('/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(signupForm);
     try {
-        const response = await fetch('/api/signup', {
+        const response = await fetch('/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
