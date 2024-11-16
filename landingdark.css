@@ -129,6 +129,14 @@ nav:hover {
     box-shadow: 0 5px 15px rgba(255, 255, 255, 0.5);
 }
 
+body {
+    background-color: #090909;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    overflow-x: hidden;
+}
+
 /* Hero Content */
 .hero-content {
     color: #ffffff;
@@ -159,6 +167,7 @@ nav:hover {
 }
 
 .destination-grid {
+    background-color: #090909;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
@@ -187,6 +196,14 @@ nav:hover {
     padding: 2rem;
     background: linear-gradient(transparent, rgba(255, 255, 255, 0.8));
     color: var(--text-light);
+}
+
+.footer-content {
+    color: #ffffff;
+    background-color: #090909;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
 }
 
 /* Responsive Design */
