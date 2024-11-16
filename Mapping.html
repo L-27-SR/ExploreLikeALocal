@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelMapper - Explore</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="tourism.css">
+    <style>
+        body {
+            background: #fdfdfd;
+            overflow-x: hidden;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            padding: 10px;
+        }
+
+        .search-bar input {
+            width: 70%;
+            padding: 15px;
+            font-size: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+        }
+
+        .search-bar button {
+            margin-left: 10px;
+            padding: 15px 20px;
+            border: none;
+            background: #4a90e2;
+            color: white;
+            font-size: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background: #357ab8;
+        }
+
+        .map-container {
+            margin: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #map {
+            width: 100%;
+            height: 50vh;
+            border-radius: 15px;
+        }
+
+        .content-section {
+            padding: 40px 20px;
+            background: linear-gradient(to bottom, #ffffff, #f0f4ff);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .content-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #2a2a2a;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-section p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+            animation: slideIn 1s ease-out;
+        }
+
+        .pricing-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .pricing-card p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .pricing-card span {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4a90e2;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">TravelMapper</div>
+        <div class="nav-links">
+            <a href="#" id="logoutBtn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search location (e.g., 'Paris')" />
+        <button id="searchSubmitBtn">Search</button>
+    </div>
+
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
+
+    <div class="content-section">
+        <h2>Explore Beautiful Destinations</h2>
+        <p id="locationInfo">
+            Find your dream destination and uncover the hidden gems it offers. From bustling cities to serene landscapes, we help you map your next adventure.
+        </p>
+
+        <div class="pricing-section">
+            <div class="pricing-card">
+                <h3>Luxury Hotel</h3>
+                <p>5-star hotel with scenic views and premium amenities.</p>
+                <span>$250/night</span>
+            </div>
+            <div class="pricing-card">
+                <h3>Adventure Package</h3>
+                <p>Guided tours and outdoor activities.</p>
+                <span>$180/day</span>
+            </div>
+            <div class="pricing-card">
+                <h3>Local Cuisine</h3>
+                <p>Enjoy authentic dishes made by local chefs.</p>
+                <span>$50/person</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="map.js"></script>
+</body>
+</html>
