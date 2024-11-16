@@ -9,10 +9,9 @@
 <body>
     <header>
         <ul>
-            <li style="float:left"><a class="active"  href="landing.html">ExploreLikeALocal</button></a></li>
-            <li><a href="about.html">About Us</button></a></li>
-            <li><a href="main.html">Home</button></a></li>
-            
+            <li style="float:left"><a class="active"  href="landing.html">ExploreLikeALocal</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="main.html">Home</a></li>
         </ul>
     </header>
 
@@ -30,8 +29,7 @@
                         Explore vibrant wildlife and exotic animals in beautifully curated enclosures, perfect for family outings and educational adventures.
                     </div>
                     <div class="buttons">
-                        <button>SEE MORE</button>
-                        
+                        <button onclick="sendCategory('Zoo')">SEE MORE</button>
                     </div>
                 </div>
             </div>
@@ -45,8 +43,7 @@
                         Discover serene sanctuaries of spirituality, showcasing intricate architecture and centuries-old traditions.
                     </div>
                     <div class="buttons">
-                        <button>SEE MORE</button>
-                        
+                        <button onclick="sendCategory('Temple')">SEE MORE</button>
                     </div>
                 </div>
             </div>
@@ -57,11 +54,10 @@
                     <div class="title">MUSEUM</div>
                     <div class="topic">Journey Through Time – Discover the Stories of the Past</div>
                     <div class="des">
-                        Discover serene sanctuaries of spirituality, showcasing intricate architecture and centuries-old traditions.
+                        Explore fascinating historical artifacts and exhibitions that bring the past to life.
                     </div>
                     <div class="buttons">
-                        <button>SEE MORE</button>
-                        
+                        <button onclick="sendCategory('Museum')">SEE MORE</button>
                     </div>
                 </div>
             </div>
@@ -75,11 +71,10 @@
                         Unwind in lush green spaces ideal for picnics, leisure walks, or just soaking in nature's tranquility.
                     </div>
                     <div class="buttons">
-                        <button>SEE MORE</button>
-                        
+                        <button onclick="sendCategory('Park')">SEE MORE</button>
                     </div>
                 </div>
-            </div>            
+            </div>
             <div class="item">
                 <img src="image/viewpoint.jpg">
                 <div class="content">
@@ -90,8 +85,7 @@
                         Marvel at breathtaking panoramic vistas that capture the essence of the surrounding landscape.
                     </div>
                     <div class="buttons">
-                        <button>SEE MORE</button>
-                        
+                        <button onclick="sendCategory('Viewpoint')">SEE MORE</button>
                     </div>
                 </div>
             </div>
@@ -105,8 +99,7 @@
                         Bask in golden sands and crystal-clear waters, a haven for relaxation and water sports.
                     </div>
                     <div class="buttons">
-                        <button>SEE MORE</button>
-                        
+                        <button onclick="sendCategory('Beach')">SEE MORE</button>
                     </div>
                 </div>
             </div>
@@ -118,76 +111,61 @@
                     <div class="topic">Savor Every Bite - A Culinary Adventure Awaits!</div>
                     <div class="des">
                         Savor delectable cuisines in charming settings that cater to every palate and occasion.
-
                     </div>
                     <div class="buttons">
-                        <button>SEE MORE</button>
-                        
+                        <button onclick="sendCategory('Restaurant')">SEE MORE</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- list thumnail -->
+
+        <!-- list thumbnail -->
         <div class="thumbnail">
             <div class="item">
                 <img src="image/zoo.jpg">
                 <div class="content">
-                    <div class="title">
-                        ZOO
-                    </div>
+                    <div class="title">ZOO</div>
                 </div>
             </div>
             <div class="item">
                 <img src="image/temple.jpg">
                 <div class="content">
-                    <div class="title">
-                        TEMPLE
-                    </div>
+                    <div class="title">TEMPLE</div>
                 </div>
             </div>
             <div class="item">
                 <img src="image/museum.jpg">
                 <div class="content">
-                    <div class="title">
-                        MUSEUM
-                    </div>
+                    <div class="title">MUSEUM</div>
                 </div>
             </div>
             <div class="item">
                 <img src="image/park.jpg">
                 <div class="content">
-                    <div class="title">
-                        PARK
-                    </div>
+                    <div class="title">PARK</div>
                 </div>
             </div>
             <div class="item">
                 <img src="image/viewpoint.jpg">
                 <div class="content">
-                    <div class="title">
-                        VIEWPOINT
-                    </div>
+                    <div class="title">VIEWPOINT</div>
                 </div>
-            </div>        
+            </div>
             <div class="item">
                 <img src="image/beach.jpg">
                 <div class="content">
-                    <div class="title">
-                        BEACH
-                    </div>
+                    <div class="title">BEACH</div>
                 </div>
             </div>
             <div class="item">
                 <img src="image/restaurant.jpg">
                 <div class="content">
-                    <div class="title">
-                        RESTAURANT
-                    </div>
+                    <div class="title">RESTAURANT</div>
                 </div>
             </div>
         </div>
-        <!-- next prev -->
 
+        <!-- next prev -->
         <div class="arrows">
             <button id="prev"><</button>
             <button id="next">></button>
@@ -195,7 +173,9 @@
         <!-- time running -->
         <div class="time"></div>
     </div>
+
     <br>
+
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -209,6 +189,25 @@
             <p>&copy; 2024 ExploreLikeALocal. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        function sendCategory(category) {
+            fetch('/map', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ category: category })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);  
+                window.location.href = "./map.html"; // Redirect to the HTML page
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+
     <script src="app.js"></script>
 </body>
 </html>

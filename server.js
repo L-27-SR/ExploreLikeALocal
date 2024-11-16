@@ -178,6 +178,14 @@ app.post("/login", async (req, res) => {
       return res.status(500).send("Server error. Please try again later.");
     }
   });
+
+  app.post("/map", async (req, res) => {
+    console.log("Entering map");
+    const data = req.body;
+    console.log(data);
+    res.json({data});
+});
+
   
 
 // Logout route
