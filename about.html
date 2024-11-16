@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us</title>
-    <link rel="stylesheet" href="landing.css">
+    
+    <link id="light theme" rel="stylesheet" href="landing.css">
+    <link id="dark theme" rel="stylesheet" href="landingdark.css" disabled>
 </head>
 <body>
+    <script src="theme.js"></script>
     <header class="hero">
         <nav>
             <div class="logo">Our Team</div>
             <div class="nav-links">
                 <a href="index.html">Home</a>
             </div>
+            <button id="theme-toggle" onclick="toggleTheme()" class="btn-primary" style="color: rgb(18, 188, 188);">Switch to Dark Mode </button>
         </nav>
         <div class="hero-content">
             <h1 class="animate-title">ExploreLikeALocal</h1>
@@ -74,5 +79,6 @@
             <p>&copy; 2024 ExploreLikeALocal. All rights reserved.</p>
         </div>
     </footer>
+    
 </body>
 </html>
