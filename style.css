@@ -6,7 +6,23 @@ body{
     font-family: Poppins;
     font-size: 12px;
 }
-a{
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #0A192F;
+  }
+
+  li {
+    float: right;
+  }
+
+  li a {
+    display: block;
+    color: #4DC1AD;
+    text-align: center;
+    padding: 14px 16px;
     text-decoration: none;
 }
 header{
@@ -20,7 +36,7 @@ header{
     z-index: 100;
 }
 header a{
-    color: #000000;
+    color: #eee;
     margin-right: 40px;
 }
 /* carousel */
@@ -313,4 +329,23 @@ header a{
     .carousel .list .item .content .title{
         font-size: 30px;
     }
+}
+
+footer {
+    background: var(--primary-color);
+    color: var(--text-light);
+    padding: 3rem 5%;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
 }
