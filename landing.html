@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelSpot - Local Tourism Guide</title>
+    <link rel="stylesheet" href="./landing.css">
+</head>
+<body>
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form">
+                <h2>Login</h2>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="btn-primary">Login</button>
+                <p>Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+            </form>
+            <!-- Signup Form -->
+            <form id="signupForm" class="auth-form hidden">
+                <h2>Sign Up</h2>
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit" class="btn-primary">Sign Up</button>
+                <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <header class="hero">
+        <nav>
+            <div class="logo">TravelSpot</div>
+            <div class="nav-links">
+                <a href="#nearby">Nearby</a>
+                <a href="#preferences">Preferences</a>
+                <a href="#saved">Saved Places</a>
+                <button id="authBtn" class="btn-primary rainbow-border">Login</button>
+            </div>
+        </nav>
+        <div class="hero-content">
+            <h1 class="animate-title">Discover Hidden Gems Near You</h1>
+            <p class="animate-subtitle">Get personalized recommendations based on your location and interests</p>
+            <button id="locationBtn" class="btn-primary rainbow-border">Find Spots Near Me</button>
+        </div>
+    </header>
+
+    <section id="nearby" class="destinations">
+        <h2>Spots Near You</h2>
+        <div class="destination-grid">
+            <div class="destination-card" style="background-image: url('https://images.unsplash.com/photo-1533587851505-d119e13fa0d7')">
+                <div class="card-content">
+                    <h3>Mountain Trail</h3>
+                    <p>2.5 km away • Hiking • Nature</p>
+                </div>
+            </div>
+            <div class="destination-card" style="background-image: url('https://images.unsplash.com/photo-1514933651103-005eec06c04b')">
+                <div class="card-content">
+                    <h3>Local Art Gallery</h3>
+                    <p>1.2 km away • Culture • Indoor</p>
+                </div>
+            </div>
+            <div class="destination-card" style="background-image: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5')">
+                <div class="card-content">
+                    <h3>Historic Market</h3>
+                    <p>0.8 km away • Food • Shopping</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="preferences" class="experiences">
+        <h2>Your Travel Style</h2>
+        <div class="experience-slider">
+            <div class="experience-card">
+                <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff" alt="Nature">
+                <h3>Nature Lover</h3>
+                <p>Parks, trails, and scenic viewpoints</p>
+            </div>
+            <div class="experience-card">
+                <img src="https://images.unsplash.com/photo-1582234372722-50d7ccc30ebd" alt="Culture">
+                <h3>Culture Explorer</h3>
+                <p>Museums, galleries, and historical sites</p>
+            </div>
+            <div class="experience-card">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0" alt="Food">
+                <h3>Food Enthusiast</h3>
+                <p>Local cuisine and food markets</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About TravelSpot</h3>
+                <p>Discover local attractions based on your preferences and location.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <div class="social-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Use</a>
+                    <a href="#">Contact Us</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TravelSpot. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="./landing.js"></script>
+</body>
+</html>
