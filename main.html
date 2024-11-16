@@ -189,7 +189,6 @@
             <p>&copy; 2024 ExploreLikeALocal. All rights reserved.</p>
         </div>
     </footer>
-
     <script>
         function sendCategory(category) {
             fetch('/map', {
@@ -201,13 +200,21 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);  
-                window.location.href = "./map.html"; // Redirect to the HTML page
+                console.log(data);
+                // Store the category in local storage
+                localStorage.setItem('category', category);
+                // Redirect to map.html
+                window.location.href = `./map.html`;
             })
             .catch(error => console.error('Error:', error));
         }
+    
+        document.getElementById('categoryForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const category = document.getElementById('category').value;
+            sendCategory(category);
+        });
     </script>
-
     <script src="app.js"></script>
 </body>
 </html>
