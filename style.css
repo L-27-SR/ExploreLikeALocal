@@ -19,15 +19,16 @@
     }
 
     li a {
+        align-self: center;
         display: block;
         color: #4DC1AD;
         text-align: center;
-        padding: 14px 16px;
+        padding: 40px 60px;
         text-decoration: none;
     }
     header{
         width: 1140px;
-        max-width: 80%;
+        max-width: 100%;
         margin: auto;
         height: 50px;
         display: flex;
