@@ -61,7 +61,7 @@ async function fetchLocations(category, userLocation) {
     // Use a switch case to assign the correct OSM tag based on category
     switch (category) {
         case "Zoo":
-            osmTag = "tourism=zoo";
+            osmTag = "zoo";
             break;
         case "Temple":
             osmTag = "place_of_worship";
@@ -92,7 +92,7 @@ async function fetchLocations(category, userLocation) {
     const overpassQuery = `
     [out:json];
     (
-      node["${osmTag}"](around:${radius},${latitude},${longitude});
+        node["${osmTag}"](around:${radius},${latitude},${longitude});
     );
     out body;
     `;
@@ -111,7 +111,7 @@ async function fetchLocations(category, userLocation) {
                     // Add a marker for each node (lat, lon)
                     L.marker([element.lat, element.lon])
                         .addTo(map)
-                        .bindPopup(`Category: ${category}`);
+                        .bindPopup(`<b>${category}</b>`);
                     console.log(`Added marker for node at Latitude: ${element.lat}, Longitude: ${element.lon}`);
                 } else if (element.type === 'way' || element.type === 'relation') {
                     // Handle ways and relations (optional, depending on your needs)
@@ -121,8 +121,8 @@ async function fetchLocations(category, userLocation) {
                     }
                     // Draw polygons or polylines for ways or relations
                     if (coords.length) {
-                        L.polygon(coords).addTo(map).bindPopup(`Category: ${category}`);
-                        console.log(`Added polygon for way/relation.`);
+                        L.polygon(coords).addTo(map).bindPopup(`<b>${category}</b>`);
+                        console.log("Added polygon for way/relation.");
                     }
                 }
             });
@@ -138,6 +138,11 @@ async function fetchLocations(category, userLocation) {
 async function initMap() {
     try {
         const userLocation = await getUserLocation();
+        
+        // Center the map to the user's current location
+        map.setView([userLocation.latitude, userLocation.longitude], 13);
+
+        // Fetch locations based on the user's location
         fetchLocations(category, userLocation);
     } catch (error) {
         console.error(error);
