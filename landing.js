@@ -30,29 +30,40 @@ async function getUserLocation() {
         });
         
         const { latitude, longitude } = position.coords;
-        fetchNearbyPlaces(latitude, longitude);
+        fetchNearbyPlaces(latitude, longitude);  // Using mock data for now
     } catch (error) {
         alert('Please enable location services to find spots near you.');
     }
 }
 
-async function fetchNearbyPlaces(lat, lng) {
-    try {
-        const response = await fetch(`/api/places?lat=${lat}&lng=${lng}`, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        });
-        
-        if (response.ok) {
-            const places = await response.json();
-            updateNearbySection(places);
+// Mock function to simulate fetching nearby places based on location
+function fetchNearbyPlaces(lat, lng) {
+    // Example of mock places data for demonstration
+    const places = [
+        {
+            name: 'Mountain Trail',
+            distance: '2.5',
+            categories: ['Hiking', 'Nature'],
+            image: 'https://images.unsplash.com/photo-1533587851505-d119e13fa0d7'
+        },
+        {
+            name: 'Local Art Gallery',
+            distance: '1.2',
+            categories: ['Culture', 'Indoor'],
+            image: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b'
+        },
+        {
+            name: 'Historic Market',
+            distance: '0.8',
+            categories: ['Food', 'Shopping'],
+            image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5'
         }
-    } catch (error) {
-        console.error('Failed to fetch nearby places:', error);
-    }
+    ];
+
+    updateNearbySection(places);  // Update the section with mock data
 }
 
+// Dynamically updates the 'Nearby' section with places
 function updateNearbySection(places) {
     const grid = document.querySelector('.destination-grid');
     grid.innerHTML = places.map(place => `
@@ -97,64 +108,6 @@ showLoginLink.addEventListener('click', showLogin);
 window.addEventListener('click', (e) => {
     if (e.target === authModal) {
         hideModal();
-    }
-});
-
-// Form Submissions
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(loginForm);
-    try {
-        const response = await fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: formData.get('email'),
-                password: formData.get('password'),
-            }),
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem('token', data.token);
-            hideModal();
-            getUserLocation(); // Fetch recommendations after login
-        } else {
-            throw new Error('Login failed');
-        }
-    } catch (error) {
-        alert('Login failed. Please try again.');
-    }
-});
-
-signupForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(signupForm);
-    try {
-        const response = await fetch('/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: formData.get('name'),
-                email: formData.get('email'),
-                password: formData.get('password'),
-            }),
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem('token', data.token);
-            hideModal();
-            getUserLocation(); // Fetch recommendations after signup
-        } else {
-            throw new Error('Signup failed');
-        }
-    } catch (error) {
-        alert('Signup failed. Please try again.');
     }
 });
 
