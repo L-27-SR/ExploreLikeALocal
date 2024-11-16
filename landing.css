@@ -1,6 +1,6 @@
 /* Base Styles */
 
-:root {
+:root[light-theme = 'light'] {
     --primary-color: #2a2a2a;
     --accent-color: #4a90e2;
     --text-light: #ffffff;
@@ -53,7 +53,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828') center/cover;
+    background: url("https://img.freepik.com/free-photo/about-as-service-contact-information-concept_53876-138509.jpg") center/cover;
     opacity: 0.1;
     z-index: 0;
 }
@@ -324,4 +324,18 @@ footer {
     .animate-subtitle {
         font-size: 1.2rem;
     }
+}
+
+.landing {
+    position: relative;
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    justify-content: center; /* Horizontally center the video */
+    align-items: center; /* Vertically center the video */
+}
+
+.bg-video {
+    width: 100%; /* Ensure the video fills the width */
+    height: 100%; /* Ensure the video fills the height */
+    object-fit: cover; /* Make the video cover the area without distortion */
 }

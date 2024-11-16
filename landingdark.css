@@ -1,0 +1,205 @@
+/* Base Styles */
+:root[dark-theme='dark'] {
+    --primary-color: #121212;
+    --accent-color: #4a90e2;
+    --text-dark: #090909;
+    --text-light: #e0e0e0;
+    --transition: all 0.3s ease;
+    --background-dark: #1e1e1e;
+    --background-secondary: #292929;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-light);
+    background-color: var(--background-dark);
+    overflow-x: hidden;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes rainbow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Header & Navigation */
+.hero {
+    height: 100vh;
+    background: linear-gradient(135deg, #222 0%, #333 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("https://img.freepik.com/free-photo/about-as-service-contact-information-concept_53876-138509.jpg") center/cover;
+    opacity: 0.05;
+    z-index: 0;
+}
+
+nav {
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    background: rgba(34, 34, 34, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.5);
+}
+
+nav:hover {
+    background: rgba(34, 34, 34, 0.9);
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--text-light); /* Ensure the logo is white */
+    background: none; /* Remove gradient if unnecessary */
+}
+
+.nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    margin: 0 1.5rem;
+    transition: var(--transition);
+}
+
+.nav-links a:hover {
+    color: var(--text-light);
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--accent-color);
+    color: var(--text-light);
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.5);
+}
+
+/* Hero Content */
+.hero-content {
+    color: #ffffff;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding-top: 15vh;
+}
+
+.animate-title {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: fadeIn 1s ease-out;
+    color: var(--text-light);
+}
+
+.animate-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    animation: fadeIn 1s ease-out 0.3s backwards;
+    color: var(--text-light);
+}
+
+/* Destinations Section */
+.destinations {
+    padding: 5rem 5%;
+    background: var(--background-secondary);
+}
+
+.destination-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.destination-card {
+    height: 400px;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    transition: var(--transition);
+}
+
+.destination-card:hover {
+    transform: scale(1.03);
+}
+
+.card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    background: linear-gradient(transparent, rgba(255, 255, 255, 0.8));
+    color: var(--text-light);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .animate-title {
+        font-size: 2.5rem;
+    }
+
+    .animate-subtitle {
+        font-size: 1.2rem;
+    }
+}
