@@ -20,7 +20,7 @@ header{
     z-index: 100;
 }
 header a{
-    color: #eee;
+    color: #000000;
     margin-right: 40px;
 }
 /* carousel */
@@ -51,21 +51,29 @@ header a{
     transform: translateX(-50%);
     padding-right: 30%;
     box-sizing: border-box;
-    color: #fff;
+    color: #ffffff;
     text-shadow: 0 5px 10px #0004;
 }
 .carousel .list .item .author{
     font-weight: bold;
+    color: #f1683a;
+    font-size: 40px;
     letter-spacing: 10px;
 }
-.carousel .list .item .title,
+.carousel .list .item .title{
+    font-size: 100px;
+}
 .carousel .list .item .topic{
-    font-size: 5em;
-    font-weight: bold;
+    font-size: 40px;
+    
     line-height: 1.3em;
 }
 .carousel .list .item .topic{
-    color: #f1683a;
+    color: #5af338;
+    opacity: 10%;
+}
+.carousel .list .item .des{
+    font-size: 20px;
 }
 .carousel .list .item .buttons{
     display: grid;
