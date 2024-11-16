@@ -10,14 +10,9 @@ const __dirname = dirname(__filename);
 
 const router = express.Router();
 
-mongoose.connect("mongodb://localhost/seasavvy")
+mongoose.connect("mongodb://localhost/tourism")
     .then(()=> console.log("Connected to database"))
     .catch((err)=> console.log(`Error : ${err}`));
-
-router.get("/", (req, res) => {
-    console.log("New login request");
-    res.sendFile(path.resolve(__dirname, "../../Frontend/public/login.html"));
-})
 
 router.post("/", async (req, res) => {
     const { email, password } = req.body;

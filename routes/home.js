@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const router = express.Router();
-mongoose.connect("mongodb://localhost/seasavvy")
+mongoose.connect("mongodb://localhost/tourism")
     .then(()=> console.log("Connected to database"))
     .catch((err)=> console.log(`Error : ${err}`));
 
@@ -23,7 +23,7 @@ router.get("/", async (req, res) => {
     try {
         const userFound = await user.findById(sessionUserId);
         if(userFound) {
-            res.render(path.resolve(__dirname, "../../Frontend/public/home.ejs"), {userFound});
+            res.sendFile(path.join(__dirname, "../index.html"));
         }
         else {
             res.status(401).send("Please login again");

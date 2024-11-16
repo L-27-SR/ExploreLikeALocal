@@ -5,11 +5,9 @@ import bodyParser from "body-parser";
 import morgan from "morgan";
 import fs from "fs";
 import path from "path";
-import signupRouter from "./routes/signUp.js";
+import signupRouter from './routes/signUp.js';
 import loginRouter from "./routes/login.js";
 import homeRouter from "./routes/home.js";
-import profileRouter from "./routes/profile.js";
-import eduRouter from "./routes/seascholar.js";
 import {
     GoogleGenerativeAI,
     HarmCategory,
@@ -22,7 +20,7 @@ import connectMongoDBSession from "connect-mongodb-session";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const router = express.Router();
-const port = 3004;
+const port = 3005;
 const MongoDBStore = connectMongoDBSession(session);
 const store = new MongoDBStore({
   uri : "mongodb://localhost:27017/tourism",
@@ -110,6 +108,7 @@ app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
     const sessionUserId = req.session.userId;
+    console.log("Session User ID:", sessionUserId);  // Debugging log
     if(sessionUserId) {
         res.redirect("/home");
         return;
@@ -117,10 +116,11 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "./landing.html"));
 });
 
+
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
+app.use("/signup", signupRouter);
 app.use("/home", homeRouter);
-app.use("/profile", profileRouter);
 app.get('/logout', (req, res) => {
   req.session.destroy(err => {
       if (err) {
@@ -128,4 +128,8 @@ app.get('/logout', (req, res) => {
       }
       res.redirect("/");
   });
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });
