@@ -199,7 +199,7 @@ app.get('/logout', (req, res) => {
 });
 
 // AI Query route (for handling user queries)
-app.post('/query', (req, res) => {
+app.post('/map/gen', (req, res) => {
   const { query } = req.body;
   if (!query) {
     return res.status(400).send('Query parameter is required');
