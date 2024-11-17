@@ -29,7 +29,7 @@ const app = express();
 const port = 3005;
 const MongoDBStore = connectMongoDBSession(session);
 const store = new MongoDBStore({
-  uri : "mongodb://localhost:27017/tourism",
+  uri : "mongodb+srv://sreeharshat27:fzvoEddUb4ntakmJ@cluster0.tpluz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/tourism",
   collection : "sessions",
 });
 
@@ -199,7 +199,7 @@ app.get('/logout', (req, res) => {
 });
 
 // AI Query route (for handling user queries)
-app.post('/map/gen', (req, res) => {
+app.post('/query', (req, res) => {
   const { query } = req.body;
   if (!query) {
     return res.status(400).send('Query parameter is required');
