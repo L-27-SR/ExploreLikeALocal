@@ -1,3 +1,6 @@
+// Global variable to store the name of the first tourist location
+let firstLocationName = null;
+
 // OSM feature tags for different categories
 const featuresOSMTags = {
     "Zoo": "tourism=zoo",
@@ -47,15 +50,10 @@ function getUserLocation() {
     });
 }
 
-// Function to fetch locations from Overpass API
+// Modify the fetchLocations function to store the first tourist location name
 async function fetchLocations(category, userLocation) {
-    // Get the user's location (latitude and longitude)
     const { latitude, longitude } = userLocation;
-
-    // Define search radius (50 km)
-    const radius = 1000000; // in meters
-
-    // Declare a variable for the OSM tag
+    const radius = 1000000; // 50 km in meters
     let osmTag;
 
     // Use a switch case to assign the correct OSM tag based on category
@@ -105,21 +103,22 @@ async function fetchLocations(category, userLocation) {
 
         if (data.elements && data.elements.length > 0) {
             console.log(`Found ${data.elements.length} locations.`);
+
+            // Store the name of the first tourist location
+            firstLocationName = data.elements[0].tags.name || "Unnamed Location";  // Default if name is missing
+
             // Iterate over each element and place markers or polygons
             data.elements.forEach(element => {
                 if (element.type === 'node') {
-                    // Add a marker for each node (lat, lon)
                     L.marker([element.lat, element.lon])
                         .addTo(map)
                         .bindPopup(`<b>${category}</b>`);
                     console.log(`Added marker for node at Latitude: ${element.lat}, Longitude: ${element.lon}`);
                 } else if (element.type === 'way' || element.type === 'relation') {
-                    // Handle ways and relations (optional, depending on your needs)
                     let coords = [];
                     if (element.type === 'way') {
                         element.geometry.forEach(geo => coords.push([geo.lat, geo.lon]));
                     }
-                    // Draw polygons or polylines for ways or relations
                     if (coords.length) {
                         L.polygon(coords).addTo(map).bindPopup(`<b>${category}</b>`);
                         console.log("Added polygon for way/relation.");
@@ -133,6 +132,31 @@ async function fetchLocations(category, userLocation) {
         console.error('Error fetching Overpass data:', error);
     }
 }
+
+// Function to handle "Generate" button click and send POST request
+document.getElementById("generate").addEventListener("click", async () => {
+    if (firstLocationName) {
+        try {
+            const response = await fetch('/map/gen', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ locationName: firstLocationName }),
+            });
+
+            if (response.ok) {
+                console.log("Location name sent to server:", firstLocationName);
+            } else {
+                console.error("Failed to send location name to server");
+            }
+        } catch (error) {
+            console.error("Error sending location name:", error);
+        }
+    } else {
+        console.error("No tourist location found to send");
+    }
+});
 
 // Main function to execute everything
 async function initMap() {
