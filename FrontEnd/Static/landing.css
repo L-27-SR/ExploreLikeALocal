@@ -19,6 +19,7 @@ body {
     line-height: 1.6;
     color: var(--text-dark);
     overflow-x: hidden;
+    background: radial-gradient(circle, rgba(2,0,36,0.7540266106442577) 0%, rgba(0,212,255,0.1517857142857143) 100%);
 }
 
 /* Animations */
@@ -41,7 +42,6 @@ body {
 /* Header & Navigation */
 .hero {
     height: 100vh;
-    background: linear-gradient(135deg, #f6f8ff 0%, #f0f4ff 100%);
     position: relative;
     overflow: hidden;
 }
@@ -157,7 +157,7 @@ nav:hover {
 /* Destinations Section */
 .destinations {
     padding: 5rem 5%;
-    background: #ffffff;
+    background: var(--primary-color);
 }
 
 .destination-grid {
@@ -194,7 +194,7 @@ nav:hover {
 /* Experiences Section */
 .experiences {
     padding: 5rem 5%;
-    background: #f8f9fa;
+    background: var(--primary-color);
 }
 
 .experience-slider {
