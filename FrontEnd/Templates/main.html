@@ -4,39 +4,527 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExploreLikeALocal</title>
-    <link rel="stylesheet" href="./style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle, rgba(88, 70, 70, 1), rgba(0, 0, 0, 1));
+        }
+        .navbar {
+            background: #111;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: -webkit-sticky;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(17, 17, 17, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        /* Navigation Styles */
+        .nav-container {
+            padding: 1rem;
+            background: #111;
+        }
+        .logo {
+            font-size: 1.5rem;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+        .nav-link:before {
+            content: '';
+            background: #111;
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+            border-radius: 6px;
+        }
+
+        .nav-link:hover:before {
+            opacity: 1;
+        }
+
+        .nav-link:after {
+            z-index: -1;
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #111;
+            left: 0;
+            top: 0;
+            border-radius: 6px;
+            opacity: 0;
+        }
+
+        .nav-link:hover:after {
+            opacity: 1;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 10px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: #fff;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+
+        /* Mobile responsive styles */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+                z-index: 100;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 6px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -6px);
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 100%;
+                background: #111;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: 0.3s ease;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+        }
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;  
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .nav-list li {
+            margin: 0 10px;
+        }
+
+        .nav-list li:first-child {
+            margin-right: auto;
+        }
+
+        .nav-button {
+            color: #fff;
+            padding: 12px 15px;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            transition: .3s;
+            z-index: 1;
+            background: #111;
+            cursor: pointer;
+            border-radius: 6px;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-button:before {
+            content: '';
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+            border-radius: 6px;
+        }
+
+        .nav-button:hover:before {
+            opacity: 1;
+        }
+
+        .nav-button:after {
+            z-index: -1;
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #111;
+            left: 0;
+            top: 0;
+            border-radius: 6px;
+            opacity: 0;
+        }
+
+        .nav-button:hover:after {
+            opacity: 1;
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+
+        /* Carousel Styles */
+        .carousel {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel .list {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel .list .item {
+            width: 100%;
+            height: 100%;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel .list .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+
+        .carousel .list .item .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 50px);
+            width: 80%;
+            max-width: 800px;
+            opacity: 0;
+            transition: all 0.8s ease;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .carousel .list .item.active .content {
+            transform: translateY(-50%, -50%);
+            opacity: 1;
+        }
+        .carousel .list .item .content::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            z-index: -1;
+        }
+
+        .carousel .list .item .content .author {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .carousel .list .item .content .title {
+            font-size: 3rem;
+            color: #fff;
+            margin-bottom: 1rem;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.8s ease 0.2s;
+        }
+        .carousel .list .item.active .content .title {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .carousel .list .item .content .topic {
+            font-size: 1.5rem;
+            color: #00ff88;
+            margin-bottom: 1.5rem;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.8s ease 0.4s;
+        }
+        .carousel .list .item.active .content .topic {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.carousel .list .item .content .des {
+    font-size: 1.1rem;
+    color: #ddd;
+    margin-bottom: 2rem;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.8s ease 0.6s;
+}
+
+.carousel .list .item.active .content .des {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.carousel .list .item .content .buttons {
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.8s ease 0.8s;
+}
+.carousel .list .item .content .buttons {
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.8s ease 0.8s;
+}
+
+        .carousel .list .item .content .buttons button {
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .carousel .list .item .content .buttons button:hover {
+            background: white;
+            color: black;
+        }
+
+        .carousel .thumbnail {
+            position: absolute;
+            bottom: 50px;
+            right: 50px;
+            display: flex;
+            gap: 15px;
+            max-width: 50%;
+            overflow-x: auto;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .carousel .thumbnail .item {
+            width: 150px;
+            height: 100px;
+            flex-shrink: 0;
+            position: relative;
+            cursor: pointer;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .carousel .thumbnail .item.active {
+            border: 3px solid white;
+            transform: scale(1.1);
+        }
+
+        .carousel .thumbnail .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel .arrows button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel .arrows button:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        #prev {
+            left: 20px;
+        }
+
+        #next {
+            right: 20px;
+        }
+
+        .carousel .time {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: white;
+            transition: width 0.3s linear;
+        }
+        
+.categories-section {
+            padding: 60px 20px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .category-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .category-description {
+            font-size: 0.9rem;
+            color: #ddd;
+            line-height: 1.5;
+        }
+        .footer {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .footer-content {
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+.footer-bottom {
+    color: #ccc;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+}
+    </style>
 </head>
 <body>
-    <header>
-        <ul>
-            <li style = "float:left"><a class = "active" href = "/">ExploreLikeALocal</button></a></li>
-            <li><a href="about.html">About Us</button></a></li>
-            <li><a href="main.html">Home</button></a></li>
+    <nav class="navbar">
+        <a href="/" class="logo">ExploreLikeALocal</a>
+        <button class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links">
+            <li><a href="/" class="nav-button">Home</a></li>
+            <li><a href="map.html" class="nav-button">Maps</a></li>
+            <li><a href="about.html" class="nav-button">About</a></li>
         </ul>
-        </ul>
-    </header>
+    </nav>
 
-    <!-- carousel -->
     <div class="carousel">
         <!-- list item -->
         <div class="list">
-            <div class="item">
-                <img src="image/zoo.jpg">
-
+            <div class="item-active">
+                <img src="../Static/image/zoo.jpg" alt="Wildlife">
                 <div class="content">
-                    <div class="author">ExploreLikeALocal</div>
                     <div class="title">Wildlife</div>
                     <div class="topic">Step Into the Wild, A World of Wonder Awaits!</div>
                     <div class="des">
                         Explore vibrant wildlife and exotic animals in beautifully curated enclosures, perfect for family outings and educational adventures.
                     </div>
-                    <div class="buttons">
-                        <button onclick="sendCategory('Zoo')">SEE MORE</button>
-                    </div>
                 </div>
             </div>
             <div class="item">
-                <img src="image/temple.jpg">
+                <img src="../Static/image/temple.jpg">
                 <div class="content">
                     <div class="author">ExploreLikeALocal</div>
                     <div class="title">TEMPLE</div>
@@ -44,13 +532,10 @@
                     <div class="des">
                         Discover serene sanctuaries of spirituality, showcasing intricate architecture and centuries-old traditions.
                     </div>
-                    <div class="buttons">
-                        <button onclick="sendCategory('Temple')">SEE MORE</button>
-                    </div>
                 </div>
             </div>
             <div class="item">
-                <img src="image/museum.jpg">
+                <img src="../Static/image/museum.jpg">
                 <div class="content">
                     <div class="author">ExploreLikeALocal</div>
                     <div class="title">MUSEUM</div>
@@ -58,13 +543,10 @@
                     <div class="des">
                         Explore fascinating historical artifacts and exhibitions that bring the past to life.
                     </div>
-                    <div class="buttons">
-                        <button onclick="sendCategory('Museum')">SEE MORE</button>
-                    </div>
                 </div>
             </div>
             <div class="item">
-                <img src="image/park.jpg">
+                <img src="../Static/image/park.jpg">
                 <div class="content">
                     <div class="author">ExploreLikeALocal</div>
                     <div class="title">PARK</div>
@@ -72,13 +554,10 @@
                     <div class="des">
                         Unwind in lush green spaces ideal for picnics, leisure walks, or just soaking in nature's tranquility.
                     </div>
-                    <div class="buttons">
-                        <button onclick="sendCategory('Park')">SEE MORE</button>
-                    </div>
                 </div>
             </div>
             <div class="item">
-                <img src="image/viewpoint.jpg">
+                <img src="../Static/image/viewpoint.jpg">
                 <div class="content">
                     <div class="author">ExploreLikeALocal</div>
                     <div class="title">VIEWPOINT</div>
@@ -86,13 +565,10 @@
                     <div class="des">
                         Marvel at breathtaking panoramic vistas that capture the essence of the surrounding landscape.
                     </div>
-                    <div class="buttons">
-                        <button onclick="sendCategory('Viewpoint')">SEE MORE</button>
-                    </div>
                 </div>
             </div>
             <div class="item">
-                <img src="image/beach.jpg">
+                <img src="../Static/image/beach.jpg">
                 <div class="content">
                     <div class="author">ExploreLikeALocal</div>
                     <div class="title">BEACH</div>
@@ -100,13 +576,10 @@
                     <div class="des">
                         Bask in golden sands and crystal-clear waters, a haven for relaxation and water sports.
                     </div>
-                    <div class="buttons">
-                        <button onclick="sendCategory('Beach')">SEE MORE</button>
-                    </div>
                 </div>
             </div>
             <div class="item">
-                <img src="image/restaurant.jpg">
+                <img src="../Static/image/restaurant.jpg">
                 <div class="content">
                     <div class="author">ExploreLikeALocal</div>
                     <div class="title">RESTAURANT</div>
@@ -114,59 +587,56 @@
                     <div class="des">
                         Savor delectable cuisines in charming settings that cater to every palate and occasion.
                     </div>
-                    <div class="buttons">
-                        <button onclick="sendCategory('Restaurant')">SEE MORE</button>
-                    </div>
                 </div>
             </div>
         </div>
-
+    
         <!-- list thumbnail -->
         <div class="thumbnail">
             <div class="item">
-                <img src="image/zoo.jpg">
+                <img src="../Static/image/zoo.jpg">
                 <div class="content">
                     <div class="title">ZOO</div>
                 </div>
             </div>
             <div class="item">
-                <img src="image/temple.jpg">
+                <img src="../Static/image/temple.jpg">
                 <div class="content">
                     <div class="title">TEMPLE</div>
                 </div>
             </div>
             <div class="item">
-                <img src="image/museum.jpg">
+                <img src="../Static/image/museum.jpg">
                 <div class="content">
                     <div class="title">MUSEUM</div>
                 </div>
             </div>
             <div class="item">
-                <img src="image/park.jpg">
+                <img src="../Static/image/park.jpg">
                 <div class="content">
                     <div class="title">PARK</div>
                 </div>
             </div>
             <div class="item">
-                <img src="image/viewpoint.jpg">
+                <img src="../Static/image/viewpoint.jpg">
                 <div class="content">
                     <div class="title">VIEWPOINT</div>
                 </div>
             </div>
             <div class="item">
-                <img src="image/beach.jpg">
+                <img src="../Static/image/beach.jpg">
                 <div class="content">
                     <div class="title">BEACH</div>
                 </div>
             </div>
             <div class="item">
-                <img src="image/restaurant.jpg">
+                <img src="../Static/image/restaurant.jpg">
                 <div class="content">
                     <div class="title">RESTAURANT</div>
                 </div>
             </div>
         </div>
-
+    
         <!-- next prev -->
         <div class="arrows">
             <button id="prev"><</button>
@@ -175,9 +645,31 @@
         <!-- time running -->
         <div class="time"></div>
     </div>
-
     <br>
-
+    <section class="categories-section">
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="category-icon">🏛️</div>
+                <h3 class="category-title">Cultural Heritage</h3>
+                <p class="category-description">Explore temples, museums, and historical landmarks that showcase local traditions.</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🌊</div>
+                <h3 class="category-title">Natural Wonders</h3>
+                <p class="category-description">Discover beaches, parks, and scenic viewpoints perfect for outdoor adventures.</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🍜</div>
+                <h3 class="category-title">Local Cuisine</h3>
+                <p class="category-description">Experience authentic flavors at carefully selected local restaurants.</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🎨</div>
+                <h3 class="category-title">Arts & Entertainment</h3>
+                <p class="category-description">Immerse yourself in local art galleries, theaters, and cultural shows.</p>
+            </div>
+        </div>
+    </section>
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -191,32 +683,133 @@
             <p>&copy; 2024 ExploreLikeALocal. All rights reserved.</p>
         </div>
     </footer>
-    <script>
-        function sendCategory(category) {
-            fetch('/map', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ category: category })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                // Store the category in local storage
-                localStorage.setItem('category', category);
-                // Redirect to map.html
-                window.location.href = `./map.html`;
-            })
-            .catch(error => console.error('Error:', error));
-        }
     
-        document.getElementById('categoryForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const category = document.getElementById('category').value;
-            sendCategory(category);
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.querySelector('.carousel');
+            const list = carousel.querySelector('.list');
+            const items = carousel.querySelectorAll('.list .item');
+            const thumbnails = carousel.querySelectorAll('.thumbnail .item');
+            const prevBtn = document.getElementById('prev');
+            const nextBtn = document.getElementById('next');
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking a link (mobile)
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            // Navbar scroll effect
+            window.addEventListener('scroll', () => {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+            
+            let currentIndex = 0;
+            const totalItems = items.length;
+            
+            // Initialize thumbnails
+            thumbnails[currentIndex].classList.add('active');
+            
+            // Function to update carousel position
+            function updateCarousel() {
+            list.style.transform = `translateX(-${currentIndex * 100}%)`;
+            
+            // Show only current and next thumbnail
+            thumbnails.forEach((thumb, index) => {
+                if (index === currentIndex || index === (currentIndex + 1) % totalItems) {
+                    thumb.style.display = 'block';
+                } else {
+                    thumb.style.display = 'none';
+                }
+            });
+            
+            // Update active state
+            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            thumbnails[currentIndex].classList.add('active');
+        }
+            
+            // Previous button click
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+                updateCarousel();
+            });
+            
+            // Next button click
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % totalItems;
+                updateCarousel();
+            });
+            
+            // Thumbnail clicks
+            thumbnails.forEach((thumb, index) => {
+                thumb.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateCarousel();
+                });
+            });
+            
+            // Auto advance carousel
+            let autoAdvance = setInterval(() => {
+                currentIndex = (currentIndex + 1) % totalItems;
+                updateCarousel();
+            }, 5000); // Change slides every 5 seconds
+            
+            // Pause auto-advance on hover
+            carousel.addEventListener('mouseenter', () => {
+                clearInterval(autoAdvance);
+            });
+            
+            // Resume auto-advance when mouse leaves
+            carousel.addEventListener('mouseleave', () => {
+                autoAdvance = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % totalItems;
+                    updateCarousel();
+                }, 5000);
+            });
+            
+            // Touch support
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            carousel.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            
+            carousel.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+            
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const difference = touchStartX - touchEndX;
+                
+                if (Math.abs(difference) > swipeThreshold) {
+                    if (difference > 0) {
+                        // Swipe left - next slide
+                        currentIndex = (currentIndex + 1) % totalItems;
+                    } else {
+                        // Swipe right - previous slide
+                        currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+                    }
+                    updateCarousel();
+                }
+            }
         });
     </script>
-    <script src="app.js"></script>
 </body>
 </html>

@@ -187,8 +187,8 @@ nav:hover {
     left: 0;
     right: 0;
     padding: 2rem;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
-    color: var(--text-light);
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: #ffffff;
 }
 
 /* Experiences Section */

@@ -7,29 +7,34 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.161.0/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: #fdfdfd;
-            overflow-x: hidden;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.6;
         }
 
         nav {
-            background: #4a90e2;
+            background: linear-gradient(90deg, #4a90e2 0%, #6a11cb 100%);
             color: white;
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
+
 
         .nav-links a {
             color: white;
@@ -44,15 +49,19 @@
         }
 
         .search-container {
-            padding: 1rem 2rem;
+            max-width: 900px;
+            margin: 1.5rem auto;
             background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
         }
 
         .search-bar {
             max-width: 800px;
             margin: 0 auto;
             display: flex;
+            justify-content: center;
             gap: 1rem;
         }
 
@@ -86,22 +95,30 @@
         }
 
         .map-container {
-            height: 60vh;
-            margin: 1rem 2rem;
-            border-radius: 12px;
+            height: 65vh;
+            margin: 1.5rem 2rem;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+        .map-container:hover {
+            transform: scale(1.01);
         }
 
         #map {
             height: 100%;
             width: 100%;
+            filter: grayscale(10%) contrast(110%);
         }
 
         .location-info {
+            background: white;
+            max-width: 900px;
+            margin: 1.5rem auto;
             padding: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
         }
 
         .location-info h2 {
@@ -117,7 +134,8 @@
         .category-label {
             display: inline-block;
             padding: 0.5rem 1rem;
-            background: #ebf4ff;
+            background: rgba(74,144,226,0.1);
+            border: 1px solid rgba(74,144,226,0.3);
             color: #4a90e2;
             border-radius: 20px;
             font-size: 0.875rem;
@@ -146,12 +164,104 @@
             font-size: 0.75rem;
             margin-top: 0.5rem;
         }
+
+        .weather-info {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .social-share {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .social-share button {
+            margin: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .social-share button:first-child {
+            background: #1DA1F2;
+            color: white;
+        }
+
+        .social-share button:last-child {
+            background: #4267B2;
+            color: white;
+        }
+
+        .virtual-guide {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #e9ecef;
+            border-radius: 8px;
+        }
+
+        .virtual-guide button {
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #3d-preview {
+            margin-top: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #generate {
+            background: linear-gradient(90deg, #4a90e2 0%, #6a11cb 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74,144,226,0.4);
+        }
+        #generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74,144,226,0.5);
+        }
+
+        .category-label {
+            background: rgba(74,144,226,0.1);
+            color: #4a90e2;
+            border: 1px solid rgba(74,144,226,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .map-container {
+                margin: 1rem;
+                height: 50vh;
+            }
+            
+            .location-info, .search-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
     <nav>
         <div class="logo">TravelMapper</div>
         <div class="nav-links">
+            <a href="landing.html">Home</a>
             <a href="#" id="logoutBtn">Logout</a>
         </div>
     </nav>
@@ -175,6 +285,8 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.161.0/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
     <script src="map.js"></script>
 </body>
 </html>
