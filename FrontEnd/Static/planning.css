@@ -295,3 +295,28 @@ button:disabled {
 button:disabled {
     animation: pulse 1.5s infinite;
 }
+.dropdown-container {
+    width: 250px;
+    position: relative;
+}
+#search {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+#destinationList {
+    max-height: 120px; /* Limits visible options to 3 */
+    overflow-y: auto;  /* Enables scrolling */
+    border: 1px solid #ccc;
+    position: absolute;
+    width: 100%;
+    background: white;
+    display: none;
+}
+.destination-option {
+    padding: 8px;
+    cursor: pointer;
+}
+.destination-option:hover {
+    background-color: #f0f0f0;
+}
