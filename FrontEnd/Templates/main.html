@@ -22,10 +22,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: -webkit-sticky;
-            width: 100%;
             top: 0;
             z-index: 1000;
+            position: sticky;
+            width: 100%;
             transition: all 0.3s ease;
         }
 
@@ -250,24 +250,24 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: brightness(0.7);
+            filter: brightness(0.8);
         }
 
         .carousel .list .item .content {
             position: absolute;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, 50px);
+            left: 30%;
+            transform: translate(-50%, 50%);
             width: 80%;
-            max-width: 800px;
-            opacity: 0;
+            max-width: 300px;
+            opacity: 1;
             transition: all 0.8s ease;
             text-align: center;
             z-index: 2;
         }
 
         .carousel .list .item.active .content {
-            transform: translateY(-50%, -50%);
+            transform: translate(-50%, -50%);
             opacity: 1;
         }
         .carousel .list .item .content::before {
@@ -514,7 +514,7 @@
     <div class="carousel">
         <!-- list item -->
         <div class="list">
-            <div class="item-active">
+            <div class="item active">
                 <img src="../Static/image/zoo.jpg" alt="Wildlife">
                 <div class="content">
                     <div class="title">Wildlife</div>
@@ -737,7 +737,9 @@
                     thumb.style.display = 'none';
                 }
             });
-            
+            items.forEach(item => item.classList.remove('active'));
+            // Add active class to current item
+            items[currentIndex].classList.add('active');
             // Update active state
             thumbnails.forEach(thumb => thumb.classList.remove('active'));
             thumbnails[currentIndex].classList.add('active');
