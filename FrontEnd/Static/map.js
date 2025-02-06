@@ -15,7 +15,7 @@ const categories = {
     restaurants: { type: "restaurant", radius: 5000, limit: 5 },
     gasStations: { type: "fuel", radius: 5000, limit: 5 },
     temples: { type: "place_of_worship", radius: 10000, limit: 3 },
-    parks: { type: "leisure", value: "park", radius: 10000, limit: 5 },
+    parks: { type: "park", radius: 10000, limit: 5 },
     touristAttractions: { type: "tourism", value: "attraction", radius: 50000, limit: 10 }
 };
 
@@ -199,13 +199,91 @@ function searchLocation() {
 // Function to find places from Overpass API
 function findPlaces(lat, lon, category) {
     let { type, radius, limit } = categories[category];
-    let query = `
-        [out:json];
-        (
-          node["amenity"="${type}"](around:${radius}, ${lat}, ${lon});
-        );
-        out center;
-    `;
+    
+    let query;
+    if (category === 'parks') {
+        query = `
+            [out:json];
+            (
+                // Regular parks
+                node["leisure"="park"](around:${radius}, ${lat}, ${lon});
+                way["leisure"="park"](around:${radius}, ${lat}, ${lon});
+                
+                // Gardens
+                node["leisure"="garden"](around:${radius}, ${lat}, ${lon});
+                way["leisure"="garden"](around:${radius}, ${lat}, ${lon});
+                
+                // Urban green spaces
+                node["landuse"="recreation_ground"](around:${radius}, ${lat}, ${lon});
+                way["landuse"="recreation_ground"](around:${radius}, ${lat}, ${lon});
+                
+                // Playgrounds
+                node["leisure"="playground"](around:${radius}, ${lat}, ${lon});
+                way["leisure"="playground"](around:${radius}, ${lat}, ${lon});
+                
+                // Dog parks
+                node["leisure"="dog_park"](around:${radius}, ${lat}, ${lon});
+                way["leisure"="dog_park"](around:${radius}, ${lat}, ${lon});
+                
+                // Nature reserves and protected areas
+                node["leisure"="nature_reserve"](around:${radius}, ${lat}, ${lon});
+                way["leisure"="nature_reserve"](around:${radius}, ${lat}, ${lon});
+                
+                // City parks
+                node["leisure"="city_park"](around:${radius}, ${lat}, ${lon});
+                way["leisure"="city_park"](around:${radius}, ${lat}, ${lon});
+            );
+            out center;
+        `;
+    } else if (category === 'touristAttractions') {
+        // Keep the existing tourist attractions query
+        query = `
+            [out:json];
+            (
+                // Museums
+                node["tourism"="museum"](around:${radius}, ${lat}, ${lon});
+                way["tourism"="museum"](around:${radius}, ${lat}, ${lon});
+                
+                // Beaches
+                node["natural"="beach"](around:${radius}, ${lat}, ${lon});
+                way["natural"="beach"](around:${radius}, ${lat}, ${lon});
+                
+                // Amusement Parks
+                node["leisure"="amusement_park"](around:${radius}, ${lat}, ${lon});
+                way["leisure"="amusement_park"](around:${radius}, ${lat}, ${lon});
+                
+                // National Parks and Forests
+                node["leisure"="nature_reserve"](around:${radius}, ${lat}, ${lon});
+                way["leisure"="nature_reserve"](around:${radius}, ${lat}, ${lon});
+                node["boundary"="national_park"](around:${radius}, ${lat}, ${lon});
+                way["boundary"="national_park"](around:${radius}, ${lat}, ${lon});
+                
+                // Waterfalls
+                node["waterway"="waterfall"](around:${radius}, ${lat}, ${lon});
+                
+                // Resorts
+                node["tourism"="resort"](around:${radius}, ${lat}, ${lon});
+                way["tourism"="resort"](around:${radius}, ${lat}, ${lon});
+                
+                // Other tourist attractions
+                node["tourism"="attraction"](around:${radius}, ${lat}, ${lon});
+                way["tourism"="attraction"](around:${radius}, ${lat}, ${lon});
+                node["tourism"="viewpoint"](around:${radius}, ${lat}, ${lon});
+                node["historic"="monument"](around:${radius}, ${lat}, ${lon});
+                node["historic"="castle"](around:${radius}, ${lat}, ${lon});
+                node["historic"="ruins"](around:${radius}, ${lat}, ${lon});
+            );
+            out center;
+        `;
+    } else {
+        query = `
+            [out:json];
+            (
+              node["amenity"="${type}"](around:${radius}, ${lat}, ${lon});
+            );
+            out center;
+        `;
+    }
 
     let overpassUrl = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
 
@@ -214,6 +292,7 @@ function findPlaces(lat, lon, category) {
         .then(data => {
             let places = data.elements;
 
+            // Sort places by distance
             places.sort((a, b) => getDistance(lat, lon, a.lat, a.lon) - getDistance(lat, lon, b.lat, b.lon));
             places = places.slice(0, limit);
 
@@ -221,22 +300,34 @@ function findPlaces(lat, lon, category) {
             listContainer.innerHTML = "";
 
             places.forEach(place => {
-                let placeName = place.tags.name || "Unnamed";
-                let placeLat = place.lat;
-                let placeLon = place.lon;
-            
+                let placeName = place.tags.name || "Unnamed Park";
+                let placeLat = place.center ? place.center.lat : place.lat;
+                let placeLon = place.center ? place.center.lon : place.lon;
+                let placeType = "";
+                
+                // Determine the type of park/space
+                if (place.tags.leisure === "park") placeType = "Park";
+                else if (place.tags.leisure === "garden") placeType = "Garden";
+                else if (place.tags.leisure === "playground") placeType = "Playground";
+                else if (place.tags.leisure === "dog_park") placeType = "Dog Park";
+                else if (place.tags.leisure === "nature_reserve") placeType = "Nature Reserve";
+                else if (place.tags.landuse === "recreation_ground") placeType = "Recreation Ground";
+                else placeType = "Green Space";
+
                 let listItem = document.createElement("li");
                 listItem.style.display = "flex";
                 listItem.style.justifyContent = "space-between";
                 listItem.style.alignItems = "center";
                 listItem.style.padding = "8px";
                 listItem.style.cursor = "pointer";
-            
+                listItem.style.borderBottom = "1px solid #eee";
+                listItem.style.margin = "5px 0";
+
                 let nameSpan = document.createElement("span");
-                nameSpan.innerText = `${placeName} (${getDistance(lat, lon, placeLat, placeLon).toFixed(2)} km)`;
-            
+                nameSpan.innerHTML = `${placeName} <small>(${placeType})</small><br>${getDistance(lat, lon, placeLat, placeLon).toFixed(2)} km`;
+                
                 let navButton = document.createElement("button");
-                navButton.innerHTML = '<i class="fas fa-directions"></i> Navigate';
+                navButton.innerHTML = '<i class="fas fa-directions"></i>';
                 navButton.style.marginLeft = "10px";
                 navButton.style.border = "2px solid #4CAF50";
                 navButton.style.backgroundColor = "white";
@@ -245,8 +336,7 @@ function findPlaces(lat, lon, category) {
                 navButton.style.borderRadius = "4px";
                 navButton.style.cursor = "pointer";
                 navButton.style.transition = "all 0.3s";
-            
-                // Hover effect
+
                 navButton.onmouseover = () => {
                     navButton.style.backgroundColor = "#4CAF50";
                     navButton.style.color = "white";
@@ -255,19 +345,27 @@ function findPlaces(lat, lon, category) {
                     navButton.style.backgroundColor = "white";
                     navButton.style.color = "#4CAF50";
                 };
-            
+
                 navButton.onclick = (event) => {
                     event.stopPropagation();
                     window.open(`https://www.google.com/maps/dir/${lat},${lon}/${placeLat},${placeLon}`, "_blank");
                 };
-            
-                listItem.onclick = () => map.setView([placeLat, placeLon], 30);
-            
+
+                listItem.onclick = () => {
+                    map.setView([placeLat, placeLon], 16);
+                    // Add a marker for the selected park
+                    L.marker([placeLat, placeLon])
+                        .addTo(map)
+                        .bindPopup(`<b>${placeName}</b><br>${placeType}`);
+                };
+
                 listItem.appendChild(nameSpan);
                 listItem.appendChild(navButton);
                 listContainer.appendChild(listItem);
             });
-})
+        })
+        .catch(error => console.error("Error fetching places:", error));
+}
 
 // Distance calculation (Haversine formula)
 function getDistance(lat1, lon1, lat2, lon2) {
@@ -412,4 +510,4 @@ async function initMap() {
 }
 
 // Initialize map and fetch locations
-initMap()};
+initMap();
