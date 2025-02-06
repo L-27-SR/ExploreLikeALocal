@@ -49,13 +49,23 @@
         }
 
         .search-container {
-            max-width: 900px;
-            margin: 1.5rem auto;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
             background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
         }
+        #locationInput {
+            padding: 8px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
 
         .search-bar {
             max-width: 800px;
@@ -169,24 +179,39 @@
             background: rgba(255, 255, 255, 0.9);
             padding: 1rem;
             border-radius: 8px;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .weather-info h3 {
+            margin-top: 0;
+            color: #2d3748;
         }
 
         .social-share {
-            margin-top: 1rem;
-            padding: 1rem;
-            background: #f8f9fa;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f8fafc;
             border-radius: 8px;
         }
 
         .social-share button {
             margin: 0.5rem;
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-weight: 500;
+        }
+
+        .social-share button[onclick*="Twitter"] {
+            background: #1DA1F2;
+            color: white;
+        }
+
+        .social-share button[onclick*="Facebook"] {
+            background: #4267B2;
+            color: white;
         }
 
         .social-share button:first-child {
@@ -215,11 +240,14 @@
             border-radius: 4px;
             cursor: pointer;
         }
-
+        .virtual-guide button:hover {
+            background: #357abd;
+        }
         #3d-preview {
-            margin-top: 1rem;
+            margin: 1.5rem 0;
             border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         #generate {
             background: linear-gradient(90deg, #4a90e2 0%, #6a11cb 100%);
@@ -255,6 +283,39 @@
                 padding: 1rem;
             }
         }
+        .checkbox-container {
+            margin-top: 10px;
+        }
+        #resultsContainer {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            
+        }
+
+        .results-column {
+            width: 18%;
+            padding: 10px;
+            
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .results-column h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .results-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .results-column ul li {
+            cursor: pointer;
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
     </style>
 </head>
 <body>
@@ -265,28 +326,41 @@
             <a href="#" id="logoutBtn">Logout</a>
         </div>
     </nav>
-
-
+    <div class="search-container">
+        <input type="text" id="locationInput" placeholder="Enter location...">
+        <button onclick="searchLocation()">Search</button>
+    </div>
     <div class="map-container">
+        <div class="checkbox-container">
+            <label><input type="checkbox" id="restaurants"> Restaurants (5km)</label>
+            <label><input type="checkbox" id="gasStations"> Gas Stations (5km)</label>
+            <label><input type="checkbox" id="temples"> Temples (10km)</label>
+            <label><input type="checkbox" id="parks"> Parks (10km)</label>
+            <label><input type="checkbox" id="touristAttractions"> Tourist Attractions (50km)</label>
+        </div>
         <div id="map"></div>
     </div>
-
-    <div class="location-info">
-        <div id="categoryDisplay" class="category-label"></div>
-        <h2>Nearby Locations</h2>
-        <p id="locationInfo">
-            Searching for interesting places nearby...
-        </p>
+    <div id="resultsContainer">
+        <div id="restaurantsResults" class="results-column"><h3>Restaurants</h3><ul></ul></div>
+        <div id="gasStationsResults" class="results-column"><h3>Gas Stations</h3><ul></ul></div>
+        <div id="templesResults" class="results-column"><h3>Temples</h3><ul></ul></div>
+        <div id="parksResults" class="results-column"><h3>Parks</h3><ul></ul></div>
+        <div id="touristAttractionsResults" class="results-column"><h3>Tourist Attractions</h3><ul></ul></div>
     </div>
-    <div class="search-container">
-        <div class="search-bar">
-            <button id="generate">Generate</button>
-        </div>
-    </div>
+    
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.161.0/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
-    <script src="map.js"></script>
+    <script src="../Static/map.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const category = localStorage.getItem('category');
+            if (category) {
+                const categoryDisplay = document.getElementById('categoryDisplay');
+                categoryDisplay.textContent = category;
+            }
+        });
+    </script>
 </body>
 </html>

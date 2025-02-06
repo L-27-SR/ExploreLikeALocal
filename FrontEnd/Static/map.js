@@ -11,6 +11,13 @@ const featuresOSMTags = {
     "Beach": "natural=beach",
     "Restaurant": "amenity=restaurant",
 };
+const categories = {
+    restaurants: { type: "restaurant", radius: 5000, limit: 5 },
+    gasStations: { type: "fuel", radius: 5000, limit: 5 },
+    temples: { type: "place_of_worship", radius: 10000, limit: 3 },
+    parks: { type: "leisure", value: "park", radius: 10000, limit: 5 },
+    touristAttractions: { type: "tourism", value: "attraction", radius: 50000, limit: 10 }
+};
 
 // Initialize the map with a placeholder position until the actual location is obtained
 const map = L.map('map').setView([51.505, -0.09], 13); // Default center (can be changed)
@@ -151,6 +158,127 @@ function speakGuideText(text) {
     window.speechSynthesis.speak(utterance);
 }
 
+// Function to search for location
+function searchLocation() {
+    let location = document.getElementById("locationInput").value;
+    if (!location) {
+        alert("Please enter a location");
+        return;
+    }
+
+    let apiUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${location}`;
+
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.length === 0) {
+                alert("Location not found");
+                return;
+            }
+
+            let lat = parseFloat(data[0].lat);
+            let lon = parseFloat(data[0].lon);
+            
+            map.setView([lat, lon], 12);
+
+            L.marker([lat, lon]).addTo(map)
+                .bindPopup(`<b>${location}</b>`)
+                .openPopup();
+
+            Object.keys(categories).forEach(category => {
+                if (document.getElementById(category).checked) {
+                    findPlaces(lat, lon, category);
+                } else {
+                    document.getElementById(category + "Results").querySelector("ul").innerHTML = "";
+                }
+            });
+        })
+        .catch(error => console.error("Error fetching location:", error));
+}
+
+// Function to find places from Overpass API
+function findPlaces(lat, lon, category) {
+    let { type, radius, limit } = categories[category];
+    let query = `
+        [out:json];
+        (
+          node["amenity"="${type}"](around:${radius}, ${lat}, ${lon});
+        );
+        out center;
+    `;
+
+    let overpassUrl = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
+
+    fetch(overpassUrl)
+        .then(response => response.json())
+        .then(data => {
+            let places = data.elements;
+
+            places.sort((a, b) => getDistance(lat, lon, a.lat, a.lon) - getDistance(lat, lon, b.lat, b.lon));
+            places = places.slice(0, limit);
+
+            let listContainer = document.getElementById(category + "Results").querySelector("ul");
+            listContainer.innerHTML = "";
+
+            places.forEach(place => {
+                let placeName = place.tags.name || "Unnamed";
+                let placeLat = place.lat;
+                let placeLon = place.lon;
+            
+                let listItem = document.createElement("li");
+                listItem.style.display = "flex";
+                listItem.style.justifyContent = "space-between";
+                listItem.style.alignItems = "center";
+                listItem.style.padding = "8px";
+                listItem.style.cursor = "pointer";
+            
+                let nameSpan = document.createElement("span");
+                nameSpan.innerText = `${placeName} (${getDistance(lat, lon, placeLat, placeLon).toFixed(2)} km)`;
+            
+                let navButton = document.createElement("button");
+                navButton.innerHTML = '<i class="fas fa-directions"></i> Navigate';
+                navButton.style.marginLeft = "10px";
+                navButton.style.border = "2px solid #4CAF50";
+                navButton.style.backgroundColor = "white";
+                navButton.style.color = "#4CAF50";
+                navButton.style.padding = "5px 10px";
+                navButton.style.borderRadius = "4px";
+                navButton.style.cursor = "pointer";
+                navButton.style.transition = "all 0.3s";
+            
+                // Hover effect
+                navButton.onmouseover = () => {
+                    navButton.style.backgroundColor = "#4CAF50";
+                    navButton.style.color = "white";
+                };
+                navButton.onmouseout = () => {
+                    navButton.style.backgroundColor = "white";
+                    navButton.style.color = "#4CAF50";
+                };
+            
+                navButton.onclick = (event) => {
+                    event.stopPropagation();
+                    window.open(`https://www.google.com/maps/dir/${lat},${lon}/${placeLat},${placeLon}`, "_blank");
+                };
+            
+                listItem.onclick = () => map.setView([placeLat, placeLon], 30);
+            
+                listItem.appendChild(nameSpan);
+                listItem.appendChild(navButton);
+                listContainer.appendChild(listItem);
+            });
+})
+
+// Distance calculation (Haversine formula)
+function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 // Modify the fetchLocations function to store the first tourist location name
 async function fetchLocations(category, userLocation) {
     const { latitude, longitude } = userLocation;
@@ -284,4 +412,4 @@ async function initMap() {
 }
 
 // Initialize map and fetch locations
-initMap();
+initMap()};
