@@ -8,6 +8,7 @@
     "accepts": "^1.3.8",
     "anymatch": "^3.1.3",
     "array-flatten": "^1.1.1",
+    "axios": "^1.7.9",
     "balanced-match": "^1.0.2",
     "binary-extensions": "^2.3.0",
     "body-parser": "^1.20.3",
@@ -91,6 +92,7 @@
     "setprototypeof": "^1.2.0",
     "side-channel": "^1.0.6",
     "simple-update-notifier": "^2.0.0",
+    "socket.io": "^4.8.1",
     "statuses": "^2.0.1",
     "supports-color": "^5.5.0",
     "to-regex-range": "^5.0.1",
@@ -100,11 +102,13 @@
     "undefsafe": "^2.0.5",
     "unpipe": "^1.0.0",
     "utils-merge": "^1.0.1",
-    "vary": "^1.1.2"
+    "vary": "^1.1.2",
+    "weather-js": "^2.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
