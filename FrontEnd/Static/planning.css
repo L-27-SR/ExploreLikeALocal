@@ -92,12 +92,11 @@ nav {
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
     font-size: 2rem;
-    color: #1f1e1e;
+    font-weight: bold;
+    background: linear-gradient(45deg, #333, #666);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .logo svg {
