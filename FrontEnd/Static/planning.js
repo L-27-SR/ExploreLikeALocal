@@ -425,16 +425,8 @@ const destinations = {
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('vacationForm');
-    const destinationSelect = document.getElementById('destination');
-    const activitiesContainer = document.getElementById('activitiesContainer');
     const shareBtn = document.getElementById('shareBtn');
     const downloadBtn = document.getElementById('downloadBtn');
-
-    // Update activities when destination changes
-    destinationSelect.addEventListener('change', updateActivities);
-
-    // Initial activities update
-    updateActivities();
 
     // Form submission
     form.addEventListener('submit', handleFormSubmit);
@@ -446,11 +438,15 @@ document.addEventListener('DOMContentLoaded', () => {
     downloadBtn.addEventListener('click', downloadItinerary);
 });
 
-function updateActivities() {
-    const destinationSelect = document.getElementById('destination');
+function updateActivities(destinationId) {
     const activitiesContainer = document.getElementById('activitiesContainer');
-    const selectedDestination = destinations[destinationSelect.value];
-
+    const selectedDestination = destinations[destinationId];
+    
+    if (!selectedDestination) {
+        activitiesContainer.innerHTML = '<p>Please select a destination first</p>';
+        return;
+    }
+    
     activitiesContainer.innerHTML = selectedDestination.activities.map(activity => `
         <label class="activity-checkbox">
             <input type="checkbox" name="activities" value="${activity}">
@@ -462,7 +458,17 @@ function updateActivities() {
 async function handleFormSubmit(e) {
     e.preventDefault();
     
-    const destinationId = document.getElementById('destination').value;
+    // Get the destination ID from the search input's value
+    const searchInput = document.getElementById('search');
+    const destinationName = searchInput.value;
+    // Find the destination ID by matching the name
+    const destinationId = Object.values(destinations).find(dest => dest.name === destinationName)?.id;
+
+    if (!destinationId) {
+        alert('Please select a valid destination');
+        return;
+    }
+
     const numDays = parseInt(document.getElementById('days').value);
     const selectedActivities = Array.from(document.querySelectorAll('input[name="activities"]:checked'))
         .map(checkbox => checkbox.value);

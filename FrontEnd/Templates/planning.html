@@ -32,11 +32,10 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                                 Destination
                             </label>
-                            <select id="destination" required>
-                                <option value="bali">Bali, Indonesia</option>
-                                <option value="paris">Paris, France</option>
-                                <option value="tokyo">Tokyo, Japan</option>
-                            </select>
+                            <div class="dropdown-container">
+                                <input type="text" id="search" placeholder="Search destination...">
+                                <div id="destinationList"></div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -77,6 +76,101 @@
         </main>
     </div>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <script>
+        const destination = {
+            bali: { id: 'bali', name: 'Bali, Indonesia' },
+            paris: { id: 'paris', name: 'Paris, France' },
+            tokyo: { id: 'tokyo', name: 'Tokyo, Japan' },
+            newyork: { id: 'newyork', name: 'New York, USA' },
+            london: { id: 'london', name: 'London, UK' },
+            sydney: { id: 'sydney', name: 'Sydney, Australia' },
+            rome: { id: 'rome', name: 'Rome, Italy' },
+            bangkok: { id: 'bangkok', name: 'Bangkok, Thailand' },
+            dubai: { id: 'dubai', name: 'Dubai, UAE' },
+            barcelona: { id: 'barcelona', name: 'Barcelona, Spain' },
+            amsterdam: { id: 'amsterdam', name: 'Amsterdam, Netherlands' },
+            seoul: { id: 'seoul', name: 'Seoul, South Korea' },
+            hongkong: { id: 'hongkong', name: 'Hong Kong, China' },
+            venice: { id: 'venice', name: 'Venice, Italy' },
+            cairo: { id: 'cairo', name: 'Cairo, Egypt' },
+            losangeles: { id: 'losangeles', name: 'Los Angeles, USA' },
+            madrid: { id: 'madrid', name: 'Madrid, Spain' },
+            singapore: { id: 'singapore', name: 'Singapore' },
+            istanbul: { id: 'istanbul', name: 'Istanbul, Turkey' },
+            capetown: { id: 'capetown', name: 'Cape Town, South Africa' },
+            toronto: { id: 'toronto', name: 'Toronto, Canada' },
+            melbourne: { id: 'melbourne', name: 'Melbourne, Australia' },
+            lisbon: { id: 'lisbon', name: 'Lisbon, Portugal' },
+            moscow: { id: 'moscow', name: 'Moscow, Russia' },
+            prague: { id: 'prague', name: 'Prague, Czech Republic' },
+            vienna: { id: 'vienna', name: 'Vienna, Austria' },
+            zurich: { id: 'zurich', name: 'Zurich, Switzerland' },
+            buenosaires: { id: 'buenosaires', name: 'Buenos Aires, Argentina' },
+            delhi: { id: 'delhi', name: 'Delhi, India' },
+            kathmandu: { id: 'kathmandu', name: 'Kathmandu, Nepal' },
+            colombo: { id: 'colombo', name: 'Colombo, Sri Lanka' },
+            oslo: { id: 'oslo', name: 'Oslo, Norway' },
+            stockholm: { id: 'stockholm', name: 'Stockholm, Sweden' },
+            beijing: { id: 'beijing', name: 'Beijing, China' },
+            athens: { id: 'athens', name: 'Athens, Greece' },
+            helsinki: { id: 'helsinki', name: 'Helsinki, Finland' },
+            dubrovnik: { id: 'dubrovnik', name: 'Dubrovnik, Croatia' },
+            riyadh: { id: 'riyadh', name: 'Riyadh, Saudi Arabia' },
+            edinburgh: { id: 'edinburgh', name: 'Edinburgh, Scotland' },
+            berlin: { id: 'berlin', name: 'Berlin, Germany' },
+            doha: { id: 'doha', name: 'Doha, Qatar' },
+            marrakech: { id: 'marrakech', name: 'Marrakech, Morocco' },
+            hoian: { id: 'hoian', name: 'Hoi An, Vietnam' },
+            chicago: { id: 'chicago', name: 'Chicago, USA' },
+            vancouver: { id: 'vancouver', name: 'Vancouver, Canada' },
+            auckland: { id: 'auckland', name: 'Auckland, New Zealand' },
+            montreal: { id: 'montreal', name: 'Montreal, Canada' },
+            saopaulo: { id: 'saopaulo', name: 'São Paulo, Brazil' },
+            cairo: { id: 'cairo', name: 'Cairo, Egypt' },
+            florence: { id: 'florence', name: 'Florence, Italy' }
+        };
+    
+        const searchInput = document.getElementById('search');
+        const destinationList = document.getElementById('destinationList');
+    
+        function showDropdown() {
+            destinationList.innerHTML = '';
+            Object.values(destinations).forEach(destination => {
+                const div = document.createElement('div');
+                div.classList.add('destination-option');
+                div.textContent = destination.name;
+                div.dataset.value = destination.id;
+                div.addEventListener('click', () => {
+                    searchInput.value = destination.name;
+                    destinationList.style.display = 'none';
+                    // Update activities when destination is selected
+                    updateActivities(destination.id);
+                });
+                destinationList.appendChild(div);
+            });
+            destinationList.style.display = 'block';
+        }
+
+        searchInput.addEventListener('focus', showDropdown);
+
+        searchInput.addEventListener('input', () => {
+            const filter = searchInput.value.toLowerCase();
+            document.querySelectorAll('.destination-option').forEach(option => {
+                option.style.display = option.textContent.toLowerCase().includes(filter) ? 'block' : 'none';
+            });
+        });
+    
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown-container')) {
+                destinationList.style.display = 'none';
+            }
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const activitiesContainer = document.getElementById('activitiesContainer');
+            activitiesContainer.innerHTML = '<p>Please select a destination to view available activities</p>';
+        });
+    </script>
     <script src="../Static/planning.js"></script>
 </body>
 </html>
