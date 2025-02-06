@@ -1,0 +1,238 @@
+:root {
+    --primary: #0d9488;
+    --primary-hover: #0f766e;
+    --bg-gradient-from: #ecfeff;
+    --bg-gradient-to: #f0fdfa;
+    --text-primary: #1f2937;
+    --text-secondary: #4b5563;
+    --border-color: #e5e7eb;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(135deg, var(--bg-gradient-from), var(--bg-gradient-to));
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.logo svg {
+    color: var(--primary);
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+}
+
+header p {
+    color: var(--text-secondary);
+}
+
+.planner-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .planner-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.form-container {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+label svg {
+    color: var(--text-secondary);
+}
+
+select, input[type="number"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+select:focus, input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+}
+
+.activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.5rem;
+}
+
+.activity-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.activity-checkbox input[type="checkbox"] {
+    accent-color: var(--primary);
+}
+
+button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+}
+
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.itinerary-container {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+}
+
+.itinerary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.itinerary-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.icon-button {
+    width: auto;
+    padding: 0.5rem;
+    background: none;
+    color: var(--text-secondary);
+}
+
+.icon-button:hover {
+    background: var(--bg-gradient-from);
+    color: var(--primary);
+}
+
+.day-plan {
+    border-left: 4px solid var(--primary);
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+    background: white;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.day-plan h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+}
+
+.day-plan ul {
+    list-style: none;
+}
+
+.day-plan li {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    background: #f8fafc;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Export styles */
+.export-container {
+    padding: 2rem;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%);
+    border-radius: 1rem;
+    width: 1200px;
+}
+
+.export-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.export-row:last-child {
+    margin-bottom: 0;
+}
+
+/* Loading state */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+button:disabled {
+    animation: pulse 1.5s infinite;
+}
