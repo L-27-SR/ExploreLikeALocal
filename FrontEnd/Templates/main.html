@@ -494,6 +494,153 @@
     padding: 10px;
     font-size: 14px;
 }
+.featured-experiences {
+            padding: 60px 20px;
+            color: white;
+        }
+
+        .experiences-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .experience-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .experience-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .experience-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .travel-tips {
+            padding: 60px 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tip-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .tip-card:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .newsletter {
+            padding: 60px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .newsletter-input {
+            flex-grow: 1;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #555;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .newsletter-button {
+            padding: 12px 24px;
+            background: #00ff88;
+            color: black;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-button:hover {
+            background: #00cc6e;
+        }
+        .features-section {
+            padding: 60px 20px;
+            color: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #00ff88;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #00ff88;
+        }
+
+        .feature-description {
+            color: #ddd;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
@@ -671,6 +818,100 @@
                 <p class="category-description">Immerse yourself in local art galleries, theaters, and cultural shows.</p>
             </div>
         </div>
+    </section>
+    <section class="features-section">
+        <h2 style="text-align: center; margin-bottom: 40px; color: white;">Our Powerful Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🗺️</div>
+                <h3 class="feature-title">Interactive Maps</h3>
+                <p class="feature-description">Discover local attractions with our comprehensive, user-friendly map interface. Explore restaurants, parks, museums, and hidden gems with ease.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📅</div>
+                <h3 class="feature-title">Trip Planner</h3>
+                <p class="feature-description">Create personalized itineraries tailored to your interests, time, and budget. Seamlessly organize your entire trip with our intuitive planning tool.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3 class="feature-title">Real-Time Translation</h3>
+                <p class="feature-description">Break language barriers with our instant translation feature. Communicate confidently and understand local signs, menus, and conversations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3 class="feature-title">Local Recommendations</h3>
+                <p class="feature-description">Get personalized suggestions based on your preferences, previous travels, and trending local experiences. Discover unique adventures off the beaten path.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📸</div>
+                <h3 class="feature-title">Memory Journal</h3>
+                <p class="feature-description">Document your travels with our digital journal. Add photos, notes, and memories to create a lasting record of your local explorations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3 class="feature-title">Community Insights</h3>
+                <p class="feature-description">Connect with fellow travelers, read authentic reviews, and share your own local discoveries. Learn from real experiences and global perspectives.</p>
+            </div>
+        </div>
+    </section>
+    <section class="featured-experiences">
+        <h2 style="text-align: center; margin-bottom: 40px; color: white;">Curated Experiences</h2>
+        <div class="experiences-grid">
+            <div class="experience-card">
+                <img src="../Static/image/food-tour.jpg" alt="Food Tour" class="experience-image">
+                <div class="experience-content">
+                    <h3 style="color: #00ff88; margin-bottom: 10px;">Culinary Adventures</h3>
+                    <p>Embark on guided food tours that take you through local markets, street food havens, and hidden culinary gems.</p>
+                </div>
+            </div>
+            <div class="experience-card">
+                <img src="../Static/image/adventure-sports.jpg" alt="Adventure Sports" class="experience-image">
+                <div class="experience-content">
+                    <h3 style="color: #00ff88; margin-bottom: 10px;">Thrilling Experiences</h3>
+                    <p>From hiking and kayaking to paragliding, discover adrenaline-pumping activities tailored to your adventure level.</p>
+                </div>
+            </div>
+            <div class="experience-card">
+                <img src="../Static/image/cultural-workshop.jpg" alt="Cultural Workshop" class="experience-image">
+                <div class="experience-content">
+                    <h3 style="color: #00ff88; margin-bottom: 10px;">Cultural Immersion</h3>
+                    <p>Participate in local workshops: cooking classes, traditional craft making, and language exchange programs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Travel Tips Section -->
+    <section class="travel-tips">
+        <h2 style="margin-bottom: 40px;">Travel Smart, Travel Local</h2>
+        <div class="tips-grid">
+            <div class="tip-card">
+                <h3>🌍 Sustainable Travel</h3>
+                <p>Minimize your environmental impact. Choose eco-friendly accommodations and respect local ecosystems.</p>
+            </div>
+            <div class="tip-card">
+                <h3>🤝 Cultural Respect</h3>
+                <p>Learn basic local customs, dress codes, and a few phrases in the local language to show respect.</p>
+            </div>
+            <div class="tip-card">
+                <h3>💰 Budget Wisely</h3>
+                <p>Use local transportation, eat at local eateries, and avoid tourist traps to save money and have authentic experiences.</p>
+            </div>
+            <div class="tip-card">
+                <h3>🔒 Safety First</h3>
+                <p>Stay informed about local conditions, keep important documents safe, and stay aware of your surroundings.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <h2>Stay Inspired, Stay Informed</h2>
+        <p style="margin-bottom: 20px;">Subscribe to our newsletter for travel tips, local insights, and exclusive deals!</p>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email" class="newsletter-input" required>
+            <button type="submit" class="newsletter-button">Subscribe</button>
+        </form>
     </section>
     <footer>
         <div class="footer-content">

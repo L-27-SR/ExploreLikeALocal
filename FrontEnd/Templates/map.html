@@ -20,8 +20,7 @@
         }
 
         nav {
-            background: linear-gradient(90deg, #4a90e2 0%, #6a11cb 100%);
-            color: white;
+            color: rgb(0, 0, 0);
             padding: 1rem 2rem;
             display: flex;
             top: 0;
@@ -30,6 +29,10 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .logo {
@@ -40,7 +43,7 @@
 
 
         .nav-links a {
-            color: white;
+            color: rgb(0, 0, 0);
             text-decoration: none;
             padding: 0.5rem 1rem;
             border-radius: 5px;
@@ -49,6 +52,41 @@
 
         .nav-links a:hover {
             background-color: rgba(255,255,255,0.2);
+        }
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--text-light);
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .rainbow-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400%;
+            z-index: -1;
+            animation: rainbow 20s linear infinite;
+            border-radius: inherit;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .rainbow-border:hover::before {
+            opacity: 1;
         }
 
         .search-container {
@@ -325,8 +363,8 @@
     <nav>
         <div class="logo">TravelMapper</div>
         <div class="nav-links">
-            <a href="main.html">Home</a>
-            <a href="#" id="logoutBtn">Logout</a>
+            <a href="main.html" class="btn-primary rainbow-border">Home</a>
+            <a href="#" id="logoutBtn" class="btn-primary rainbow-border">Logout</a>
         </div>
     </nav>
     <div class="search-container">
