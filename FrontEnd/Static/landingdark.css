@@ -82,6 +82,9 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    top: 0;
+    z-index: 1000;          
+    position: sticky;
     padding: 1.5rem 5%;
     background: rgba(34, 34, 34, 0.8);
     backdrop-filter: blur(10px);
