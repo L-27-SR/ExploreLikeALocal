@@ -40,8 +40,387 @@ const destinations = {
             'Night Tours',
             'Tea Ceremonies'
         ]
+    },
+    newYork: {
+        id: 'newYork',
+        name: 'New York, USA',
+        activities: [
+            'Broadway Shows',
+            'Central Park Visits',
+            'Museum Tours',
+            'Shopping',
+            'City Walks',
+            'Statue of Liberty',
+            'Food Tours',
+            'Skyline Views'
+        ]
+    },
+    london: {
+        id: 'london',
+        name: 'London, England',
+        activities: [
+            'London Eye',
+            'West End Shows',
+            'Historical Sites',
+            'Museum Tours',
+            'Afternoon Tea',
+            'Shopping',
+            'River Thames Cruise',
+            'Parks & Gardens'
+        ]
+    },
+    rome: {
+        id: 'rome',
+        name: 'Rome, Italy',
+        activities: [
+            'Colosseum Tours',
+            'Vatican City Visit',
+            'Food Tasting',
+            'Museum Tours',
+            'Historical Sites',
+            'Shopping',
+            'Piazza Visits',
+            'Cultural Experiences'
+        ]
+    },
+    sydney: {
+        id: 'sydney',
+        name: 'Sydney, Australia',
+        activities: [
+            'Sydney Opera House Tours',
+            'Harbour Bridge Climb',
+            'Beach Activities',
+            'Zoo Visits',
+            'Shopping',
+            'Coastal Walks',
+            'Food Tours',
+            'Botanic Garden Visits'
+        ]
+    },
+    dubai: {
+        id: 'dubai',
+        name: 'Dubai, UAE',
+        activities: [
+            'Shopping Malls',
+            'Desert Safari',
+            'Burj Khalifa Visit',
+            'Cultural Experiences',
+            'Beach Activities',
+            'Waterparks',
+            'Fine Dining',
+            'Luxury Shopping'
+        ]
+    },
+    amsterdam: {
+        id: 'amsterdam',
+        name: 'Amsterdam, Netherlands',
+        activities: [
+            'Canal Cruises',
+            'Museum Tours',
+            'Bicycle Rides',
+            'Food Tours',
+            'Art Galleries',
+            'Historical Sites',
+            'Shopping',
+            'Tulip Gardens'
+        ]
+    },
+    barcelona: {
+        id: 'barcelona',
+        name: 'Barcelona, Spain',
+        activities: [
+            'Sagrada Familia Tour',
+            'Beach Activities',
+            'Football Matches',
+            'Tapas Tasting',
+            'Park Visits',
+            'Art Galleries',
+            'Shopping',
+            'Historical Sites'
+        ]
+    },
+    capeTown: {
+        id: 'capeTown',
+        name: 'Cape Town, South Africa',
+        activities: [
+            'Table Mountain Hike',
+            'Wine Tasting',
+            'Beach Activities',
+            'Cape Point Visit',
+            'Cultural Experiences',
+            'Botanical Gardens',
+            'Shopping',
+            'Wildlife Safaris'
+        ]
+    },
+    iceland: {
+        id: 'iceland',
+        name: 'Iceland',
+        activities: [
+            'Northern Lights Viewing',
+            'Geothermal Hot Springs',
+            'Waterfalls Tours',
+            'Volcano Hikes',
+            'Geyser Visits',
+            'Glacier Tours',
+            'Wildlife Watching',
+            'Snowmobile Tours'
+        ]
+    },
+    machuPicchu: {
+        id: 'machuPicchu',
+        name: 'Machu Picchu, Peru',
+        activities: [
+            'Inca Trail Hike',
+            'Mountain Views',
+            'Historical Site Tours',
+            'Cultural Experiences',
+            'Wildlife Watching',
+            'Adventure Trekking',
+            'Food Tasting',
+            'Andean Culture Exploration'
+        ]
+    },
+    venice: {
+        id: 'venice',
+        name: 'Venice, Italy',
+        activities: [
+            'Gondola Rides',
+            'Saint Mark’s Basilica Visit',
+            'Museum Tours',
+            'Shopping',
+            'Food Tasting',
+            'Cultural Experiences',
+            'Historic Palace Visits',
+            'Island Tours'
+        ]
+    },
+    vancouver: {
+        id: 'vancouver',
+        name: 'Vancouver, Canada',
+        activities: [
+            'Whale Watching',
+            'Skiing',
+            'City Walks',
+            'Stanley Park Visit',
+            'Food Tours',
+            'Shopping',
+            'Outdoor Adventures',
+            'Cultural Experiences'
+        ]
+    },
+    prague: {
+        id: 'prague',
+        name: 'Prague, Czech Republic',
+        activities: [
+            'Castle Tours',
+            'Old Town Walks',
+            'Beer Tasting',
+            'Historical Sites',
+            'Cultural Performances',
+            'Art Galleries',
+            'Shopping',
+            'River Cruises'
+        ]
+    },
+    cairo: {
+        id: 'cairo',
+        name: 'Cairo, Egypt',
+        activities: [
+            'Pyramids of Giza',
+            'Egyptian Museum',
+            'Nile River Cruise',
+            'Cultural Tours',
+            'Shopping',
+            'Historical Sites',
+            'Camel Rides',
+            'Food Tours'
+        ]
+    },
+    hongKong: {
+        id: 'hongKong',
+        name: 'Hong Kong, China',
+        activities: [
+            'Victoria Peak',
+            'Temple Visits',
+            'Food Markets',
+            'Shopping',
+            'Cultural Experiences',
+            'Night Markets',
+            'Beach Activities',
+            'Skyline Views'
+        ]
+    },
+    bangkok: {
+        id: 'bangkok',
+        name: 'Bangkok, Thailand',
+        activities: [
+            'Temple Visits',
+            'Floating Market Tours',
+            'Street Food Tours',
+            'City Walks',
+            'Shopping',
+            'Cultural Shows',
+            'River Cruises',
+            'Nightlife Exploration'
+        ]
+    },
+    seoul: {
+        id: 'seoul',
+        name: 'Seoul, South Korea',
+        activities: [
+            'Palace Tours',
+            'Shopping',
+            'Food Tours',
+            'Temple Visits',
+            'City Walks',
+            'Cultural Performances',
+            'Night Markets',
+            'Traditional Tea Ceremonies'
+        ]
+    },
+    buenosAires: {
+        id: 'buenosAires',
+        name: 'Buenos Aires, Argentina',
+        activities: [
+            'Tango Shows',
+            'Food Tours',
+            'Shopping',
+            'City Walks',
+            'Historical Sites',
+            'Cultural Experiences',
+            'Museum Visits',
+            'Nightlife Exploration'
+        ]
+    },
+    athens: {
+        id: 'athens',
+        name: 'Athens, Greece',
+        activities: [
+            'Acropolis Visit',
+            'Museum Tours',
+            'Food Tasting',
+            'Historical Sites',
+            'Cultural Experiences',
+            'Shopping',
+            'City Walks',
+            'Greek Islands Tour'
+        ]
+    },
+    losAngeles: {
+        id: 'losAngeles',
+        name: 'Los Angeles, USA',
+        activities: [
+            'Hollywood Walk of Fame',
+            'Beach Activities',
+            'Museum Tours',
+            'Amusement Parks',
+            'Food Tours',
+            'Shopping',
+            'City Walks',
+            'Studio Tours'
+        ]
+    },
+    mexicoCity: {
+        id: 'mexicoCity',
+        name: 'Mexico City, Mexico',
+        activities: [
+            'Aztec Ruins Tour',
+            'Museum Visits',
+            'Food Tasting',
+            'Cultural Shows',
+            'Historical Sites',
+            'Art Galleries',
+            'Shopping',
+            'Tequila Tasting'
+        ]
+    },
+    bali: {
+        id: 'bali',
+        name: 'Bali, Indonesia',
+        activities: [
+            'Beach Activities',
+            'Temple Visits',
+            'Rice Terrace Tours',
+            'Spa & Wellness',
+            'Water Sports',
+            'Cultural Shows',
+            'Cooking Classes',
+            'Mountain Hiking'
+        ]
+    },
+    madrid: {
+        id: 'madrid',
+        name: 'Madrid, Spain',
+        activities: [
+            'Museums',
+            'Food Tours',
+            'Shopping',
+            'Historical Sites',
+            'Football Matches',
+            'Parks & Gardens',
+            'Flamenco Shows',
+            'Cultural Walks'
+        ]
+    },
+    lisbon: {
+        id: 'lisbon',
+        name: 'Lisbon, Portugal',
+        activities: [
+            'City Walks',
+            'Fado Music Performances',
+            'Historical Sites',
+            'Food Tours',
+            'Shopping',
+            'Beach Activities',
+            'Cultural Experiences',
+            'Trolley Tours'
+        ]
+    },
+    rioDeJaneiro: {
+        id: 'rioDeJaneiro',
+        name: 'Rio de Janeiro, Brazil',
+        activities: [
+            'Christ the Redeemer Tour',
+            'Beach Activities',
+            'Samba Shows',
+            'Carnival',
+            'Sugarloaf Mountain Tour',
+            'Food Tours',
+            'Shopping',
+            'Cultural Performances'
+        ]
+    },
+    kualaLumpur: {
+        id: 'kualaLumpur',
+        name: 'Kuala Lumpur, Malaysia',
+        activities: [
+            'Petronas Towers',
+            'Cultural Tours',
+            'Food Tours',
+            'Shopping',
+            'Historical Sites',
+            'City Walks',
+            'Night Markets',
+            'Temple Visits'
+        ]
+    },
+    stockholm: {
+        id: 'stockholm',
+        name: 'Stockholm, Sweden',
+        activities: [
+            'Museum Visits',
+            'Historical Sites',
+            'Food Tasting',
+            'Archipelago Tours',
+            'Shopping',
+            'Cultural Experiences',
+            'City Walks',
+            'Boat Tours'
+        ]
     }
 };
+
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
