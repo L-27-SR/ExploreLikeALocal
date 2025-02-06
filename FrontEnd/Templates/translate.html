@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Translator</title>
+  <link rel="stylesheet" href="../Static/translate.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <nav>
+        <div class="logo">TravelandTranslate</div>
+        <div class="nav-links">
+            <a href="landing.html" class="btn-primary rainbow-border">Home</a>
+            <a href="#" id="logoutBtn" class="btn-primary rainbow-border">Logout</a>
+        </div>
+    </nav>
+  <div class="container">
+    <div class="header">
+      <i data-lucide="languages" class="logo"></i>
+      <h1>Universal Translator</h1>
+    </div>
+
+    <div class="translator-card">
+      <div class="toolbar">
+        <button class="tool-button" id="historyBtn">
+          <i data-lucide="history"></i>
+          History
+        </button>
+        <button class="tool-button" id="favoritesBtn">
+          <i data-lucide="star"></i>
+          Favorites
+        </button>
+        <button class="tool-button" id="downloadBtn">
+          <i data-lucide="download"></i>
+          Download
+        </button>
+      </div>
+
+      <div class="translator-content">
+        <div class="translator-box">
+          <div class="lang-select-wrapper">
+            <select id="fromLang" class="language-select">
+              <option value="auto">Detect Language</option>
+              <option value="en-GB">English</option>
+              <option value="es-ES">Spanish</option>
+              <option value="fr-FR">French</option>
+              <option value="de-DE">German</option>
+              <option value="it-IT">Italian</option>
+              <option value="pt-PT">Portuguese</option>
+              <option value="ru-RU">Russian</option>
+              <option value="zh-CN">Chinese</option>
+              <option value="ja-JP">Japanese</option>
+              <option value="ko-KR">Korean</option>
+            </select>
+            <div class="char-count" id="fromCount">0/5000</div>
+          </div>
+          <div class="textarea-container">
+            <textarea
+              id="fromText"
+              placeholder="Enter text to translate..."
+              class="text-input"
+              maxlength="5000"
+            ></textarea>
+            <div class="actions">
+              <button class="icon-button" id="fromMic" title="Voice Input">
+                <i data-lucide="mic"></i>
+              </button>
+              <button class="icon-button" id="fromSpeak" title="Text to Speech">
+                <i data-lucide="volume-2"></i>
+              </button>
+              <button class="icon-button" id="fromCopy" title="Copy">
+                <i data-lucide="copy" id="fromCopyIcon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button class="swap-button" id="swapLangs">
+          <i data-lucide="arrow-right-left"></i>
+        </button>
+
+        <div class="translator-box">
+          <div class="lang-select-wrapper">
+            <select id="toLang" class="language-select">
+              <option value="es-ES">Spanish</option>
+              <option value="en-GB">English</option>
+              <option value="fr-FR">French</option>
+              <option value="de-DE">German</option>
+              <option value="it-IT">Italian</option>
+              <option value="pt-PT">Portuguese</option>
+              <option value="ru-RU">Russian</option>
+              <option value="zh-CN">Chinese</option>
+              <option value="ja-JP">Japanese</option>
+              <option value="ko-KR">Korean</option>
+            </select>
+            <button class="icon-button favorite-btn" id="favoriteBtn" title="Add to Favorites">
+              <i data-lucide="star" id="favoriteIcon"></i>
+            </button>
+          </div>
+          <div class="textarea-container">
+            <textarea
+              id="toText"
+              placeholder="Translation"
+              class="text-input"
+              readonly
+            ></textarea>
+            <div class="actions">
+              <button class="icon-button" id="toSpeak" title="Text to Speech">
+                <i data-lucide="volume-2"></i>
+              </button>
+              <button class="icon-button" id="toCopy" title="Copy">
+                <i data-lucide="copy" id="toCopyIcon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button id="translateBtn" class="translate-button">
+        Translate
+      </button>
+    </div>
+
+    <!-- History Sidebar -->
+    <div class="sidebar" id="historySidebar">
+      <div class="sidebar-header">
+        <h2>History</h2>
+        <button class="close-btn" id="closeHistory">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="sidebar-content" id="historyContent"></div>
+    </div>
+
+    <!-- Favorites Sidebar -->
+    <div class="sidebar" id="favoritesSidebar">
+      <div class="sidebar-header">
+        <h2>Favorites</h2>
+        <button class="close-btn" id="closeFavorites">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="sidebar-content" id="favoritesContent"></div>
+    </div>
+  </div>
+
+  <script src="../Static/translate.js"></script>
+</body>
+</html>
