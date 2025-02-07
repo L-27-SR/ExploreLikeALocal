@@ -7,6 +7,17 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link id="light theme" rel="stylesheet" href="../Static/currency.css">
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=GoogleTranslateElementInit"></script>
+    <script type="text/javascript">
+        function GoogleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,es,fr,de,zh-CN,ar,hi,ja,ru,pt',
+                layout: google.translate.TranslateElement.InlineLayout.DROPDOWN,
+                autoDisplay: true
+            }, 'google_translate_element');
+        }
+    </script>
 </head>
 <body>
     <nav>
@@ -14,12 +25,13 @@
         <div class="nav-links">
             <a href="main.html" class="btn-primary rainbow-border">Home</a>
             <a href="#" id="logoutBtn" class="btn-primary rainbow-border">Logout</a>
+            <li id="google_translate_element"></li>
         </div>
     </nav>
   <div class="container">
     <div class="card">
       <div class="header">
-        <h1 class="title">Advanced Currency Wallet</h1>
+        <h1 class="title">My Wallet</h1>
         <div class="button-group">
           <button id="themeToggle" class="icon-button">
             <i data-lucide="sun"></i>
