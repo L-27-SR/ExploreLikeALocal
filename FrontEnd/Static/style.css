@@ -368,3 +368,19 @@
         padding-top: 2rem;
         border-top: 1px solid rgba(255,255,255,0.1);
     }
+    #google_translate_element {
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+    /* Ensure responsive design */
+    @media (max-width: 768px) {
+        .nav-links {
+            flex-direction: column;
+            align-items: center;
+        }
+        #google_translate_element {
+            margin-left: 0;
+            margin-top: 10px;
+        }
+    }

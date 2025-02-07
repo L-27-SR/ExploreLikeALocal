@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Weather Satellite View</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <link rel="stylesheet" href="../Static/maps.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="/marine-monitor"><i class="fas fa-water"></i>Weather</a>
+        </div>
+        <select id="layer-selector">
+            <option value="clouds_new">Cloud Cover</option>
+            <option value="precipitation_new">Precipitation</option>
+            <option value="pressure_new">Pressure</option>
+            <option value="wind_new">Wind</option>
+            <option value="heat">Heat Map</option>
+        </select>
+        <div class="time-controls">
+            <button class="time-btn active">Real-time</button>
+            <button class="time-btn">Past 6 Hours</button>
+            <button class="time-btn">Forecast</button>
+        </div>
+    </div>
+        <div class="global-map-container">
+            <div id="global-weather-map"></div>
+            
+            <div class="map-overlay">
+                <div class="weather-info">
+                    <div class="current-conditions">
+                        <h2 id="location-name">Global Overview</h2>
+                        <div class="temp-display">
+                            <span id="global-temp">--°C</span>
+                            <span id="weather-description">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="additional-details">
+                        <div class="detail">
+                            <i class="fas fa-wind"></i>
+                            <span id="global-wind">Wind: -- km/h</span>
+                        </div>
+                        <div class="detail">
+                            <i class="fas fa-tint"></i>
+                            <span id="global-humidity">Humidity: --%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="global-stats">
+            <div class="stat-box">
+                <h3>Global Temperature</h3>
+                <div id="global-avg-temp">--°C</div>
+            </div>
+            <div class="stat-box">
+                <h3>Extreme Conditions</h3>
+                <div id="extreme-conditions">
+                    <p>Hottest: --°C</p>
+                    <p>Coldest: --°C</p>
+                </div>
+            </div>
+            <div class="stat-box">
+                <h3>Precipitation</h3>
+                <div id="global-precipitation">-- mm</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <script src="../Static/maps.js"></script>
+</body>
+</html>
