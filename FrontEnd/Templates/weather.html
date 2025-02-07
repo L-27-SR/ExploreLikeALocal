@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sea Weather Explorer</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="marine-weather-icon.png">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../Static/weather.css">
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=GoogleTranslateElementInit"></script>
+<script type="text/javascript">
+    function GoogleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,es,fr,de,zh-CN,ar,hi,ja,ru,pt',
+            layout: google.translate.TranslateElement.InlineLayout.DROPDOWN,
+            autoDisplay: true
+        }, 'google_translate_element');
+    }
+</script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/home">
+                <i class="fas fa-water"></i>Weather
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="main.html" class="btn-primary rainbow-border">Home</a>
+            <a href="maps.html" class="btn-primary rainbow-border">Forecast</a>
+            <li id="google_translate_element"></li>
+        </div>
+        <div class="nav-actions">
+            <button class="btn-89">
+                <svg viewBox="0 0 45.917 45.917">
+                  <path
+                    d="M33.523,28.334c-0.717,1.155-1.498,2.358-2.344,3.608c7.121,1.065,10.766,3.347,10.766,4.481
+                          c0,1.511-6.459,5.054-18.986,5.054c-12.528,0-18.988-3.543-18.988-5.054c0-1.135,3.645-3.416,10.768-4.481
+                          c-0.847-1.25-1.628-2.453-2.345-3.608C5.365,29.661,0,32.385,0,36.424c0,5.925,11.551,9.024,22.959,9.024s22.958-3.1,22.958-9.024
+                          C45.917,32.385,40.553,29.661,33.523,28.334z"
+                  ></path>
+                  <path
+                    d="M22.96,36.047c1.032,0,2.003-0.491,2.613-1.325c3.905-5.33,10.813-15.508,10.813-20.827
+                          c0-7.416-6.012-13.427-13.427-13.427c-7.417,0-13.427,6.011-13.427,13.427c0,5.318,6.906,15.497,10.812,20.827
+                          C20.957,35.556,21.928,36.047,22.96,36.047z M17.374,13.63c0-3.084,2.5-5.584,5.585-5.584c3.084,0,5.584,2.5,5.584,5.584
+                          s-2.5,5.584-5.584,5.584C19.874,19.215,17.374,16.715,17.374,13.63z"
+                  ></path>
+                </svg>
+              </button>
+        </div>
+    </nav>
+    <div class="app-wrap">
+        <header>
+            <input 
+                type="text" 
+                autocomplete="off" 
+                class="search-box" 
+                placeholder="Search for a location..."
+            >
+        </header>
+
+        <main>
+            <section class="location">
+                <div class="city">Loading...</div>
+                <div class="date">Date</div>
+            </section>
+            <section class="current">
+                <div class="temp">0<span>°c</span></div>
+                <div class="weather">-</div>
+                <img class="weather-icon" src="" alt="Weather Icon">
+                <div class="hi-low">-</div>
+                <div class="humidity">Humidity: -</div>
+                <div class="wind-speed">Wind: -</div>
+                <div class="pressure">Pressure: -</div>
+                <div class="visibility">Visibility: -</div>
+                <div class="weather-description">Description: -</div>
+            </section>
+        </main>
+    </div>
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h2>About ExploreLikeALocal</h2>
+                <p>ExploreLikeALocal is a multilingual travel platform with Google Translate integration for seamless language support. It offers interactive maps, travel planners, weather updates, virtual tours, and local event listings. With personalized recommendations and real-time translation, the website enhances travel planning, making it accessible for users worldwide.</p>
+            </div>
+            <div class="footer-section contact">
+                <h2>Contact</h2>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> ExploreLikeALocal@gmail.com</li>
+                    <li><i class="fas fa-phone"></i>+080 123456789</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 ExploreLikeALocal Explorer. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../Static/weather.js"></script>
+</body>
+</html>

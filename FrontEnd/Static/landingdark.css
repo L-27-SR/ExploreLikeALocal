@@ -242,3 +242,120 @@ footer { /* Dark background for contrast */
         font-size: 1.2rem;
     }
 }
+.featured-locations {
+    background: linear-gradient(135deg, #0d0d1a, #1a1a2e);
+    padding: 60px 20px;
+    color: #e0e0e0;
+}
+
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.featured-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.featured-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255,255,255,0.1);
+}
+
+.featured-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    filter: brightness(0.8);
+}
+
+.featured-card h3 {
+    color: #00ff88;
+}
+
+.seasonal-highlights {
+    background: linear-gradient(135deg, #16213e, #0f3460);
+    padding: 60px 20px;
+    color: #e0e0e0;
+    text-align: center;
+}
+
+.highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.highlight-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.highlight-card:hover {
+    transform: scale(1.05);
+    background: rgba(255,255,255,0.1);
+}
+
+.highlight-card h3 {
+    color: #00ff88;
+}
+
+.community-section {
+    background: linear-gradient(135deg, #0d0d1a, #1a1a2e);
+    padding: 60px 20px;
+    color: #e0e0e0;
+    text-align: center;
+}
+
+.community-stats {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 30px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 3rem;
+    color: #00ff88;
+    font-weight: bold;
+}
+
+.stat-item p {
+    color: #aaaaaa;
+}
+#google_translate_element {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+/* Ensure responsive design */
+@media (max-width: 768px) {
+    .nav-links {
+        flex-direction: column;
+        align-items: center;
+    }
+    #google_translate_element {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}
