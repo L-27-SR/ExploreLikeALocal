@@ -23,7 +23,7 @@
         <div class="logo">TravelandTranslate</div>
         <div class="nav-links">
             <a href="main.html" class="btn-primary rainbow-border">Home</a>
-            <a href="#" id="logoutBtn" class="btn-primary rainbow-border">Logout</a>
+            <a href="login.html" id="logoutBtn" class="btn-primary rainbow-border">Logout</a>
             <li id="google_translate_element"></li>
         </div>
     </nav>
@@ -48,6 +48,9 @@
         <button class="tool-button" id="downloadBtn">
           <i data-lucide="download"></i>
           Download
+        </button>
+        <button id="theme-Toggle" class="icon-button">
+          <i data-lucide="sun"></i>
         </button>
       </div>
 
@@ -160,5 +163,13 @@
   </div>
 
   <script src="../Static/translate.js"></script>
+  <script>
+    document.getElementById('theme-Toggle').addEventListener('click', () => {
+  document.documentElement.setAttribute(
+    'data-theme',
+    document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
+  );
+});
+  </script>
 </body>
 </html>

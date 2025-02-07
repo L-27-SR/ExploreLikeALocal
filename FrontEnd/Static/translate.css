@@ -8,9 +8,79 @@
   body {
     min-height: 100vh;
     background: linear-gradient(45deg,rgba(74,144,226,1) 0%, rgba(252,70,107,0.10416666666666663) 100%);
-    padding: 1rem;
   }
-  
+  /* Dark theme variables */
+:root[data-theme='dark'] {
+  --primary-bg: linear-gradient(45deg, #0f172a, #1e293b, #334155, #1e293b, #0f172a);
+  --text-color: #e2e8f0;
+  --card-bg: rgba(30, 41, 59, 0.8);
+  --border-color: #475569;
+  --hover-bg: rgba(51, 65, 85, 0.5);
+  --input-bg: #1e293b;
+  --button-bg: #334155;
+}
+
+/* Apply dark theme styles */
+[data-theme='dark'] body {
+  background: var(--primary-bg);
+  color: var(--text-color);
+}
+
+[data-theme='dark'] nav {
+  background: var(--card-bg);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='dark'] .nav-links a {
+  color: var(--text-color);
+}
+
+[data-theme='dark'] .nav-links a:hover {
+  background-color: var(--hover-bg);
+}
+
+[data-theme='dark'] .translator-card {
+  background: var(--card-bg);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .tool-button,
+[data-theme='dark'] .language-select,
+[data-theme='dark'] .text-input {
+  background: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+[data-theme='dark'] .text-input[readonly] {
+  background: var(--button-bg);
+}
+
+[data-theme='dark'] .icon-button:hover {
+  background-color: var(--hover-bg);
+}
+
+[data-theme='dark'] .icon-button i {
+  color: var(--text-color);
+}
+
+[data-theme='dark'] #google_translate_element select {
+  background: var(--button-bg);
+  color: var(--text-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] #google_translate_element select:hover {
+  background: var(--hover-bg);
+}
+
+[data-theme='dark'] .logo {
+  background: linear-gradient(45deg, #e2e8f0, #94a3b8);
+  -webkit-background-clip: text;
+}
+[data-theme='dark'] h1 {
+  color: hsl(180, 28%, 85%); /* Light color for contrast in dark mode */
+}
   .container {
     max-width: 64rem;
     margin: 0 auto;
@@ -100,7 +170,7 @@
   h1 {
     font-size: 1.875rem;
     font-weight: 700;
-    color: #1F2937;
+    color: hsl(180, 28%, 17%);
   }
   
   .translator-card {
