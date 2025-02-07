@@ -2,7 +2,7 @@
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "frontend/Static/main.html"
+        "dest": "Frontend/Static/main.html"
       }
     ]
 }
