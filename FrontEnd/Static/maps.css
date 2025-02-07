@@ -184,3 +184,19 @@ body {
     color: var(--teal-accent);
     border: 2px solid var(--teal-accent); 
   }
+  #google_translate_element {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+/* Ensure responsive design */
+@media (max-width: 768px) {
+    .nav-links {
+        flex-direction: column;
+        align-items: center;
+    }
+    #google_translate_element {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}

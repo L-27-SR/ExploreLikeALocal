@@ -5,7 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dream Vacation Planner</title>
     <link rel="stylesheet" href="../Static/planning.css">
-
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=GoogleTranslateElementInit"></script>
+<script type="text/javascript">
+    function GoogleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,es,fr,de,zh-CN,ar,hi,ja,ru,pt',
+            layout: google.translate.TranslateElement.InlineLayout.DROPDOWN,
+            autoDisplay: true
+        }, 'google_translate_element');
+    }
+</script>
 </head>
 <body>
     <nav>
@@ -13,6 +23,7 @@
         <div class="nav-links">
             <a href="main.html" class="btn-primary rainbow-border">Home</a>
             <a href="#" id="logoutBtn" class="btn-primary rainbow-border">Logout</a>
+            <li id="google_translate_element"></li>
         </div>
     </nav>
     <div class="container">

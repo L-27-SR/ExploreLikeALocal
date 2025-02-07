@@ -9,7 +9,7 @@
   }
 
   .dark {
-    --primary-bg: #0f172a;
+    --primary-bg:linear-gradient(45deg, #0f172a, #1e293b, #334155, #1e293b, #0f172a);
     --card-bg: #1e293b;
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;

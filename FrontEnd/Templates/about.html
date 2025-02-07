@@ -8,6 +8,17 @@
     
     <link id="light theme" rel="stylesheet" href="../Static/landing.css">
     <link id="dark theme" rel="stylesheet" href="../Static/landingdark.css" disabled>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=GoogleTranslateElementInit"></script>
+    <script type="text/javascript">
+        function GoogleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,es,fr,de,zh-CN,ar,hi,ja,ru,pt',
+                layout: google.translate.TranslateElement.InlineLayout.DROPDOWN,
+                autoDisplay: true
+            }, 'google_translate_element');
+        }
+    </script>
 </head>
 <body>
     <script src="../Static/theme.js"></script>
@@ -16,8 +27,8 @@
         <div class="nav-links">
             <a href="main.html" class="btn-primary rainbow-border">Home</a>
             <button id="theme-toggle" onclick="toggleTheme()" class="btn-primary rainbow-border" style="color: rgb(2, 44, 255);">Switch to Dark Mode </button>
+            <li id="google_translate_element"></li>
         </div>
-        
     </nav>
     <header class="hero">
         
