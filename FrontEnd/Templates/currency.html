@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallet</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link id="light theme" rel="stylesheet" href="../Static/currency.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">TravelMapper</div>
+        <div class="nav-links">
+            <a href="main.html" class="btn-primary rainbow-border">Home</a>
+            <a href="#" id="logoutBtn" class="btn-primary rainbow-border">Logout</a>
+        </div>
+    </nav>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1 class="title">Advanced Currency Wallet</h1>
+        <div class="button-group">
+          <button id="themeToggle" class="icon-button">
+            <i data-lucide="sun"></i>
+          </button>
+          <button id="calculatorToggle" class="icon-button">
+            <i data-lucide="calculator"></i>
+          </button>
+          <button id="statsToggle" class="icon-button">
+            <i data-lucide="bar-chart-2"></i>
+          </button>
+          <button id="exportBtn" class="icon-button" data-tooltip="Export Wallet Data">
+            <i data-lucide="download"></i>
+        </button>
+        <button id="importBtn" class="icon-button" data-tooltip="Import Wallet Data">
+            <i data-lucide="upload"></i>
+        </button>
+        <button onclick="resetWallet()" class="icon-button" data-tooltip="Reset Wallet">
+            <i data-lucide="refresh-ccw"></i>
+        </button>
+        </div>
+      </div>
+
+      <div id="calculator" class="calculator">
+        <input type="text" class="calculator-display" id="calcDisplay" readonly>
+        <div class="calculator-grid">
+          <button onclick="appendToCalc('7')">7</button>
+          <button onclick="appendToCalc('8')">8</button>
+          <button onclick="appendToCalc('9')">9</button>
+          <button onclick="appendToCalc('/')">/</button>
+          <button onclick="appendToCalc('4')">4</button>
+          <button onclick="appendToCalc('5')">5</button>
+          <button onclick="appendToCalc('6')">6</button>
+          <button onclick="appendToCalc('*')">×</button>
+          <button onclick="appendToCalc('1')">1</button>
+          <button onclick="appendToCalc('2')">2</button>
+          <button onclick="appendToCalc('3')">3</button>
+          <button onclick="appendToCalc('-')">-</button>
+          <button onclick="appendToCalc('0')">0</button>
+          <button onclick="appendToCalc('.')">.</button>
+          <button onclick="calculateResult()">=</button>
+          <button onclick="appendToCalc('+')">+</button>
+        </div>
+        <button onclick="clearCalc()" class="primary-button">Clear</button>
+      </div>
+
+      <div id="walletSetup" class="wallet-setup">
+        <h2>Setup Your Wallet</h2>
+        <div class="input-group">
+          <label>Initial Balance</label>
+          <input type="number" id="initialBalance" placeholder="Enter amount">
+        </div>
+        <div class="input-group">
+          <label>Currency</label>
+          <select id="initialCurrency"></select>
+        </div>
+        <div class="input-group">
+          <label>Monthly Budget</label>
+          <input type="number" id="monthlyBudget" placeholder="Enter monthly budget">
+        </div>
+        <button id="setupWallet" class="primary-button">Create Wallet</button>
+      </div>
+
+      <div id="walletContent" class="hidden">
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('overview')">Overview</button>
+          <button class="tab" onclick="switchTab('budget')">Budget</button>
+          <button class="tab" onclick="switchTab('stats')">Statistics</button>
+        </div>
+
+        <div id="overviewTab">
+          <div class="wallet-info">
+            <h2>Your Wallet</h2>
+            <div id="balanceDisplay" class="balance-display"></div>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div>Monthly Spending</div>
+                <div id="monthlySpending" class="value">$0.00</div>
+              </div>
+              <div class="stat-card">
+                <div>Budget Remaining</div>
+                <div id="budgetRemaining" class="value">$0.00</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="converter">
+            <h2>Convert Currency</h2>
+            <div class="currency-inputs">
+              <div class="currency-input">
+                <div style="position: relative;">
+                  <input type="number" id="amount" placeholder="Amount">
+                  <button class="voice-input" onclick="startVoiceInput()">
+                    <i data-lucide="mic"></i>
+                  </button>
+                </div>
+                <select id="fromCurrency"></select>
+              </div>
+              <button id="swapCurrencies" class="icon-button">
+                <i data-lucide="arrow-right-left"></i>
+              </button>
+              <div class="currency-input">
+                <input type="number" id="result" readonly>
+                <select id="toCurrency"></select>
+              </div>
+            </div>
+            <button id="convert" class="primary-button">Convert</button>
+          </div>
+
+          <div class="transaction-history">
+            <h2>Recent Transactions</h2>
+            <div id="transactions"></div>
+          </div>
+        </div>
+
+        <div id="budgetTab" style="display: none;">
+          <div class="budget-section">
+            <h2>Budget Categories</h2>
+            <div class="category-list" id="categories"></div>
+            <button onclick="addCategory()" class="primary-button">Add Category</button>
+          </div>
+        </div>
+
+        <div id="statsTab" style="display: none;">
+          <div class="chart-container">
+            <canvas id="spendingChart"></canvas>
+          </div>
+          <div class="chart-container">
+            <canvas id="categoryChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="notification" class="notification"></div>
+  <script src="../Static/currency.js"></script>
+</body>
+</html>
