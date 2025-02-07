@@ -212,9 +212,8 @@ nav {
 
 
 .app-wrap {
-  max-width: 1200px;
+  max-width: 400px;
   margin: 0 auto;
-  display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
@@ -223,6 +222,7 @@ nav {
 
 .search-box {
   width: 100%;
+  text-align: center;
   padding: 10px;
   border: 2px solid var(--teal-accent);
   border-radius: 5px;
@@ -258,7 +258,6 @@ nav {
 
 /* Footer Styles */
 .site-footer {
-  color: var(--soft-aqua);
   padding: 4rem 2rem;
   margin-top: 2rem;
 }
@@ -291,7 +290,6 @@ nav {
   left: 0;
   width: 50px;
   height: 3px;
-  background: var(--teal-accent);
 }
 
 .footer-bottom {
