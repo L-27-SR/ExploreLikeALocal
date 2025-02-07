@@ -1,0 +1,186 @@
+:root {
+    --deep-blue: #0A2342; /* Updated deep blue */
+    --ocean-blue: #005F73; /* Updated ocean blue */
+    --light-blue: #2196F3;
+    --background: #E3F2FD;
+    --ocean-gradient: linear-gradient(135deg, var(--deep-blue), var(--ocean-blue)); /* New ocean gradient */
+    --soft-aqua: #A0D8E1; /* Define soft aqua color */
+    --teal-accent: #008C74; /* Define teal accent color */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background);
+    color: #333;
+}
+
+.weather-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    background-color: white;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15); /* Slightly stronger shadow for depth */
+    border-radius: 10px; /* Rounded corners for a softer look */
+    overflow: hidden; /* Prevent overflow of child elements */
+}
+
+.global-header {
+    background: var(--ocean-gradient); /* Use the new ocean gradient */
+    color: white;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2); /* Subtle shadow for the header */
+}
+
+.header-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#layer-selector {
+    padding: 10px;
+    justify-content: right;
+    border-radius: 5px;
+    border: 1px solid var(--light-blue); /* Border for better visibility */
+    background-color: white; /* White background for contrast */
+}
+
+.time-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.time-btn {
+    background-color: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    padding: 10px 20px; /* Increased padding for better touch targets */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* Added transform for hover effect */
+}
+
+.time-btn:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.time-btn.active {
+    background-color: white;
+    color: var(--deep-blue);
+}
+
+.global-map-container {
+    position: relative;
+    height: 700px;
+}
+
+#global-weather-map {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px; /* Rounded corners for the map */
+}
+
+.map-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background-color: rgba(255,255,255,0.9);
+    border-radius: 10px;
+    padding: 20px; /* Increased padding for better spacing */
+    width: 300px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15); /* Stronger shadow for overlay */
+}
+
+.global-stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #F5F5F5;
+}
+
+.stat-box {
+    flex: 1;
+    text-align: center;
+    padding: 20px; /* Increased padding for better spacing */
+    background-color: white;
+    margin: 0 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.2s; /* Added transition for hover effect */
+}
+
+.stat-box:hover {
+    transform: scale(1.02); /* Slightly enlarge on hover */
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background: rgba(10, 35, 66, 0.9);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .navbar .logo a {
+    color: var(--soft-aqua);
+    font-family: 'League Spartan', sans-serif;
+    font-size: 2rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .navbar .nav-links {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .navbar .nav-links a {
+    color: var(--soft-aqua);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar .nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--teal-accent);
+    transition: width 0.3s ease;
+  }
+  
+  .navbar .nav-links a:hover::after {
+    width: 100%;
+  }
+  
+  .navbar .btn {
+    background-color: var(--teal-accent);
+    color: var(--soft-aqua);
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .navbar .btn:hover {
+    background-color: transparent;
+    color: var(--teal-accent);
+    border: 2px solid var(--teal-accent); 
+  }
