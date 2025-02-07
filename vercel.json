@@ -2,7 +2,7 @@
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "Frontend/Templates/landing.html"
+        "dest": "FrontEnd/Templates/landing.html"
       }
     ]
 }
