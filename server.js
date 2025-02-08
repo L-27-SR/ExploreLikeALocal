@@ -5,25 +5,17 @@ import bodyParser from "body-parser";
 import morgan from "morgan";
 import fs from "fs";
 import path from "path";
-import mongoose from 'mongoose';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import session from "express-session";
-import connectMongoDBSession from "connect-mongodb-session";
 import weather from 'weather-js';
 import { Server } from 'socket.io';
-import http from 'http';
-import axios from 'axios';
 
 // Path and app setup
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
-const io = new Server();
-const port = 3005;
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, './FrontEnd/Templates')));
 app.use(express.static(path.join(__dirname, './FrontEnd/Static')));
-app.use('/js', express.static(path.join(__dirname, './FrontEnd/Static/js')));
 
 
 app.get('/', (req, res) => {
@@ -117,16 +109,6 @@ app.post('/api/recommendations', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Error generating recommendations' });
   }
-});
-
-// Existing routes...
-app.get("/", (req, res) => {
-  const sessionUserId = req.session.userId;
-  if (sessionUserId) {
-    res.redirect("/main");
-    return;
-  }
-  res.sendFile(path.join(__dirname, "./landing.html"));
 });
 
 // Start the server
