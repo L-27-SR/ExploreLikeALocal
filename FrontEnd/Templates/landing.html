@@ -54,6 +54,11 @@
     </div>
     <nav>
         <div class="logo">ExploreLikeALocal</div>
+        <button class="menu-toggle" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
         <div class="nav-links">
             <a href="#nearby" class="btn-primary rainbow-border">Nearby</a>
             <a href="#preferences" class="btn-primary rainbow-border">Preferences</a>
@@ -62,7 +67,11 @@
             <a href="/about" class="btn-primary rainbow-border">About Us</a>
             <li id="google_translate_element"></li>
         </div>
-        
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+            <svg class="sun" viewBox="0 0 24 24">
+                <path d="M12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3zm0-2V4c0-.55-.45-1-1-1s-1 .45-1 1v3c0 .55.45 1 1 1s1-.45 1-1zm0 14v-3c0-.55-.45-1-1-1s-1 .45-1 1v3c0 .55.45 1 1 1s1-.45 1-1zm7-7h-3c-.55 0-1 .45-1 1s.45 1 1 1h3c.55 0 1-.45 1-1s-.45-1-1-1zM4 12h3c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1z"/>
+            </svg>
+        </button>
     </nav>
 
     <!-- Main Content -->
@@ -86,19 +95,19 @@
     <section id="nearby" class="destinations">
         <h2>Spots Near You</h2>
         <div class="destination-grid">
-            <div class="destination-card" style="background-image: url('https://images.unsplash.com/photo-1533587851505-d119e13fa0d7')">
+            <div class="destination-card" style="background-image: url('https://images.pexels.com/photos/2523828/pexels-photo-2523828.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')">
                 <div class="card-content">
                     <h3>Mountain Trail</h3>
                     <p>2.5 km away • Hiking • Nature</p>
                 </div>
             </div>
-            <div class="destination-card" style="background-image: url('https://images.unsplash.com/photo-1514933651103-005eec06c04b')">
+            <div class="destination-card" style="background-image: url('https://images.pexels.com/photos/1028636/pexels-photo-1028636.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')">
                 <div class="card-content">
                     <h3>Local Art Gallery</h3>
                     <p>1.2 km away • Culture • Indoor</p>
                 </div>
             </div>
-            <div class="destination-card" style="background-image: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5')">
+            <div class="destination-card" style="background-image: url('https://images.pexels.com/photos/439818/pexels-photo-439818.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')">
                 <div class="card-content">
                     <h3>Historic Market</h3>
                     <p>0.8 km away • Food • Shopping</p>
@@ -184,7 +193,23 @@
             <p>&copy; 2024 ExploreLikeALocal. All rights reserved.</p>
         </div>
     </footer>
-
     <script src="./landing.js"></script>
+    <script>
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+        const theme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+
+        // Theme toggle functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    </script>
 </body>
 </html>
