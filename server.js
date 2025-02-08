@@ -130,7 +130,7 @@ app.get("/", (req, res) => {
 });
 
 // Start the server
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 export default app;
