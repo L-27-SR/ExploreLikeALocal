@@ -14,17 +14,6 @@ import { Server } from 'socket.io';
 import http from 'http';
 import axios from 'axios';
 
-mongoose.connect("mongodb://localhost:27017/tourism", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("MongoDB connected");
-  })
-  .catch((err) => {
-    console.error("Error connecting to MongoDB", err);
-  });
-
 // Path and app setup
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -32,17 +21,40 @@ const server = http.createServer(app);
 const io = new Server(server);
 const port = 3005;
 
-const MongoDBStore = connectMongoDBSession(session);
-const store = new MongoDBStore({
-  uri: "mongodb+srv://sreeharshat27:fzvoEddUb4ntakmJ@cluster0.tpluz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/tourism",
-  collection: "sessions",
-});
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '../frontend/Templates')));
+app.use(express.static(path.join(__dirname, '../FrontEnd/Static')));
 
-// MongoDB Session store error handling
-store.on('error', function(error) {
-  console.error("Session Store Error: ", error);
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/landing.html'));
 });
-
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/about.html'));
+});
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/login.html'));
+});
+app.get('/currency', (req, res) => {
+  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/currency.html'));
+});
+app.get('/main', (req, res) => {
+  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/main.html'));
+});
+app.get('/map', (req, res) => {
+  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/map.html'));
+});
+app.get('/maps', (req, res) => {
+  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/maps.html'));
+});
+app.get('/planning', (req, res) => {
+  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/planning.html'));
+});
+app.get('/translate', (req, res) => {
+  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/translate.html'));
+});
+app.get('/weather', (req, res) => {
+  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/weather.html'));
+});
 // Logger setup
 const logDirectory = path.join(__dirname, './log');
 const logFile = path.join(logDirectory, 'access.log');
@@ -56,15 +68,6 @@ const model = genAI.getGenerativeModel({
   model: "gemini-1.5-pro",
   systemInstruction: "You are Bluebot, a friendly assistant for ExploreLikeALocal. Help users discover amazing places and provide detailed information about locations, culture, and travel tips."
 });
-
-// Middleware setup
-app.use(session({
-  secret: "s3cUr3$K3y@123!",
-  saveUninitialized: false,
-  resave: false,
-  cookie: { maxAge: 182 * 24 * 60 * 60 * 1000 },
-  store: store,
-}));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
