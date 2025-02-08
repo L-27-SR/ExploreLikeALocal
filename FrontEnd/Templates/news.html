@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Indian News Portal</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --secondary: #34a853;
+            --surface: #ffffff;
+            --background: #f8f9fa;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        html[data-theme="light"] {
+            --primary: #1a73e8;
+            --secondary: #34a853;
+            --surface: #ffffff;
+            --background: #f8f9fa;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --card-bg: #ffffff;
+            --border-color: #e1e1e1;
+            --hover-bg: #f1f3f4;
+        }
+
+        html[data-theme="dark"] {
+            --primary: #8ab4f8;
+            --secondary: #81c995;
+            --surface: #202124;
+            --background: #121212;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0a6;
+            --card-bg: #2d2d2d;
+            --border-color: #3c4043;
+            --hover-bg: #3c4043;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .theme-toggle {
+            padding: 0.5rem;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--hover-bg);
+        }
+
+        .theme-toggle i {
+            font-size: 1.2rem;
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .weather-widget {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--background);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+        }
+
+        /* Navigation */
+        .nav-container {
+            background: var(--surface);
+            padding: 1rem 2rem;
+            transition: background-color 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .category-tabs {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .category-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .category-tab:hover:not(.active) {
+            background: var(--hover-bg);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .news-image-container {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background: #e1e1e1;
+            overflow: hidden;
+        }
+
+        .news-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .news-title {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            display: block;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--background);
+        }
+
+        /* Loading State */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .error-message {
+            background: #fde8e8;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 1rem;
+            }
+
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .news-grid {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="brand">
+                <a href="/main" class="brand-title">News</a>
+            </div>
+            <div class="weather-widget" id="weatherWidget">
+                <i class="fas fa-sun"></i>
+                <span>28°C | Bangalore</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <i class="fas fa-sun"></i>
+            </button>
+        </div>
+    </header>
+
+    <nav class="nav-container">
+        <div class="category-tabs" id="categoryTabs">
+            <button class="category-tab" data-category="india">National</button>
+            <button class="category-tab" data-category="international">International</button>
+            <button class="category-tab" data-category="sports">Sports</button>
+            <button class="category-tab" data-category="tourism">Tourism</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div id="newsContent" class="news-grid">
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const themeIcon = themeToggle.querySelector('i');
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeIcon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+        const API_KEY = '385a3c2c45f748fcb1cd9b3d77b0f435';
+        
+        const categoryQueries = {
+            karnataka: 'Karnataka OR Bengaluru OR Mysuru news',
+            india: 'India news -Karnataka',
+            international: 'world news -India',
+            sports: 'India sports cricket',
+            tourism: 'India tourism travel'
+        };
+
+        async function fetchNews(category) {
+            const newsContent = document.getElementById('newsContent');
+            
+            try {
+                newsContent.innerHTML = `
+                    <div class="loading-container">
+                        <div class="loading-spinner"></div>
+                    </div>
+                `;
+
+                const params = new URLSearchParams({
+                    apiKey: API_KEY,
+                    q: categoryQueries[category],
+                    language: 'en',
+                    sortBy: 'publishedAt',
+                    pageSize: 12
+                });
+
+                const response = await fetch(`https://newsapi.org/v2/everything?${params}`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch news');
+                }
+
+                const data = await response.json();
+                displayNews(data.articles, category);
+            } catch (error) {
+                newsContent.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Error loading news: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function displayNews(articles, category) {
+            const newsContent = document.getElementById('newsContent');
+            
+            const newsHTML = articles.map(article => `
+                <article class="news-card">
+                    <div class="news-image-container">
+                        <img src="${article.urlToImage || '/api/placeholder/400/225'}" 
+                             alt="${article.title}"
+                             class="news-image"
+                             onerror="this.src='/api/placeholder/400/225'"
+                        >
+                    </div>
+                    <div class="news-content">
+                        <span class="news-category">${category.toUpperCase()}</span>
+                        <a href="${article.url}" target="_blank" class="news-title">
+                            ${article.title}
+                        </a>
+                        <p class="news-description">
+                            ${article.description || 'No description available'}
+                        </p>
+                        <div class="news-meta">
+                            <span>${article.source.name}</span>
+                            <span>${new Date(article.publishedAt).toLocaleDateString('en-IN')}</span>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+
+            newsContent.innerHTML = newsHTML;
+        }
+
+        // Event Listeners
+        document.getElementById('categoryTabs').addEventListener('click', (e) => {
+            if (e.target.classList.contains('category-tab')) {
+                document.querySelectorAll('.category-tab').forEach(tab => 
+                    tab.classList.remove('active')
+                );
+                e.target.classList.add('active');
+                
+                const category = e.target.dataset.category;
+                fetchNews(category);
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchNews('karnataka');
+        });
+    </script>
+</body>
+</html>
