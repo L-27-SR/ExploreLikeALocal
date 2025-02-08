@@ -22,38 +22,40 @@ const io = new Server(server);
 const port = 3005;
 
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../frontend/Templates')));
-app.use(express.static(path.join(__dirname, '../FrontEnd/Static')));
+app.use(express.static(path.join(__dirname, './FrontEnd/Templates')));
+app.use(express.static(path.join(__dirname, './FrontEnd/Static')));
+app.use('/js', express.static(path.join(__dirname, './FrontEnd/Static/js')));
+
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/landing.html'));
+  res.sendFile(path.join(__dirname, '/FrontEnd/Templates/landing.html'));
 });
 app.get('/about', (req, res) => {
-  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/about.html'));
+  res.sendFile(path.join(__dirname, './FrontEnd/Templates/about.html'));
 });
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/login.html'));
+  res.sendFile(path.join(__dirname, './FrontEnd/Templates/login.html'));
 });
 app.get('/currency', (req, res) => {
-  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/currency.html'));
+  res.sendFile(path.join(__dirname, './FrontEnd/Templates/currency.html'));
 });
 app.get('/main', (req, res) => {
-  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/main.html'));
+  res.sendFile(path.join(__dirname, './FrontEnd/Templates/main.html'));
 });
 app.get('/map', (req, res) => {
-  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/map.html'));
+  res.sendFile(path.join(__dirname, './FrontEnd/Templates/map.html'));
 });
 app.get('/maps', (req, res) => {
-  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/maps.html'));
+  res.sendFile(path.join(__dirname, './FrontEnd/Templates/maps.html'));
 });
 app.get('/planning', (req, res) => {
-  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/planning.html'));
+  res.sendFile(path.join(__dirname, './FrontEnd/Templates/planning.html'));
 });
 app.get('/translate', (req, res) => {
-  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/translate.html'));
+  res.sendFile(path.join(__dirname, './FrontEnd/Templates/translate.html'));
 });
 app.get('/weather', (req, res) => {
-  res.sendFile(path.join(__dirname, '../FrontEnd/Templates/weather.html'));
+  res.sendFile(path.join(__dirname, './FrontEnd/Templates/weather.html'));
 });
 // Logger setup
 const logDirectory = path.join(__dirname, './log');

@@ -277,3 +277,6 @@
 ::1 - - [17/Nov/2024:02:47:31 +0000] "GET /main HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 ::1 - - [17/Nov/2024:02:47:41 +0000] "POST /map HTTP/1.1" 200 30 "http://localhost:3005/main" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 ::1 - - [17/Nov/2024:02:47:46 +0000] "POST /map/gen HTTP/1.1" 400 27 "http://localhost:3005/map.html" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+::1 - - [08/Feb/2025:06:11:28 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:3005/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+::1 - - [08/Feb/2025:06:11:30 +0000] "GET /img/logo.svg HTTP/1.1" 404 151 "http://localhost:3005/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+::1 - - [08/Feb/2025:06:11:30 +0000] "GET /img/register.svg HTTP/1.1" 404 155 "http://localhost:3005/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
