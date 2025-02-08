@@ -53,7 +53,6 @@ body {
     justify-content: right;
     border-radius: 5px;
     border: 1px solid var(--light-blue); /* Border for better visibility */
-    background-color: white; /* White background for contrast */
 }
 
 .time-controls {
@@ -62,7 +61,6 @@ body {
 }
 
 .time-btn {
-    background-color: rgba(255,255,255,0.2);
     color: white;
     border: none;
     padding: 10px 20px; /* Increased padding for better touch targets */
@@ -76,7 +74,6 @@ body {
 }
 
 .time-btn.active {
-    background-color: white;
     color: var(--deep-blue);
 }
 
@@ -95,7 +92,6 @@ body {
     position: absolute;
     bottom: 20px;
     left: 20px;
-    background-color: rgba(255,255,255,0.9);
     border-radius: 10px;
     padding: 20px; /* Increased padding for better spacing */
     width: 300px;
@@ -106,14 +102,12 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 20px;
-    background-color: #F5F5F5;
 }
 
 .stat-box {
     flex: 1;
     text-align: center;
     padding: 20px; /* Increased padding for better spacing */
-    background-color: white;
     margin: 0 10px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
