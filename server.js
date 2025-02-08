@@ -57,6 +57,9 @@ app.get('/translate', (req, res) => {
 app.get('/weather', (req, res) => {
   res.sendFile(path.join(__dirname, './FrontEnd/Templates/weather.html'));
 });
+app.get('/news', (req, res) => {
+  res.sendFile(path.join(__dirname, './FrontEnd/Templates/news.html'));
+});
 
 // API Routes
 // Weather API
