@@ -384,6 +384,208 @@
             margin-top: 10px;
         }
     }
+    .filter-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag {
+            background: #e2e8f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-tag:hover {
+            background: #cbd5e0;
+        }
+
+        .filter-tag.active {
+            background: #4a90e2;
+            color: white;
+        }
+
+        .place-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .place-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .place-photo {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .review-section {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        .star-rating {
+            color: #f59e0b;
+        }
+
+        .toggle-layer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .layer-option {
+            margin: 0.25rem 0;
+            cursor: pointer;
+        }
+
+        .direction-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            padding-top: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .favorites-list {
+            position: fixed;
+            right: -300px;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background: white;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+            transition: right 0.3s;
+            z-index: 1001;
+            padding: 1rem;
+        }
+
+        .favorites-list.active {
+            right: 0;
+        }
+
+        .marker-popup {
+            max-width: 300px;
+            padding: 0;
+        }
+
+        .marker-popup img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .marker-popup-content {
+            padding: 1rem;
+        }
+
+        .marker-popup h3 {
+            margin: 0 0 0.5rem 0;
+            color: #2d3748;
+        }
+
+        .distance-rings {
+            stroke: #4a90e2;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 5,5;
+        }
+
+        .heatmap-toggle {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        /* New Feature Styles */
+        .photo-upload {
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin: 1rem;
+        }
+
+        .community-tips {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tip-card {
+            border-bottom: 1px solid #eee;
+            padding: 0.5rem 0;
+        }
+
+        .route-history {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background: white;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+            transition: left 0.3s;
+            z-index: 1001;
+            padding: 1rem;
+        }
+
+        .route-history.active {
+            left: 0;
+        }
     </style>
 </head>
 <body>
