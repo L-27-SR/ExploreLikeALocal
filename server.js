@@ -5,6 +5,9 @@ import bodyParser from "body-parser";
 import path from "path";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import weather from 'weather-js';
+import axios from "axios";
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Path and app setup
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -16,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, './FrontEnd/Templates')));
 app.use(express.static(path.join(__dirname, './FrontEnd/Static')));
 app.use('/js', express.static(path.join(__dirname, './FrontEnd/Static/js')));
+const API_KEY = process.env.NEWS_API_KEY;
 
 // Page Routes
 app.get('/', (req, res) => {
@@ -100,7 +104,6 @@ app.post('/api/recommendations', async (req, res) => {
 // Virtual Tour Guide
 app.post('/api/guide', async (req, res) => {
   const { location } = req.body;
-  
   if (!location) {
     return res.status(400).json({ error: 'Location is required' });
   }
@@ -134,10 +137,59 @@ app.use((err, req, res, next) => {
 });
 
 // Handle 404
+const categoryQueries = {
+  karnataka: 'Karnataka OR Bengaluru OR Mysuru news',
+  india: 'India news -Karnataka',
+  international: 'world news -India',
+  sports: 'India sports cricket',
+  tourism: 'India tourism travel'
+};
+
+// API endpoint to fetch news - Move this BEFORE error handling middleware
+app.get('/api/news/:category', async (req, res) => {
+  const { category } = req.params;
+  
+  if (!categoryQueries[category]) {
+      return res.status(400).json({ error: 'Invalid category' });
+  }
+
+  try {
+      const response = await axios.get('https://newsapi.org/v2/everything', {
+          params: {
+              apiKey: API_KEY,
+              q: categoryQueries[category],
+              language: 'en',
+              sortBy: 'publishedAt',
+              pageSize: 12
+          }
+      });
+
+      res.json(response.data);
+  } catch (error) {
+      console.error('News API Error:', error.response?.data || error.message);
+      res.status(500).json({ 
+          error: 'Failed to fetch news',
+          details: error.response?.data || error.message
+      });
+  }
+});
+
+// Placeholder image endpoint - Move this BEFORE error handling middleware
+app.get('/api/placeholder/:width/:height', (req, res) => {
+  const { width, height } = req.params;
+  res.redirect(`https://via.placeholder.com/${width}x${height}`);
+});
+
+// THEN have your error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something broke!' });
+});
+
+// Handle 404
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
-
 // For local development
 if (process.env.NODE_ENV !== 'production') {
   const port = process.env.PORT || 3005;
