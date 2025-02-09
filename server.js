@@ -71,20 +71,21 @@ app.use('/js', express.static(path.join(__dirname, './FrontEnd/Static/js')));
 
 // Session Configuration
 app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_URI,
-      ttl: 24 * 60 * 60,
-      autoRemove: 'native'
-  }),
-  cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 24 * 60 * 60 * 1000,
-      sameSite: 'lax'
-  }
+    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/exploreLocal',
+        ttl: 24 * 60 * 60,
+        autoRemove: 'native'
+    }),
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 24 * 60 * 60 * 1000,
+        sameSite: 'lax'
+    }
 }));
+
 const API_KEY = process.env.NEWS_API_KEY;
 
 // Authentication middleware
