@@ -132,6 +132,61 @@
         sign_in_btn.addEventListener("click", () => {
         container.classList.remove("sign-up-mode");
         });
+        document.querySelector('.sign-in-form').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const username = e.target.querySelector('input[type="text"]').value;
+          const password = e.target.querySelector('input[type="password"]').value;
+          
+          try {
+              const response = await fetch('/api/login', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ username, password }),
+              });
+              
+              const data = await response.json();
+              
+              if (response.ok) {
+                  window.location.href = data.redirect;
+              } else {
+                  alert(data.error || 'Login failed');
+              }
+          } catch (error) {
+              alert('An error occurred during login');
+          }
+      });
+
+      // Sign Up Form Handler
+      document.querySelector('.sign-up-form').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const username = e.target.querySelector('input[type="text"]').value;
+          const email = e.target.querySelector('input[type="email"]').value;
+          const password = e.target.querySelector('input[type="password"]').value;
+          
+          try {
+              const response = await fetch('/api/register', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ username, email, password }),
+              });
+              
+              const data = await response.json();
+              
+              if (response.ok) {
+                  window.location.href = data.redirect;
+              } else {
+                  alert(data.error || 'Registration failed');
+              }
+          } catch (error) {
+              alert('An error occurred during registration');
+          }
+      });
     </script>
   </body>
 </html>
