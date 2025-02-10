@@ -3,8 +3,6 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
 import path from "path";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import weather from 'weather-js';
 import axios from "axios";
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
@@ -153,7 +151,23 @@ app.post('/api/logout', (req, res) => {
         res.json({ message: 'Logout successful', redirect: '/login' });
     });
 });
-
+app.get('/api/guest-login', async (req, res) => {
+    try {
+        // Create a temporary guest user or use a predefined guest account
+        const guestUser = await User.findOne({ username: 'guest' });
+        
+        if (!guestUser) {
+            return res.status(400).json({ error: 'Guest account not configured' });
+        }
+        
+        // Set session for guest user
+        req.session.userId = guestUser._id;
+        res.json({ message: 'Guest login successful', redirect: '/main' });
+    } catch (error) {
+        console.error('Guest login error:', error);
+        res.status(500).json({ error: 'Guest login failed' });
+    }
+});
 // Page Routes
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/FrontEnd/Templates/landing.html'));
@@ -197,41 +211,6 @@ app.get('/weather', requireAuth, (req, res) => {
 
 app.get('/news', requireAuth, (req, res) => {
     res.sendFile(path.join(__dirname, './FrontEnd/Templates/news.html'));
-});
-
-// Weather API Route
-app.get('/api/weather/:location', requireAuth, (req, res) => {
-    weather.find({ search: req.params.location, degreeType: 'C' }, (err, result) => {
-        if (err) {
-            console.error('Weather API Error:', err);
-            return res.status(500).json({ error: 'Error fetching weather data' });
-        }
-        res.json(result);
-    });
-});
-
-// AI Travel Recommendations Route
-app.post('/api/recommendations', requireAuth, async (req, res) => {
-    const { location, preferences } = req.body;
-    
-    if (!location || !preferences) {
-        return res.status(400).json({ error: 'Location and preferences are required' });
-    }
-
-    try {
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-        const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-pro",
-            systemInstruction: "You are Bluebot, a friendly assistant for ExploreLikeALocal. Help users discover amazing places and provide detailed information about locations, culture, and travel tips."
-        });
-        
-        const prompt = `Suggest 5 must-visit places in ${location} for someone interested in ${preferences.join(', ')}. Include brief descriptions and why they would appeal to someone with these interests.`;
-        const result = await model.generateContent(prompt);
-        res.json({ recommendations: result.response.text() });
-    } catch (error) {
-        console.error('AI Recommendation Error:', error);
-        res.status(500).json({ error: 'Error generating recommendations' });
-    }
 });
 
 // News API Route

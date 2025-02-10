@@ -173,6 +173,27 @@
               alert('An error occurred during registration');
           }
       });
+      document.querySelectorAll('.guest-btn').forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            try {
+                const response = await fetch('/api/guest-login', {
+                    method: 'GET'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    window.location.href = data.redirect;
+                } else {
+                    alert(data.error || 'Guest login failed');
+                }
+            } catch (error) {
+                alert('An error occurred during guest login');
+            }
+        });
+    });
     </script>
   </body>
 </html>
