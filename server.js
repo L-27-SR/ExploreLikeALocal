@@ -69,18 +69,19 @@ app.use('/js', express.static(path.join(__dirname, './FrontEnd/Static/js')));
 
 // Session Configuration
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/exploreLocal',
+        mongoUrl: process.env.MONGODB_URI,
         ttl: 24 * 60 * 60,
         autoRemove: 'native'
     }),
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 24 * 60 * 60 * 1000,
-        sameSite: 'lax'
+        secure: true,  // Important for HTTPS
+        httpOnly: true,
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000
     }
 }));
 
@@ -122,24 +123,27 @@ app.post('/api/login', async (req, res) => {
     try {
         const { username, password } = req.body;
         
-        // Find user
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
         
-        // Check password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
         
-        // Set session
         req.session.userId = user._id;
-        res.json({ message: 'Login successful', redirect: '/main' });
+        await req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+                return res.status(500).json({ error: 'Session creation failed' });
+            }
+            res.json({ message: 'Login successful', redirect: '/main' });
+        });
     } catch (error) {
         console.error('Login error:', error);
-        res.status(500).json({ error: 'Login failed' });
+        res.status(500).json({ error: 'Login failed', details: error.message });
     }
 });
 
