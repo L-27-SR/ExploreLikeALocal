@@ -686,13 +686,12 @@
         </button>
         <ul class="nav-links">
             <li><a href="/map" class="nav-button">Maps</a></li>
-            <li><a href="/about" class="nav-button">About</a></li>
             <li><a href="/planning" class="nav-button">Planner</a></li>
             <li><a href="/translate" class="nav-button">Translate</a></li>
             <li><a href="/weather" class="nav-button">Weather</a></li>
             <li><a href="/currency" class="nav-button">Wallet</a></li>
             <li><a href="/news" class="nav-button">News</a></li>
-            <li><a href="/api/logout" id="logoutBtn" class="nav-button">Logout</a></li>
+            <li><a id="logoutBtn" class="nav-button">Logout</a></li>
             <li id="google_translate_element"></li>
         </ul>
     </nav>
@@ -1103,6 +1102,9 @@
               const data = await response.json();
               if (data.redirect) {
                   window.location.href = data.redirect; // Redirect to the home page
+              }
+              else{
+                window.location.href = data.redirect;
               }
           } catch (error) {
               console.error('Logout failed:', error);

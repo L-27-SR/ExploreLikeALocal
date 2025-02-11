@@ -603,6 +603,9 @@ document.getElementById('logoutBtn').addEventListener('click', async (e) => {
       if (data.redirect) {
           window.location.href = data.redirect; // Redirect to the home page
       }
+      else{
+        window.location.href = data.redirect;
+      }
   } catch (error) {
       console.error('Logout failed:', error);
   }
