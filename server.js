@@ -122,6 +122,7 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', async (req, res) => {
     try {
         const { username, password } = req.body;
+        console.log("Attempting to login with username:", username);
         
         const user = await User.findOne({ username });
         if (!user) {
@@ -139,6 +140,7 @@ app.post('/api/login', async (req, res) => {
                 console.error('Session save error:', err);
                 return res.status(500).json({ error: 'Session creation failed' });
             }
+            console.log('Session created for user:', user.username);
             res.json({ message: 'Login successful', redirect: '/main' });
         });
     } catch (error) {
