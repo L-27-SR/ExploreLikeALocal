@@ -411,3 +411,19 @@
     background: linear-gradient(45deg, rgba(74,144,226,1.2) 0%, rgba(252,70,107,0.3) 100%);
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   }
+  .goog-logo-link {
+    display: none !important;
+}
+.goog-te-gadget {
+    color: transparent !important;
+}
+.goog-te-gadget span {
+    display: none !important;
+}
+.goog-te-gadget .goog-te-combo {
+    margin: 0 !important;
+    color: black !important;
+}
+.goog-te-banner-frame {
+    display: none !important;
+}

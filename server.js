@@ -87,6 +87,9 @@ const API_KEY = process.env.NEWS_API_KEY;
 const checkAuth = (req, res, next) => {
     if (req.session.userId) {
         req.isAuthenticated = true;
+    } else if (req.session.isGuest) {
+        req.isAuthenticated = true;
+        req.isGuest = true;
     } else {
         req.isAuthenticated = false;
     }
@@ -132,6 +135,19 @@ app.post('/api/logout', (req, res) => {
             return res.status(500).json({ error: 'Logout failed' });
         }
         res.json({ message: 'Logout successful', redirect: '/' });
+    });
+});
+
+// Add this route to your Express server code (after other authentication routes)
+app.get('/api/guest-login', (req, res) => {
+    // Create a guest session without requiring authentication
+    req.session.isGuest = true;
+    // You might want to generate a temporary guest ID
+    req.session.guestId = 'guest_' + Date.now();
+    
+    res.json({ 
+        message: 'Guest login successful', 
+        redirect: '/main'  // Redirect to main page
     });
 });
 

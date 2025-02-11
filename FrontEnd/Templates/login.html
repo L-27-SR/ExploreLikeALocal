@@ -83,6 +83,12 @@
       <div class="panels-container">
         <div class="panel left-panel">
           <div class="content">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
             <h3>New here ?</h3>
             <p>
               Awaiting the next adventure? Sign up now and start exploring ExploreLikeALocal.
@@ -91,6 +97,7 @@
               Sign up
             </button>
           </div>
+          <img src= "../Static/loginSignUp.jpg" class="image" alt="" />
         </div>
         <div class="panel right-panel">
           <div class="content">
@@ -194,6 +201,31 @@
             }
         });
     });
+    document.querySelectorAll('.guest-btn').forEach(button => {
+          button.addEventListener('click', async (e) => {
+              e.preventDefault();
+              
+              try {
+                  const response = await fetch('/api/guest-login', {
+                      method: 'GET',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      }
+                  });
+                  
+                  const data = await response.json();
+                  
+                  if (response.ok) {
+                      window.location.href = data.redirect;
+                  } else {
+                      alert('Guest login failed. Please try again.');
+                  }
+              } catch (error) {
+                  console.error('Guest login error:', error);
+                  alert('An error occurred during guest login');
+              }
+          });
+      });
     </script>
   </body>
 </html>
