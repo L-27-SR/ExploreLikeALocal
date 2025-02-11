@@ -689,6 +689,19 @@
 .goog-te-banner-frame {
     display: none !important;
 }
+.signout {
+    display: inline-block;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.signout:hover {
+    transform: scale(1.2); /* Slightly enlarges the icon */
+    color: darkred; /* Changes icon color on hover */
+}
+
+.signout:active {
+    transform: scale(0.9); /* Shrinks the icon slightly when clicked */
+}
     </style>
 </head>
 <body>
@@ -706,7 +719,7 @@
             <li><a href="/weather" class="nav-button">Weather</a></li>
             <li><a href="/currency" class="nav-button">Wallet</a></li>
             <li><a href="/news" class="nav-button">News</a></li>
-            <li><a id="logoutBtn" class="nav-button">Logout</a></li>
+            <li><a id="logoutBtn" class = "signout"><i class="fas fa-sign-out-alt" style="font-size: 36px;color:red"></i></a></li>
             <li id="google_translate_element"></li>
         </ul>
     </nav>
