@@ -12,21 +12,18 @@ import MongoStore from 'connect-mongo';
 
 dotenv.config();
 
-// Path and app setup
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/exploreLocal', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/exploreLocal')
+    .then(() => {
     console.log('Connected to MongoDB');
 }).catch((err) => {
     console.error('MongoDB connection error:', err);
 });
 
-// User Schema Definition
+// User Schema remains the same
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -51,7 +48,6 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-// Hash password before saving
 userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
     this.password = await bcrypt.hash(this.password, 10);
@@ -60,7 +56,7 @@ userSchema.pre('save', async function(next) {
 
 const User = mongoose.model('User', userSchema);
 
-// Middleware
+// Middleware setup
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, './FrontEnd/Templates')));
@@ -78,7 +74,7 @@ app.use(session({
         autoRemove: 'native'
     }),
     cookie: {
-        secure: true,  // Important for HTTPS
+        secure: true,
         httpOnly: true,
         sameSite: 'strict',
         maxAge: 24 * 60 * 60 * 1000
@@ -87,30 +83,26 @@ app.use(session({
 
 const API_KEY = process.env.NEWS_API_KEY;
 
-// Authentication middleware
-const requireAuth = (req, res, next) => {
-    if (!req.session.userId) {
-        return res.redirect('/login');
+// Modified authentication middleware to be optional
+const checkAuth = (req, res, next) => {
+    if (req.session.userId) {
+        req.isAuthenticated = true;
+    } else {
+        req.isAuthenticated = false;
     }
     next();
 };
 
-// Authentication Routes
+// Authentication Routes (unchanged)
 app.post('/api/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
-        
-        // Check if user already exists
         const existingUser = await User.findOne({ $or: [{ email }, { username }] });
         if (existingUser) {
             return res.status(400).json({ error: 'Username or email already exists' });
         }
-        
-        // Create new user
         const user = new User({ username, email, password });
         await user.save();
-        
-        // Set session
         req.session.userId = user._id;
         res.json({ message: 'Registration successful', redirect: '/main' });
     } catch (error) {
@@ -122,30 +114,15 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', async (req, res) => {
     try {
         const { username, password } = req.body;
-        console.log("Attempting to login with username:", username);
-        
         const user = await User.findOne({ username });
-        if (!user) {
+        if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
-        
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-        
         req.session.userId = user._id;
-        await req.session.save((err) => {
-            if (err) {
-                console.error('Session save error:', err);
-                return res.status(500).json({ error: 'Session creation failed' });
-            }
-            console.log('Session created for user:', user.username);
-            res.json({ message: 'Login successful', redirect: '/main' });
-        });
+        res.json({ message: 'Login successful', redirect: '/main' });
     } catch (error) {
         console.error('Login error:', error);
-        res.status(500).json({ error: 'Login failed', details: error.message });
+        res.status(500).json({ error: 'Login failed' });
     }
 });
 
@@ -154,81 +131,66 @@ app.post('/api/logout', (req, res) => {
         if (err) {
             return res.status(500).json({ error: 'Logout failed' });
         }
-        res.json({ message: 'Logout successful', redirect: '/login' });
+        res.json({ message: 'Logout successful', redirect: '/' });
     });
 });
-app.get('/api/guest-login', async (req, res) => {
-    try {
-        // Create a temporary guest user or use a predefined guest account
-        const guestUser = await User.findOne({ username: 'guest' });
-        
-        if (!guestUser) {
-            return res.status(400).json({ error: 'Guest account not configured' });
-        }
-        
-        // Set session for guest user
-        req.session.userId = guestUser._id;
-        res.json({ message: 'Guest login successful', redirect: '/main' });
-    } catch (error) {
-        console.error('Guest login error:', error);
-        res.status(500).json({ error: 'Guest login failed' });
-    }
-});
-// Page Routes
-app.get('/', (req, res) => {
+
+// Modified page routes to use checkAuth instead of requireAuth
+app.get('/', checkAuth, (req, res) => {
     res.sendFile(path.join(__dirname, '/FrontEnd/Templates/landing.html'));
 });
 
-app.get('/about', (req, res) => {
+app.get('/about', checkAuth, (req, res) => {
     res.sendFile(path.join(__dirname, './FrontEnd/Templates/about.html'));
 });
 
-app.get('/login', (req, res) => {
+app.get('/login', checkAuth, (req, res) => {
     res.sendFile(path.join(__dirname, './FrontEnd/Templates/login.html'));
 });
 
-app.get('/currency', requireAuth, (req, res) => {
+// Routes that can benefit from authentication but don't require it
+app.get('/currency', checkAuth, (req, res) => {
     res.sendFile(path.join(__dirname, './FrontEnd/Templates/currency.html'));
 });
 
-app.get('/main', requireAuth, (req, res) => {
+app.get('/main', checkAuth, (req, res) => {
     res.sendFile(path.join(__dirname, './FrontEnd/Templates/main.html'));
 });
 
-app.get('/map', requireAuth, (req, res) => {
+app.get('/map', checkAuth, (req, res) => {
     res.sendFile(path.join(__dirname, './FrontEnd/Templates/map.html'));
 });
 
-app.get('/maps', requireAuth, (req, res) => {
+app.get('/maps', checkAuth, (req, res) => {
     res.sendFile(path.join(__dirname, './FrontEnd/Templates/maps.html'));
 });
 
-app.get('/planning', requireAuth, (req, res) => {
+app.get('/planning', checkAuth, (req, res) => {
     res.sendFile(path.join(__dirname, './FrontEnd/Templates/planning.html'));
 });
 
-app.get('/translate', requireAuth, (req, res) => {
+app.get('/translate', checkAuth, (req, res) => {
     res.sendFile(path.join(__dirname, './FrontEnd/Templates/translate.html'));
 });
 
-app.get('/weather', requireAuth, (req, res) => {
+app.get('/weather', checkAuth, (req, res) => {
     res.sendFile(path.join(__dirname, './FrontEnd/Templates/weather.html'));
 });
 
-app.get('/news', requireAuth, (req, res) => {
+app.get('/news', checkAuth, (req, res) => {
     res.sendFile(path.join(__dirname, './FrontEnd/Templates/news.html'));
 });
 
-// News API Route
-const categoryQueries = {
-    karnataka: 'Karnataka OR Bengaluru OR Mysuru news',
-    india: 'India news -Karnataka',
-    international: 'world news -India',
-    sports: 'India sports cricket',
-    tourism: 'India tourism travel'
-};
+// Modified news API route to use checkAuth
+app.get('/api/news/:category', checkAuth, async (req, res) => {
+    const categoryQueries = {
+        karnataka: 'Karnataka OR Bengaluru OR Mysuru news',
+        india: 'India news -Karnataka',
+        international: 'world news -India',
+        sports: 'India sports cricket',
+        tourism: 'India tourism travel'
+    };
 
-app.get('/api/news/:category', requireAuth, async (req, res) => {
     const { category } = req.params;
     
     if (!categoryQueries[category]) {
@@ -256,24 +218,20 @@ app.get('/api/news/:category', requireAuth, async (req, res) => {
     }
 });
 
-// Placeholder image endpoint
+// Other routes remain the same
 app.get('/api/placeholder/:width/:height', (req, res) => {
-    const { width, height } = req.params;
     res.redirect(`https://via.placeholder.com/${width}x${height}`);
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ error: 'Something broke!' });
 });
 
-// Handle 404
 app.use((req, res) => {
     res.status(404).json({ error: 'Route not found' });
 });
 
-// Server startup
 const port = process.env.PORT || 3005;
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

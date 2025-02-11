@@ -692,6 +692,7 @@
             <li><a href="/weather" class="nav-button">Weather</a></li>
             <li><a href="/currency" class="nav-button">Wallet</a></li>
             <li><a href="/news" class="nav-button">News</a></li>
+            <li><a href="/api/logout" id="logoutBtn" class="nav-button">Logout</a></li>
             <li id="google_translate_element"></li>
         </ul>
     </nav>
@@ -1090,6 +1091,23 @@
                 }
             }
         });
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+          e.preventDefault(); // Prevent the default link behavior
+          try {
+              const response = await fetch('/api/logout', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  }
+              });
+              const data = await response.json();
+              if (data.redirect) {
+                  window.location.href = data.redirect; // Redirect to the home page
+              }
+          } catch (error) {
+              console.error('Logout failed:', error);
+          }
+      });
     </script>
     <script src="//code.tidio.co/oozekqtd2hbna2coolqfjbw3affl27j3.js"></script>
 </body>
