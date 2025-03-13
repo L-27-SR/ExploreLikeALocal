@@ -590,6 +590,26 @@ function initializeUIEnhancements() {
         });
     });
 }
+document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+  e.preventDefault(); // Prevent the default link behavior
+  try {
+      const response = await fetch('/api/logout', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+      const data = await response.json();
+      if (data.redirect) {
+          window.location.href = data.redirect; // Redirect to the home page
+      }
+      else{
+        window.location.href = data.redirect;
+      }
+  } catch (error) {
+      console.error('Logout failed:', error);
+  }
+});
 
 // Call initialization functions
 initializeUIEnhancements();

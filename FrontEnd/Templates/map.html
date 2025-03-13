@@ -8,7 +8,6 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.161.0/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=GoogleTranslateElementInit"></script>
 <script type="text/javascript">
     function GoogleTranslateElementInit() {
@@ -20,368 +19,224 @@
         }, 'google_translate_element');
     }
 </script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(45deg,rgba(74,144,226,1) 0%, rgba(252,70,107,0.10416666666666663) 100%);
-            color: #2c3e50;
-            line-height: 1.6;
-        }
-
-        nav {
-            color: rgb(0, 0, 0);
-            padding: 1rem 2rem;
-            display: flex;
-            top: 0;
-            z-index: 1000;
-            position: sticky;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .logo {
-            font-size: 1.75rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-
-        .nav-links a {
-            color: rgb(0, 0, 0);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .nav-links a:hover {
-            background-color: rgba(255,255,255,0.2);
-        }
-        .btn-primary {
-            background: var(--primary-color);
-            color: var(--text-light);
-            padding: 0.8rem 2rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .rainbow-border::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-            background-size: 400%;
-            z-index: -1;
-            animation: rainbow 20s linear infinite;
-            border-radius: inherit;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .rainbow-border:hover::before {
-            opacity: 1;
-        }
-
-        .search-container {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-        #locationInput {
-            padding: 8px;
-            width: 250px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-
-        .search-bar {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .search-bar input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .search-bar input:focus {
-            outline: none;
-            border-color: #4a90e2;
-        }
-
-        .search-bar button {
-            padding: 0.75rem 1.5rem;
-            background: #4a90e2;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-
-        .search-bar button:hover {
-            background: #357abd;
-        }
-
-        .map-container {
-            height: 65vh;
-            margin: 1.5rem 2rem;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease;
-        }
-        .map-container:hover {
-            transform: scale(1.01);
-        }
-
-        #map {
-            height: 100%;
-            width: 100%;
-            filter: grayscale(10%) contrast(110%);
-        }
-
-        .location-info {
-            background: white;
-            max-width: 900px;
-            margin: 1.5rem auto;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-        }
-
-        .location-info h2 {
-            color: #2d3748;
-            margin-bottom: 1rem;
-        }
-
-        .location-info p {
-            color: #4a5568;
-            line-height: 1.6;
-        }
-
-        .category-label {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(74,144,226,0.1);
-            border: 1px solid rgba(74,144,226,0.3);
-            color: #4a90e2;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
-        }
-
-        .leaflet-popup-content {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        }
-
-        .leaflet-popup-content h3 {
-            margin: 0 0 0.5rem 0;
-            color: #2d3748;
-        }
-
-        .leaflet-popup-content p {
-            margin: 0;
-            color: #4a5568;
-        }
-
-        .location-type {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            background: #e2e8f0;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
-        }
-
-        .weather-info {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .weather-info h3 {
-            margin-top: 0;
-            color: #2d3748;
-        }
-
-        .social-share {
-            margin-top: 1.5rem;
-            padding: 1.5rem;
-            background: #f8fafc;
-            border-radius: 8px;
-        }
-
-        .social-share button {
-            margin: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-weight: 500;
-        }
-
-        .social-share button[onclick*="Twitter"] {
-            background: #1DA1F2;
-            color: white;
-        }
-
-        .social-share button[onclick*="Facebook"] {
-            background: #4267B2;
-            color: white;
-        }
-
-        .social-share button:first-child {
-            background: #1DA1F2;
-            color: white;
-        }
-
-        .social-share button:last-child {
-            background: #4267B2;
-            color: white;
-        }
-
-        .virtual-guide {
-            margin-top: 1rem;
-            padding: 1rem;
-            background: #e9ecef;
-            border-radius: 8px;
-        }
-
-        .virtual-guide button {
-            margin-top: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .virtual-guide button:hover {
-            background: #357abd;
-        }
-        #3d-preview {
-            margin: 1.5rem 0;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        #generate {
-            background: linear-gradient(90deg, #4a90e2 0%, #6a11cb 100%);
-            color: white;
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 30px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(74,144,226,0.4);
-        }
-        #generate:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(74,144,226,0.5);
-        }
-
-        .category-label {
-            background: rgba(74,144,226,0.1);
-            color: #4a90e2;
-            border: 1px solid rgba(74,144,226,0.3);
-        }
-
-        @media (max-width: 768px) {
-            .map-container {
-                margin: 1rem;
-                height: 50vh;
-            }
-            
-            .location-info, .search-container {
-                margin: 1rem;
-                padding: 1rem;
-            }
-        }
-        .checkbox-container {
-            margin-top: 10px;
-        }
-        #resultsContainer {
-            display: flex;
-            justify-content: space-around;
-            padding: 10px;
-            
-        }
-
-        .results-column {
-            width: 18%;
-            padding: 10px;
-            
-            border-radius: 5px;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .results-column h3 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .results-column ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .results-column ul li {
-            cursor: pointer;
-            padding: 5px;
-            border-bottom: 1px solid #ddd;
-        }
-        #google_translate_element {
-        display: inline-block;
-        margin-left: 10px;
+    <style>:root {
+        --primary-blue: #4a90e2;
+        --hover-blue: #357abd;
+        --text-dark: #2c3e50;
+        --text-darker: #2d3748;
+        --text-medium: #4a5568;
+        --background-light: #f8fafc;
+        --border-radius-sm: 5px;
+        --border-radius-md: 8px;
+        --border-radius-lg: 15px;
+        --border-radius-xl: 30px;
+        --spacing-xs: 0.5rem;
+        --spacing-sm: 0.75rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 1.5rem;
+        --spacing-xl: 2rem;
+        --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
+        --shadow-md: 0 4px 10px rgba(0,0,0,0.2);
+        --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+        --transition-standard: all 0.3s ease;
     }
-
-    /* Ensure responsive design */
+    
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background: linear-gradient(45deg, rgba(74,144,226,1) 0%, rgba(252,70,107,0.10416666666666663) 100%);
+        color: var(--text-dark);
+        line-height: 1.6;
+    }
+    
+    /* Navigation */
+    nav {
+        color: #000;
+        padding: var(--spacing-md) var(--spacing-xl);
+        display: flex;
+        top: 0;
+        z-index: 1000;
+        position: sticky;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: var(--border-radius-lg);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .logo {
+        font-size: 1.75rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+    
+    /* Navigation Links */
+    .nav-links a {
+        color: #000;
+        text-decoration: none;
+        padding: var(--spacing-xs) var(--spacing-md);
+        border-radius: var(--border-radius-sm);
+        transition: var(--transition-standard);
+    }
+    
+    .nav-links a:hover {
+        background-color: rgba(255,255,255,0.2);
+    }
+    
+    /* Buttons */
+    .button-standard {
+        padding: var(--spacing-sm) var(--spacing-lg);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius-sm);
+        cursor: pointer;
+        transition: var(--transition-standard);
+    }
+    
+    .button-standard:hover {
+        background: var(--hover-blue);
+        transform: translateY(-2px);
+    }
+    
+    .btn-primary {
+        color: white;
+        padding: var(--spacing-sm) var(--spacing-xl);
+        border: none;
+        border-radius: var(--border-radius-xl);
+        cursor: pointer;
+        transition: var(--transition-standard);
+        position: relative;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    /* Rainbow Border Effect */
+    .rainbow-border::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+        background-size: 400%;
+        z-index: -1;
+        animation: rainbow 20s linear infinite;
+        border-radius: inherit;
+        opacity: 0;
+        transition: var(--transition-standard);
+    }
+    
+    .rainbow-border:hover::before {
+        opacity: 1;
+    }
+    
+    /* Search Container */
+    .search-container {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius-sm);
+        box-shadow: var(--shadow-sm);
+        z-index: 1000;
+    }
+    
+    #locationInput {
+        padding: 8px;
+        width: 250px;
+        border: 1px solid #ccc;
+        border-radius: var(--border-radius-sm);
+    }
+    
+    /* Map Container */
+    .map-container {
+        height: 65vh;
+        margin: var(--spacing-lg) var(--spacing-xl);
+        border-radius: var(--border-radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        transition: var(--transition-standard);
+    }
+    
+    .map-container:hover {
+        transform: scale(1.01);
+    }
+    
+    #map {
+        height: 100%;
+        width: 100%;
+        filter: grayscale(10%) contrast(110%);
+    }
+    
+    /* Results Container */
+    #resultsContainer {
+        display: flex;
+        justify-content: space-around;
+        padding: var(--spacing-md);
+    }
+    
+    .results-column {
+        width: 18%;
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius-sm);
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .results-column h3 {
+        text-align: center;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .results-column ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .results-column ul li {
+        cursor: pointer;
+        padding: var(--spacing-xs);
+    }
+    
+    /* Checkbox Container */
+    .checkbox-container {
+        margin-top: var(--spacing-md);
+    }
+    
+    /* Google Translate Element */
+    #google_translate_element {
+        display: inline-block;
+        margin-left: var(--spacing-md);
+    }
+    
+    /* Media Queries */
     @media (max-width: 768px) {
+        .map-container {
+            margin: var(--spacing-md);
+            height: 50vh;
+        }
+        
+        .location-info, 
+        .search-container {
+            margin: var(--spacing-md);
+            padding: var(--spacing-md);
+        }
+        
         .nav-links {
             flex-direction: column;
             align-items: center;
         }
+        
         #google_translate_element {
             margin-left: 0;
-            margin-top: 10px;
+            margin-top: var(--spacing-md);
         }
     }
     </style>
@@ -420,7 +275,6 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.161.0/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
     <script src="/map.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -430,6 +284,24 @@
                 categoryDisplay.textContent = category;
             }
         });
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+          e.preventDefault(); // Prevent the default link behavior
+          try {
+              const response = await fetch('/api/logout', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  }
+              });
+              const data = await response.json();
+              if (data.redirect) {
+                  window.location.href = data.redirect; // Redirect to the home page
+              }
+          } catch (error) {
+              console.error('Logout failed:', error);
+          }
+      });
     </script>
+
 </body>
 </html>

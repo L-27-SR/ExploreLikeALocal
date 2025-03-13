@@ -79,85 +79,6 @@ async function addWeatherInfo(latitude, longitude) {
     }
 }
 
-// Add 3D Preview
-function add3DPreview(latitude, longitude) {
-    const container = document.createElement('div');
-    container.id = '3d-preview';
-    container.style.height = '300px';
-    document.querySelector('.location-info').appendChild(container);
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    container.appendChild(renderer.domElement);
-
-    // Add 3D terrain using elevation data
-    const geometry = new THREE.PlaneGeometry(50, 50, 100, 100);
-    const material = new THREE.MeshPhongMaterial({ color: 0x55ff55 });
-    const terrain = new THREE.Mesh(geometry, material);
-    scene.add(terrain);
-
-    // Add lighting
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(0, 1, 1);
-    scene.add(light);
-
-    camera.position.z = 50;
-
-    function animate() {
-        requestAnimationFrame(animate);
-        terrain.rotation.x += 0.001;
-        renderer.render(scene, camera);
-    }
-    animate();
-}
-
-// Social Sharing
-function addSocialSharing(locationName) {
-    const shareDiv = document.createElement('div');
-    shareDiv.className = 'social-share';
-    shareDiv.innerHTML = `
-        <h3>Share this location</h3>
-        <button onclick="shareOnTwitter('${locationName}')">Share on Twitter</button>
-        <button onclick="shareOnFacebook('${locationName}')">Share on Facebook</button>
-    `;
-    document.querySelector('.location-info').appendChild(shareDiv);
-}
-
-window.shareOnTwitter = function(locationName) {
-    const text = `Check out ${locationName} on ExploreLikeALocal!`;
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`);
-};
-
-window.shareOnFacebook = function(locationName) {
-    const url = window.location.href;
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`);
-};
-
-// Virtual Tour Guide
-const socket = io();
-
-function requestVirtualGuide(locationName) {
-    socket.emit('requestGuide', locationName);
-}
-
-socket.on('guideResponse', (response) => {
-    const guideDiv = document.createElement('div');
-    guideDiv.className = 'virtual-guide';
-    guideDiv.innerHTML = `
-        <h3>Virtual Tour Guide</h3>
-        <p>${response}</p>
-        <button onclick="speakGuideText(this.previousElementSibling.textContent)">Listen</button>
-    `;
-    document.querySelector('.location-info').appendChild(guideDiv);
-});
-
-function speakGuideText(text) {
-    const utterance = new SpeechSynthesisUtterance(text);
-    window.speechSynthesis.speak(utterance);
-}
-
 // Function to search for location
 function searchLocation() {
     let location = document.getElementById("locationInput").value;
@@ -327,23 +248,21 @@ function findPlaces(lat, lon, category) {
                 nameSpan.innerHTML = `${placeName} <small>(${placeType})</small><br>${getDistance(lat, lon, placeLat, placeLon).toFixed(2)} km`;
                 
                 let navButton = document.createElement("button");
-                navButton.innerHTML = '<i class="fas fa-directions"></i>';
+                navButton.innerHTML = '➤'; // Map pointer emoji
                 navButton.style.marginLeft = "10px";
-                navButton.style.border = "2px solid #4CAF50";
-                navButton.style.backgroundColor = "white";
-                navButton.style.color = "#4CAF50";
-                navButton.style.padding = "5px 10px";
-                navButton.style.borderRadius = "4px";
+                navButton.style.background = "none";
+                navButton.style.border = "none";
+                navButton.style.fontSize = "20px";
                 navButton.style.cursor = "pointer";
-                navButton.style.transition = "all 0.3s";
+                navButton.style.transition = "transform 0.2s ease";
+                navButton.title = "Get directions"; // Tooltip on hover
 
+                // Change hover effects
                 navButton.onmouseover = () => {
-                    navButton.style.backgroundColor = "#4CAF50";
-                    navButton.style.color = "white";
+                    navButton.style.transform = "scale(1.2)";
                 };
                 navButton.onmouseout = () => {
-                    navButton.style.backgroundColor = "white";
-                    navButton.style.color = "#4CAF50";
+                    navButton.style.transform = "scale(1)";
                 };
 
                 navButton.onclick = (event) => {

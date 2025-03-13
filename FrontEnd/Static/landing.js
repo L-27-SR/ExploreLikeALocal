@@ -10,6 +10,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const showSignupLink = document.getElementById('showSignup');
     const showLoginLink = document.getElementById('showLogin');
     const closeBtn = document.querySelector('.close');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    // Theme toggle functionality
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+    // Get saved theme from localStorage or use system preference
+    const savedTheme = localStorage.getItem('theme') || 
+        (prefersDarkScheme.matches ? 'dark' : 'light');
+    
+    // Set initial theme
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+    
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+    });
+    
+    function updateThemeIcon(theme) {
+        const icon = themeToggle.querySelector('i');
+        icon.setAttribute('data-lucide', theme === 'dark' ? 'moon' : 'sun');
+        lucide.createIcons();
+    }
 
     // Debugging: Check if closeBtn is found
     if (closeBtn) {
@@ -112,7 +139,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Event Listeners
-    authBtn.addEventListener('click', showModal);
+    if (authBtn) {
+        authBtn.addEventListener('click', showModal);
+    }
     if (locationBtn) {
         locationBtn.addEventListener('click', getUserLocation);
     }
@@ -163,4 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
             card.style.transform = 'none';
         });
     });
+
+    // Initialize Lucide icons
+    lucide.createIcons();
 });

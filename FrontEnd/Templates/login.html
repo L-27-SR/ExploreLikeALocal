@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script
-      src="https://kit.fontawesome.com/64d58efce2.js"
+      src="https://kit.fontawesome.com/1325b67f3c.js"
       crossorigin="anonymous"
     ></script>
     <link rel="stylesheet" href="/login.css" />
@@ -97,16 +97,10 @@
               Sign up
             </button>
           </div>
-          <img src="img/logo.svg" class="image" alt="" />
+          <img src= "../Static/loginSignUp.jpg" class="image" alt="" />
         </div>
         <div class="panel right-panel">
           <div class="content">
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
             <h3>One of us ?</h3>
             <p>
                 Welcome back. Get back to exploring ExploreLikeALocal.
@@ -115,7 +109,6 @@
               Sign in
             </button>
           </div>
-          <img src="img/register.svg" class="image" alt="" />
         </div>
       </div>
     </div>
@@ -132,6 +125,107 @@
         sign_in_btn.addEventListener("click", () => {
         container.classList.remove("sign-up-mode");
         });
+        document.querySelector('.sign-in-form').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const username = e.target.querySelector('input[type="text"]').value;
+          const password = e.target.querySelector('input[type="password"]').value;
+          
+          try {
+              const response = await fetch('/api/login', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ username, password }),
+              });
+              
+              const data = await response.json();
+              
+              if (response.ok) {
+                  window.location.href = data.redirect;
+              } else {
+                  alert(data.error || 'Login failed');
+              }
+          } catch (error) {
+              alert('An error occurred during login');
+          }
+      });
+
+      // Sign Up Form Handler
+      document.querySelector('.sign-up-form').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const username = e.target.querySelector('input[type="text"]').value;
+          const email = e.target.querySelector('input[type="email"]').value;
+          const password = e.target.querySelector('input[type="password"]').value;
+          
+          try {
+              const response = await fetch('/api/register', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ username, email, password }),
+              });
+              
+              const data = await response.json();
+              
+              if (response.ok) {
+                  window.location.href = data.redirect;
+              } else {
+                  alert(data.error || 'Registration failed');
+              }
+          } catch (error) {
+              alert('An error occurred during registration');
+          }
+      });
+      document.querySelectorAll('.guest-btn').forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            try {
+                const response = await fetch('/api/guest-login', {
+                    method: 'GET'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    window.location.href = data.redirect;
+                } else {
+                    alert(data.error || 'Guest login failed');
+                }
+            } catch (error) {
+                alert('An error occurred during guest login');
+            }
+        });
+    });
+    document.querySelectorAll('.guest-btn').forEach(button => {
+          button.addEventListener('click', async (e) => {
+              e.preventDefault();
+              
+              try {
+                  const response = await fetch('/api/guest-login', {
+                      method: 'GET',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      }
+                  });
+                  
+                  const data = await response.json();
+                  
+                  if (response.ok) {
+                      window.location.href = data.redirect;
+                  } else {
+                      alert('Guest login failed. Please try again.');
+                  }
+              } catch (error) {
+                  console.error('Guest login error:', error);
+                  alert('An error occurred during guest login');
+              }
+          });
+      });
     </script>
   </body>
 </html>
