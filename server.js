@@ -59,7 +59,6 @@ const User = mongoose.model('User', userSchema);
 // Middleware setup
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, './FrontEnd/Templates')));
 app.use(express.static(path.join(__dirname, './FrontEnd/Static')));
 app.use('/js', express.static(path.join(__dirname, './FrontEnd/Static/js')));
 
