@@ -33,13 +33,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
             top: 0;
             z-index: 1000;
-            position: sticky;
             width: 100%;
             transition: all 0.3s ease;
         }
-
         .navbar.scrolled {
             background: rgba(17, 17, 17, 0.95);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -59,7 +58,9 @@
             display: flex;
             gap: 20px;
             list-style: none;
+            align-items: center;
         }
+
         .nav-link:before {
             content: '';
             background: #111;
@@ -100,17 +101,18 @@
 
         .hamburger {
             display: none;
-            cursor: pointer;
             background: none;
             border: none;
+            cursor: pointer;
             padding: 10px;
+            z-index: 1001;
         }
 
         .hamburger span {
             display: block;
             width: 25px;
             height: 3px;
-            background: #fff;
+            background-color: #fff;
             margin: 5px 0;
             transition: all 0.3s ease;
         }
@@ -125,7 +127,6 @@
         @media (max-width: 768px) {
             .hamburger {
                 display: block;
-                z-index: 100;
             }
 
             .hamburger.active span:nth-child(1) {
@@ -140,22 +141,40 @@
                 transform: rotate(-45deg) translate(5px, -6px);
             }
 
+
             .nav-links {
                 position: fixed;
                 top: 0;
                 right: -100%;
-                height: 100vh;
                 width: 100%;
-                background: #111;
+                height: 100vh;
+                background: rgba(17, 17, 17, 0.95);
                 flex-direction: column;
-                align-items: center;
                 justify-content: center;
+                align-items: center;
                 transition: 0.3s ease;
+                padding: 20px;
+                gap: 20px;
             }
 
             .nav-links.active {
                 right: 0;
             }
+            .nav-button {
+        font-size: 1.2rem;
+        padding: 15px 25px;
+        width: 200px;
+        text-align: center;
+    }
+
+    #google_translate_element {
+        display: inline-block;
+        margin-top: 20px;
+    }
+
+    .signout {
+        margin-top: 20px;
+    }
         }
         .nav-list {
             list-style: none;
@@ -656,9 +675,9 @@
         margin-left: 10px;
     }
     #google_translate_element select {
-        background-color: #111;
+        background-color: #ffffff;
         color: white;
-        border: 1px solid #333;
+        border: 1px solid #dfdddd;
         padding: 8px 12px;
         border-radius: 6px;
         appearance: none;
@@ -671,28 +690,55 @@
         transition: all 0.3s ease;
     }
     #google_translate_element select:hover {
-        background-color: #222;
+        background-color: #e9e9e9;
         border-color: #00ff88;
-    }
+    }.goog-logo-link {
+    display: none !important;
+}
+.goog-te-gadget {
+    color: transparent !important;
+}
+.goog-te-gadget span {
+    display: none !important;
+}
+.goog-te-gadget .goog-te-combo {
+    margin: 0 !important;
+    color: black !important;
+}
+.goog-te-banner-frame {
+    display: none !important;
+}
+.signout {
+    display: inline-block;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.signout:hover {
+    transform: scale(1.2); /* Slightly enlarges the icon */
+    color: darkred; /* Changes icon color on hover */
+}
+
+.signout:active {
+    transform: scale(0.9); /* Shrinks the icon slightly when clicked */
+}
     </style>
 </head>
 <body>
     <nav class="navbar">
         <a href="/" class="logo">ExploreLikeALocal</a>
-        <button class="hamburger">
+        <button class="hamburger" aria-label="Toggle navigation">
             <span></span>
             <span></span>
             <span></span>
         </button>
         <ul class="nav-links">
             <li><a href="/map" class="nav-button">Maps</a></li>
-            <li><a href="/about" class="nav-button">About</a></li>
             <li><a href="/planning" class="nav-button">Planner</a></li>
             <li><a href="/translate" class="nav-button">Translate</a></li>
             <li><a href="/weather" class="nav-button">Weather</a></li>
             <li><a href="/currency" class="nav-button">Wallet</a></li>
-            <li><a href="/login" class="nav-button">Logout</a></li>
             <li><a href="/news" class="nav-button">News</a></li>
+            <li><a id="logoutBtn" class="signout"><i class="fas fa-sign-out-alt" style="font-size: 36px;color:red"></i></a></li>
             <li id="google_translate_element"></li>
         </ul>
     </nav>
@@ -965,132 +1011,125 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const carousel = document.querySelector('.carousel');
-            const list = carousel.querySelector('.list');
-            const items = carousel.querySelectorAll('.list .item');
-            const thumbnails = carousel.querySelectorAll('.thumbnail .item');
-            const prevBtn = document.getElementById('prev');
-            const nextBtn = document.getElementById('next');
-            const hamburger = document.querySelector('.hamburger');
-            const navLinks = document.querySelector('.nav-links');
+        // Carousel functionality
+        const carousel = document.querySelector('.carousel');
+        const list = carousel.querySelector('.list');
+        const items = carousel.querySelectorAll('.list .item');
+        const thumbnails = carousel.querySelectorAll('.thumbnail .item');
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+        
+        // Hamburger menu elements
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const navButtons = document.querySelectorAll('.nav-button');
 
-            hamburger.addEventListener('click', () => {
-                hamburger.classList.toggle('active');
-                navLinks.classList.toggle('active');
-            });
+        // Hamburger menu functionality
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        });
 
-            // Close menu when clicking a link (mobile)
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', () => {
-                    hamburger.classList.remove('active');
-                    navLinks.classList.remove('active');
-                });
-            });
-
-            // Navbar scroll effect
-            window.addEventListener('scroll', () => {
-                const navbar = document.querySelector('.navbar');
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            });
-            
-            let currentIndex = 0;
-            const totalItems = items.length;
-            
-            // Initialize thumbnails
-            thumbnails[currentIndex].classList.add('active');
-            
-            // Function to update carousel position
-            function updateCarousel() {
-            list.style.transform = `translateX(-${currentIndex * 100}%)`;
-            
-            // Show only current and next thumbnail
-            thumbnails.forEach((thumb, index) => {
-                if (index === currentIndex || index === (currentIndex + 1) % totalItems) {
-                    thumb.style.display = 'block';
-                } else {
-                    thumb.style.display = 'none';
-                }
-            });
-            items.forEach(item => item.classList.remove('active'));
-            // Add active class to current item
-            items[currentIndex].classList.add('active');
-            // Update active state
-            thumbnails.forEach(thumb => thumb.classList.remove('active'));
-            thumbnails[currentIndex].classList.add('active');
-        }
-            
-            // Previous button click
-            prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + totalItems) % totalItems;
-                updateCarousel();
-            });
-            
-            // Next button click
-            nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % totalItems;
-                updateCarousel();
-            });
-            
-            // Thumbnail clicks
-            thumbnails.forEach((thumb, index) => {
-                thumb.addEventListener('click', () => {
-                    currentIndex = index;
-                    updateCarousel();
-                });
-            });
-            
-            // Auto advance carousel
-            let autoAdvance = setInterval(() => {
-                currentIndex = (currentIndex + 1) % totalItems;
-                updateCarousel();
-            }, 5000); // Change slides every 5 seconds
-            
-            // Pause auto-advance on hover
-            carousel.addEventListener('mouseenter', () => {
-                clearInterval(autoAdvance);
-            });
-            
-            // Resume auto-advance when mouse leaves
-            carousel.addEventListener('mouseleave', () => {
-                autoAdvance = setInterval(() => {
-                    currentIndex = (currentIndex + 1) % totalItems;
-                    updateCarousel();
-                }, 5000);
-            });
-            
-            // Touch support
-            let touchStartX = 0;
-            let touchEndX = 0;
-            
-            carousel.addEventListener('touchstart', e => {
-                touchStartX = e.changedTouches[0].screenX;
-            });
-            
-            carousel.addEventListener('touchend', e => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            });
-            
-            function handleSwipe() {
-                const swipeThreshold = 50;
-                const difference = touchStartX - touchEndX;
-                
-                if (Math.abs(difference) > swipeThreshold) {
-                    if (difference > 0) {
-                        // Swipe left - next slide
-                        currentIndex = (currentIndex + 1) % totalItems;
-                    } else {
-                        // Swipe right - previous slide
-                        currentIndex = (currentIndex - 1 + totalItems) % totalItems;
-                    }
-                    updateCarousel();
-                }
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
             }
         });
+
+        // Close menu when clicking nav links
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Handle escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Rest of the carousel code remains the same
+        let currentIndex = 0;
+        const totalItems = items.length;
+        
+        // Initialize thumbnails
+        thumbnails[currentIndex].classList.add('active');
+        
+        function updateCarousel() {
+            const newTransform = -currentIndex * 100 + '%';
+            list.style.transform = `translateX(${newTransform})`;
+            
+            // Update thumbnails
+            thumbnails.forEach((thumb, index) => {
+                if (index === currentIndex) {
+                    thumb.classList.add('active');
+                } else {
+                    thumb.classList.remove('active');
+                }
+            });
+        }
+        
+        // Event listeners for carousel controls
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            updateCarousel();
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % totalItems;
+            updateCarousel();
+        });
+        
+        // Thumbnail click handlers
+        thumbnails.forEach((thumb, index) => {
+            thumb.addEventListener('click', () => {
+                currentIndex = index;
+                updateCarousel();
+            });
+        });
+    });
+
+    // Logout functionality
+    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('/api/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            }
+            else {
+                window.location.href = data.redirect;
+            }
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    });
     </script>
     <script src="//code.tidio.co/oozekqtd2hbna2coolqfjbw3affl27j3.js"></script>
 </body>
