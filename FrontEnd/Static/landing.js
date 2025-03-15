@@ -196,3 +196,155 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Lucide icons
     lucide.createIcons();
 });
+const testimonials = [
+    {
+      quote: "This platform is a game-changer for travelers! The built-in translation tool helped me navigate conversations effortlessly, and the planner kept my itinerary perfectly organized.",
+      name: "Pranav Ajay",
+      designation: "Frequent Traveler & Travel Blogger",
+      src: "https://www.wallsnapy.com/img_gallery/thalapathy-vijay-hd-wallpapers-pc-4532407.jpg"
+    },
+    {
+      quote: "Managing expenses while traveling was always a hassle—until I found this platform. The wallet feature made transactions smooth, and I never had to worry about exchange rates again!",
+      name: "Sai Kavya",
+      designation: "Solo Explorer & Digital Nomad",
+      src: "https://static.toiimg.com/thumb/imgsize-23456,msid-83095349,width-600,resizemode-4/83095349.jpg"
+    },
+    {
+      quote: "From last-minute itinerary changes to real-time flight updates, this platform does it all. It’s like having a personal travel assistant in my pocket!",
+      name: "Ashok Dinda",
+      designation: "Indian Bowling Head Coach & Travel Enthusiast",
+      src: "https://img1.hscicdn.com/image/upload/f_auto,t_ds_w_1200,q_50/lsci/db/PICTURES/CMS/270100/270181.jpg"
+    },
+    {
+      quote: "I’ve never felt safer while traveling solo! The emergency assistance and offline maps were lifesavers when I was in remote locations.",
+      name: "Vir Das",
+      designation: "Adventure Seeker & Solo Traveler",
+      src: "https://images.unsplash.com/photo-1636041293178-808a6762ab39?q=80&w=3464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      quote: "I planned a month-long trip across multiple countries, and this platform made it effortless. From budget tracking to local recommendations, it had everything I needed!",
+      name: "Lisa Thompson",
+      designation: "VP of Technology & Travel Addict",
+      src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    }
+];
+
+  // DOM Elements
+  const imagesContainer = document.querySelector('.testimonial-images');
+  const testimonialName = document.querySelector('.testimonial-name');
+  const testimonialDesignation = document.querySelector('.testimonial-designation');
+  const testimonialQuote = document.querySelector('.testimonial-quote');
+  const testimonialInfo = document.querySelector('.testimonial-info');
+  const prevButton = document.querySelector('.prev-button');
+  const nextButton = document.querySelector('.next-button');
+
+  // State
+  let activeIndex = 0;
+  let autoplayInterval = null;
+
+  // Initialize
+  function initialize() {
+    // Create image elements
+    testimonials.forEach((testimonial, index) => {
+      const img = document.createElement('img');
+      img.src = testimonial.src;
+      img.alt = testimonial.name;
+      img.classList.add('testimonial-image');
+      img.dataset.index = index;
+      imagesContainer.appendChild(img);
+    });
+
+    // Set initial active testimonial
+    updateActiveTestimonial();
+
+    // Add event listeners
+    prevButton.addEventListener('click', handlePrev);
+    nextButton.addEventListener('click', handleNext);
+
+    // Start autoplay
+    startAutoplay();
+  }
+
+  // Update active testimonial
+  function updateActiveTestimonial() {
+    // Update images with proper class assignment
+    const images = document.querySelectorAll('.testimonial-image');
+    
+    images.forEach((img, index) => {
+      // Remove all classes first
+      img.classList.remove('active', 'prev', 'next');
+      
+      if (index === activeIndex) {
+        img.classList.add('active');
+      } else if (index === getPrevIndex()) {
+        img.classList.add('prev');
+      } else if (index === getNextIndex()) {
+        img.classList.add('next');
+      }
+    });
+
+    // Update content with animation
+    testimonialInfo.classList.remove('active');
+    
+    setTimeout(() => {
+      testimonialName.textContent = testimonials[activeIndex].name;
+      testimonialDesignation.textContent = testimonials[activeIndex].designation;
+      
+      const words = testimonials[activeIndex].quote.split(' ');
+    testimonialQuote.innerHTML = '';
+
+    words.forEach((word, index) => {
+    const span = document.createElement('span');
+    // Make sure to add a space after each word
+    span.textContent = word;
+    span.style.transitionDelay = `${index * 0.02}s`;
+    testimonialQuote.appendChild(span);
+    
+    // Add a space after each word (except the last one)
+    if (index < words.length - 1) {
+        testimonialQuote.appendChild(document.createTextNode(' '));
+    }
+    });
+      
+      testimonialInfo.classList.add('active');
+      testimonialQuote.classList.add('active');
+    }, 200);
+  }
+
+  // Get previous index with wrap-around
+  function getPrevIndex() {
+    return (activeIndex - 1 + testimonials.length) % testimonials.length;
+  }
+
+  // Get next index with wrap-around
+  function getNextIndex() {
+    return (activeIndex + 1) % testimonials.length;
+  }
+
+  // Handle previous button click
+  function handlePrev() {
+    activeIndex = getPrevIndex();
+    updateActiveTestimonial();
+    resetAutoplay();
+  }
+
+  // Handle next button click
+  function handleNext() {
+    activeIndex = getNextIndex();
+    updateActiveTestimonial();
+    resetAutoplay();
+  }
+
+  // Start autoplay
+  function startAutoplay() {
+    autoplayInterval = setInterval(handleNext, 5000);
+  }
+
+  // Reset autoplay
+  function resetAutoplay() {
+    clearInterval(autoplayInterval);
+    startAutoplay();
+  }
+
+  // Initialize the component
+  initialize();
