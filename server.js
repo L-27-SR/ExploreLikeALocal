@@ -61,6 +61,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, './FrontEnd/Static')));
 app.use('/js', express.static(path.join(__dirname, './FrontEnd/Static/js')));
+// Add this new line
+app.use('/image', express.static(path.join(__dirname, './FrontEnd/Static/image')));
 
 // Session Configuration
 app.use(session({
@@ -233,11 +235,6 @@ app.get('/api/news/:category', checkAuth, async (req, res) => {
     }
 });
 
-// Other routes remain the same
-app.get('/api/placeholder/:width/:height', (req, res) => {
-    res.redirect(`https://via.placeholder.com/${width}x${height}`);
-});
-
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ error: 'Something broke!' });
@@ -253,3 +250,43 @@ app.listen(port, () => {
 });
 
 export default app;
+
+// Add this route handler
+app.post('/api/generate-itinerary', async (req, res) => {
+    try {
+        const { destination, days, activities } = req.body;
+
+        // Sample itinerary generation (replace with your actual logic)
+        const itinerary = {
+            days: Array.from({ length: parseInt(days) }, (_, i) => ({
+                activities: [
+                    {
+                        time: '09:00 AM',
+                        name: 'Morning Activity',
+                        description: `Explore ${destination}'s local attractions`
+                    },
+                    {
+                        time: '12:00 PM',
+                        name: 'Lunch Break',
+                        description: 'Experience local cuisine'
+                    },
+                    {
+                        time: '02:00 PM',
+                        name: 'Afternoon Activity',
+                        description: activities[0] || 'Sightseeing'
+                    },
+                    {
+                        time: '07:00 PM',
+                        name: 'Evening Activity',
+                        description: 'Dinner and local entertainment'
+                    }
+                ]
+            }))
+        };
+
+        res.json(itinerary);
+    } catch (error) {
+        console.error('Error generating itinerary:', error);
+        res.status(500).json({ error: 'Failed to generate itinerary' });
+    }
+});
