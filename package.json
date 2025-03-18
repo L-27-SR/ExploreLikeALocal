@@ -62,6 +62,7 @@
     "is-extglob": "^2.1.1",
     "is-glob": "^4.0.3",
     "is-number": "^7.0.0",
+    "lucide": "^0.482.0",
     "media-typer": "^0.3.0",
     "merge-descriptors": "^1.0.3",
     "methods": "^1.1.2",
