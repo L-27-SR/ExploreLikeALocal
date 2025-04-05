@@ -16,7 +16,35 @@
             }, 'google_translate_element');
         }
     </script>
-    <link  rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/main.css">
+    <style>
+        /* Add these styles for the profile avatar in the navigation */
+        .profile-avatar-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            vertical-align: middle;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .profile-nav-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+        }
+        
+        .nav-button:hover .profile-avatar-icon {
+            border-color: #00ff88;
+            transform: scale(1.1);
+        }
+        
+        /* Active state for profile button */
+        .nav-button.active .profile-avatar-icon {
+            border-color: #00ff88;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -33,6 +61,11 @@
             <li><a href="/weather" class="nav-button">Weather</a></li>
             <li><a href="/currency" class="nav-button">Wallet</a></li>
             <li><a href="/news" class="nav-button">News</a></li>
+            <li>
+                <a href="/profile" class="nav-button profile-nav-button">
+                    <img src='https://avataaars.io/?avatarStyle=Transparent&topType=Eyepatch&facialHairType=Blank&clotheType=GraphicShirt&clotheColor=Black&graphicType=Skull&eyeType=Default&eyebrowType=Default&mouthType=Twinkle&skinColor=Brown' class="profile-avatar-icon" alt="Profile" />
+                </a>
+            </li>
             <li><a id="logoutBtn" class="signout"><i class="fas fa-sign-out-alt" style="font-size: 36px;color:red"></i></a></li>
             <li id="google_translate_element"></li>
         </ul>
