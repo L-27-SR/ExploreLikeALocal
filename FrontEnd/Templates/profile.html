@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - ExploreLikeALocal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=GoogleTranslateElementInit"></script>
+    <script type="text/javascript">
+        function GoogleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,es,fr,de,zh-CN,ar,hi,ja,ru,pt,kn,ml,te,ta',
+                layout: google.translate.TranslateElement.InlineLayout.DROPDOWN,
+                autoDisplay: true
+            }, 'google_translate_element');
+        }
+    </script>
+    <link rel="stylesheet" href="/main.css">
+    <style>
+        /* Profile specific styles */
+        .profile-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            border-radius: 15px;
+            padding: 40px;
+            color: white;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .profile-avatar i {
+            font-size: 60px;
+            color: #3498db;
+        }
+
+        .profile-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .profile-info p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .profile-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .profile-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .profile-card h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            font-size: 1.5rem;
+        }
+
+        .profile-field {
+            margin-bottom: 20px;
+        }
+
+        .profile-field label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #7f8c8d;
+        }
+
+        .profile-field span {
+            display: block;
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .profile-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .profile-btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .profile-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .profile-btn.secondary {
+            background-color: #95a5a6;
+        }
+
+        .profile-btn.secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        .profile-loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2rem;
+            color: #7f8c8d;
+        }
+
+        .profile-error {
+            background-color: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .profile-sections {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo">ExploreLikeALocal</a>
+        <button class="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links">
+            <li><a href="/map" class="nav-button">Maps</a></li>
+            <li><a href="/planning" class="nav-button">Planner</a></li>
+            <li><a href="/translate" class="nav-button">Translate</a></li>
+            <li><a href="/weather" class="nav-button">Weather</a></li>
+            <li><a href="/currency" class="nav-button">Wallet</a></li>
+            <li><a href="/news" class="nav-button">News</a></li>
+            <li><a href="/profile" class="nav-button active">Profile</a></li>
+            <li><a id="logoutBtn" class="signout"><i class="fas fa-sign-out-alt" style="font-size: 36px;color:red"></i></a></li>
+            <li id="google_translate_element"></li>
+        </ul>
+    </nav>
+
+    <div class="profile-container">
+        <div id="profile-loading" class="profile-loading">
+            <i class="fas fa-circle-notch fa-spin" style="font-size: 40px; margin-bottom: 20px;"></i>
+            <p>Loading your profile information...</p>
+        </div>
+
+        <div id="profile-content" style="display: none;">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-info">
+                    <h1 id="profile-username">Username</h1>
+                    <p id="profile-email">email@example.com</p>
+                    <div id="profile-type" class="profile-badge">Standard Account</div>
+                </div>
+            </div>
+
+            <!-- In the profile-sections div, add a new card for login streak after the account information card -->
+            <div class="profile-sections">
+                <div class="profile-card">
+                    <h2><i class="fas fa-user-circle"></i> Account Information</h2>
+                    <div class="profile-field">
+                        <label>Username</label>
+                        <span id="account-username">Username</span>
+                    </div>
+                    <div class="profile-field">
+                        <label>Email Address</label>
+                        <span id="account-email">email@example.com</span>
+                    </div>
+                    <div class="profile-field">
+                        <label>Member Since</label>
+                        <span id="account-created">January 1, 2023</span>
+                    </div>
+                    <div class="profile-field">
+                        <label>Account Type</label>
+                        <span id="account-type">Standard Account</span>
+                    </div>
+                </div>
+
+                <!-- Add new streak card -->
+                <div class="profile-card">
+                    <h2><i class="fas fa-fire"></i> Login Streak</h2>
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div id="current-streak" class="stat-value">0</div>
+                            <div class="stat-label">Current Streak</div>
+                        </div>
+                        <div class="stat-item">
+                            <div id="total-logins" class="stat-value">0</div>
+                            <div class="stat-label">Total Logins</div>
+                        </div>
+                    </div>
+                    <div class="profile-field" style="margin-top: 30px;">
+                        <label>Last Login</label>
+                        <span id="last-login">Today</span>
+                    </div>
+                </div>
+
+                <!-- Existing activity summary card -->
+                <div class="profile-card">
+                    <h2><i class="fas fa-chart-line"></i> Activity Summary</h2>
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Trips Planned</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Places Saved</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Reviews</div>
+                        </div>
+                    </div>
+                    <!-- In the Activity Summary card -->
+                    <div class="profile-field" style="margin-top: 30px;">
+                        <label>Last Activity</label>
+                        <span id="last-activity">Today</span>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="profile-btn secondary">View Activity</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-card" style="margin-top: 30px;">
+                <h2><i class="fas fa-cog"></i> Account Settings</h2>
+                <div class="profile-actions">
+                    <button class="profile-btn secondary">Change Password</button>
+                    <button class="profile-btn">Edit Profile</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="profile-error" class="profile-error" style="display: none;">
+            Failed to load profile information. Please try again later.
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About ExploreLikeALocal</h3>
+                <p>Discover local attractions based on your preferences and location.</p>
+            </div>
+            <div class="footer-section">
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 ExploreLikeALocal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hamburger menu elements
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            const navButtons = document.querySelectorAll('.nav-button');
+
+            // Hamburger menu functionality
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!hamburger.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Close menu when clicking nav links
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            // Handle escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Navbar scroll effect
+            window.addEventListener('scroll', () => {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // In the fetch user profile information section, update to include streak info
+            fetch('/api/user/profile')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch profile');
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    // Hide loading indicator
+                    document.getElementById('profile-loading').style.display = 'none';
+                    
+                    // Show profile information
+                    document.getElementById('profile-content').style.display = 'block';
+                    
+                    // Populate profile fields
+                    document.getElementById('profile-username').textContent = user.username;
+                    document.getElementById('profile-email').textContent = user.email;
+                    document.getElementById('account-username').textContent = user.username;
+                    document.getElementById('account-email').textContent = user.email;
+                    
+                    // Format date
+                    const createdDate = new Date(user.createdAt);
+                    const formattedDate = createdDate.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                    document.getElementById('account-created').textContent = formattedDate;
+                    
+                    // Set account type
+                    let accountType = 'Standard Account';
+                    if (user.isGuest) {
+                        accountType = 'Guest Account';
+                    } else if (user.isGoogleUser) {
+                        accountType = 'Google Account';
+                    }
+                    
+                    document.getElementById('profile-type').textContent = accountType;
+                    document.getElementById('account-type').textContent = accountType;
+                    
+                    // Set streak information
+                    document.getElementById('current-streak').textContent = user.currentStreak || 1;
+                    document.getElementById('total-logins').textContent = user.totalLogins || 1;
+                    
+                    // Format last login date
+                    const lastLogin = new Date(user.lastLogin);
+                    const formattedLastLogin = lastLogin.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                    document.getElementById('last-login').textContent = formattedLastLogin;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('profile-loading').style.display = 'none';
+                    document.getElementById('profile-error').style.display = 'block';
+                });
+            
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+                e.preventDefault();
+                try {
+                    const response = await fetch('/api/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    const data = await response.json();
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                    }
+                } catch (error) {
+                    console.error('Logout failed:', error);
+                }
+            });
+        });
+    </script>
+    <script src="//code.tidio.co/oozekqtd2hbna2coolqfjbw3affl27j3.js"></script>
+</body>
+</html>

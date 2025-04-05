@@ -3,308 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TravelMapper - Explore</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.161.0/three.min.js"></script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=GoogleTranslateElementInit"></script>
-<script type="text/javascript">
-    function GoogleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'en,es,fr,de,zh-CN,ar,hi,ja,ru,pt',
-            layout: google.translate.TranslateElement.InlineLayout.DROPDOWN,
-            autoDisplay: true
-        }, 'google_translate_element');
-    }
-</script>
-    <style>:root {
-        --primary-blue: #4a90e2;
-        --hover-blue: #357abd;
-        --text-dark: #2c3e50;
-        --text-darker: #2d3748;
-        --text-medium: #4a5568;
-        --background-light: #f8fafc;
-        --border-radius-sm: 5px;
-        --border-radius-md: 8px;
-        --border-radius-lg: 15px;
-        --border-radius-xl: 30px;
-        --spacing-xs: 0.5rem;
-        --spacing-sm: 0.75rem;
-        --spacing-md: 1rem;
-        --spacing-lg: 1.5rem;
-        --spacing-xl: 2rem;
-        --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
-        --shadow-md: 0 4px 10px rgba(0,0,0,0.2);
-        --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
-        --transition-standard: all 0.3s ease;
-    }
+    <title>Tourist Spot Explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <link rel="stylesheet" href="/map.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-content">
+            <h2 class="logo">Tourist Spot Explorer</h2>
+            <div class="tagline">Discover Local Attractions & Hidden Gems</div>
+        </div>
+    </div>
     
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        background: linear-gradient(45deg, rgba(74,144,226,1) 0%, rgba(252,70,107,0.10416666666666663) 100%);
-        color: var(--text-dark);
-        line-height: 1.6;
-    }
+    <div class="search-container">
+        <div class="search-input-row">
+            <div class="search-input-wrapper">
+                <input type="text" id="search-input" placeholder="What would you like to explore?">
+                <button id="search-near-location-btn" class="inside-search-btn">
+                    <i class="fas fa-map-marker-alt"></i>
+                </button>
+            </div>
+            <button id="search-btn" class="primary-btn">Search</button>
+            <button id="near-me-btn" class="location-btn">Near Me</button>
+        </div>
+        <div class="category-filters">
+            <button class="category-button" data-category="park">Parks & Gardens</button>
+            <button class="category-button" data-category="viewpoint">Scenic Views</button>
+            <button class="category-button" data-category="place_of_worship">Temples & Shrines</button>
+            <button class="category-button" data-category="museum">Museums</button>
+            <button class="category-button" data-category="beach">Beaches</button>
+            <button class="category-button" data-category="restaurant">Local Food</button>
+            <button class="category-button" data-category="zoo">Wildlife</button>
+        </div>
+    </div>
     
-    /* Navigation */
-    nav {
-        color: #000;
-        padding: var(--spacing-md) var(--spacing-xl);
-        display: flex;
-        top: 0;
-        z-index: 1000;
-        position: sticky;
-        justify-content: space-between;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        border-radius: var(--border-radius-lg);
-        box-shadow: var(--shadow-md);
-    }
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
     
-    .logo {
-        font-size: 1.75rem;
-        font-weight: 700;
-        letter-spacing: -0.5px;
-    }
+    <div class="radius-info">Exploration radius: <span id="radius-display">5</span> km</div>
     
-    /* Navigation Links */
-    .nav-links a {
-        color: #000;
-        text-decoration: none;
-        padding: var(--spacing-xs) var(--spacing-md);
-        border-radius: var(--border-radius-sm);
-        transition: var(--transition-standard);
-    }
+    <div class="results-panel" id="results-panel" style="display: none;">
+        <div class="results-header">
+            <h3>Attractions Near You</h3>
+            <button id="close-results" class="close-btn">×</button>
+        </div>
+        <div id="results-list"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="/map.js"></script>
     
-    .nav-links a:hover {
-        background-color: rgba(255,255,255,0.2);
-    }
-    
-    /* Buttons */
-    .button-standard {
-        padding: var(--spacing-sm) var(--spacing-lg);
-        color: white;
-        border: none;
-        border-radius: var(--border-radius-sm);
-        cursor: pointer;
-        transition: var(--transition-standard);
-    }
-    
-    .button-standard:hover {
-        background: var(--hover-blue);
-        transform: translateY(-2px);
-    }
-    
-    .btn-primary {
-        color: white;
-        padding: var(--spacing-sm) var(--spacing-xl);
-        border: none;
-        border-radius: var(--border-radius-xl);
-        cursor: pointer;
-        transition: var(--transition-standard);
-        position: relative;
-    }
-    
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-    }
-    
-    /* Rainbow Border Effect */
-    .rainbow-border::before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-        background-size: 400%;
-        z-index: -1;
-        animation: rainbow 20s linear infinite;
-        border-radius: inherit;
-        opacity: 0;
-        transition: var(--transition-standard);
-    }
-    
-    .rainbow-border:hover::before {
-        opacity: 1;
-    }
-    
-    /* Search Container */
-    .search-container {
-        position: absolute;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: white;
-        padding: var(--spacing-md);
-        border-radius: var(--border-radius-sm);
-        box-shadow: var(--shadow-sm);
-        z-index: 1000;
-    }
-    
-    #locationInput {
-        padding: 8px;
-        width: 250px;
-        border: 1px solid #ccc;
-        border-radius: var(--border-radius-sm);
-    }
-    
-    /* Map Container */
-    .map-container {
-        height: 65vh;
-        margin: var(--spacing-lg) var(--spacing-xl);
-        border-radius: var(--border-radius-md);
-        overflow: hidden;
-        box-shadow: var(--shadow-lg);
-        transition: var(--transition-standard);
-    }
-    
-    .map-container:hover {
-        transform: scale(1.01);
-    }
-    
-    #map {
-        height: 100%;
-        width: 100%;
-        filter: grayscale(10%) contrast(110%);
-    }
-    
-    /* Results Container */
-    #resultsContainer {
-        display: flex;
-        justify-content: space-around;
-        padding: var(--spacing-md);
-    }
-    
-    .results-column {
-        width: 18%;
-        padding: var(--spacing-md);
-        border-radius: var(--border-radius-sm);
-        box-shadow: var(--shadow-sm);
-    }
-    
-    .results-column h3 {
-        text-align: center;
-        margin-bottom: var(--spacing-md);
-    }
-    
-    .results-column ul {
-        list-style: none;
-        padding: 0;
-    }
-    
-    .results-column ul li {
-        cursor: pointer;
-        padding: var(--spacing-xs);
-    }
-    
-    /* Checkbox Container */
-    .checkbox-container {
-        margin-top: var(--spacing-md);
-    }
-    
-    /* Google Translate Element */
-    #google_translate_element {
-        display: inline-block;
-        margin-left: var(--spacing-md);
-    }
-    
-    /* Media Queries */
-    @media (max-width: 768px) {
-        .map-container {
-            margin: var(--spacing-md);
-            height: 50vh;
+    <style>
+        /* Additional styles for the search near location button */
+        .search-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
         }
         
-        .location-info, 
-        .search-container {
-            margin: var(--spacing-md);
-            padding: var(--spacing-md);
-        }
-        
-        .nav-links {
-            flex-direction: column;
+        .search-input-wrapper {
+            position: relative;
+            flex: 1;
+            display: flex;
             align-items: center;
         }
         
-        #google_translate_element {
-            margin-left: 0;
-            margin-top: var(--spacing-md);
+        #search-input {
+            width: 100%;
+            height: 40px;
+            padding: 8px 40px 8px 12px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            font-size: 16px;
         }
+        
+        .inside-search-btn {
+            position: absolute;
+            right: 5px;
+            height: 100%;
+            background: none;
+            border: none;
+            color: #777;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 12px;
+            transition: color 0.3s ease;
+        }
+        
+        .inside-search-btn:hover {
+            color: #444;
+        }
+        
+        .inside-search-btn.active {
+            color: #e74c3c; /* Red color when active */
+        }
+        
+        .primary-btn, .location-btn {
+            height: 40px;
+            padding: 0 20px;
+            border-radius: 20px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        .primary-btn {
+            background-color: #FF6B00;
+            color: white;
+        }
+        
+        .location-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .pin-marker {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        color: #555;
+        cursor: pointer;
+    }
+    
+    .pin-checkbox {
+        margin-right: 5px;
     }
     </style>
-</head>
-<body>
-    <nav>
-        <div class="logo">TravelMapper</div>
-        <div class="nav-links">
-            <a href="/main" class="btn-primary rainbow-border">Home</a>
-            <a id="logoutBtn" class="btn-primary rainbow-border">Logout</a>
-            <li id="google_translate_element"></li>
-        </div>
-    </nav>
-    <div class="search-container">
-        <input type="text" id="locationInput" placeholder="Enter location...">
-        <button onclick="searchLocation()">Search</button>
-    </div>
-    <div class="map-container">
-        <div class="checkbox-container">
-            <label><input type="checkbox" id="restaurants"> Restaurants (5km)</label>
-            <label><input type="checkbox" id="gasStations"> Gas Stations (5km)</label>
-            <label><input type="checkbox" id="temples"> Temples (10km)</label>
-            <label><input type="checkbox" id="parks"> Parks (10km)</label>
-            <label><input type="checkbox" id="touristAttractions"> Tourist Attractions (50km)</label>
-        </div>
-        <div id="map"></div>
-    </div>
-    <div id="resultsContainer">
-        <div id="restaurantsResults" class="results-column"><h3>Restaurants</h3><ul></ul></div>
-        <div id="gasStationsResults" class="results-column"><h3>Gas Stations</h3><ul></ul></div>
-        <div id="templesResults" class="results-column"><h3>Temples</h3><ul></ul></div>
-        <div id="parksResults" class="results-column"><h3>Parks</h3><ul></ul></div>
-        <div id="touristAttractionsResults" class="results-column"><h3>Tourist Attractions</h3><ul></ul></div>
-    </div>
     
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.161.0/three.min.js"></script>
-    <script src="/map.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const category = localStorage.getItem('category');
-            if (category) {
-                const categoryDisplay = document.getElementById('categoryDisplay');
-                categoryDisplay.textContent = category;
+        // Add this to your existing JavaScript or include in map.js
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchNearLocationBtn = document.getElementById('search-near-location-btn');
+            let isSearchNearLocationActive = false;
+            
+            searchNearLocationBtn.addEventListener('click', function() {
+                isSearchNearLocationActive = !isSearchNearLocationActive;
+                
+                if (isSearchNearLocationActive) {
+                    searchNearLocationBtn.classList.add('active');
+                    // When active, the search will be performed near the location entered
+                    console.log('Search near location mode activated');
+                } else {
+                    searchNearLocationBtn.classList.remove('active');
+                    console.log('Search near location mode deactivated');
+                }
+            });
+            
+            // Modify your existing search functionality to consider the isSearchNearLocationActive flag
+            const searchBtn = document.getElementById('search-btn');
+            searchBtn.addEventListener('click', function() {
+                const searchQuery = document.getElementById('search-input').value;
+                
+                if (searchQuery.trim() === '') {
+                    alert('Please enter a search term');
+                    return;
+                }
+                
+                if (isSearchNearLocationActive) {
+                    // Search for places near the location entered in the search box
+                    console.log(`Searching for places near: ${searchQuery}`);
+                    // Implement your geocoding and search logic here
+                    searchNearLocation(searchQuery);
+                } else {
+                    // Regular search functionality
+                    console.log(`Searching for: ${searchQuery}`);
+                    // Implement your regular search logic here
+                    performRegularSearch(searchQuery);
+                }
+            });
+            
+            // Placeholder functions - implement these based on your application's needs
+            function searchNearLocation(location) {
+                // Geocode the location and search for attractions nearby
+                // This would typically involve calling a geocoding API and then
+                // searching for points of interest near the geocoded location
+            }
+            
+            function performRegularSearch(query) {
+                // Perform a regular search based on the query
+                // This might search for attractions by name or type
             }
         });
-        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
-          e.preventDefault(); // Prevent the default link behavior
-          try {
-              const response = await fetch('/api/logout', {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  }
-              });
-              const data = await response.json();
-              if (data.redirect) {
-                  window.location.href = data.redirect; // Redirect to the home page
-              }
-              else{
-                window.location.href = data.redirect;
-              }
-          } catch (error) {
-              console.error('Logout failed:', error);
-          }
-      });
     </script>
-
 </body>
 </html>
