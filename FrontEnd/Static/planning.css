@@ -460,3 +460,59 @@ button:disabled {
     background: linear-gradient(45deg, rgba(74,144,226,1.2) 0%, rgba(252,70,107,0.3) 100%);
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-color);
+}
+
+.error-message {
+    text-align: center;
+    color: #ff4444;
+    padding: 2rem;
+}
+
+.timeline {
+    position: relative;
+    padding: 1rem 0;
+}
+
+.timeline-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 95px;
+    top: 0;
+    bottom: -1.5rem;
+    width: 2px;
+    background: var(--accent-color);
+}
+
+.time {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.activity {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.activity h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--heading-color);
+}
+
+.activity p {
+    margin: 0;
+    color: var(--text-color);
+}
