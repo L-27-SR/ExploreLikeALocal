@@ -272,6 +272,9 @@ app.get('/currency', requireAuth, (req, res) => {
 app.get('/translate', requireAuth, (req, res) => {
     res.sendFile(path.join(__dirname, './FrontEnd/Templates/translate.html'));
 });
+app.get('/similar', requireAuth, (req, res) => {
+    res.sendFile(path.join(__dirname, './FrontEnd/Templates/similar-places.html'));
+});
 
 app.get('/weather', requireAuth, (req, res) => {
     res.sendFile(path.join(__dirname, './FrontEnd/Templates/weather.html'));
@@ -535,4 +538,55 @@ app.get('/api/google-auth/callback', async (req, res) => {
         console.error('Error details:', error.response?.data || error.message);
         res.redirect('/login?error=Google authentication failed');
     }
+});
+
+// Add the Gemini API endpoint for similar places
+const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+
+app.post('/api/get_similar_places/:place', async (req, res) => {
+  const { place } = req.params;
+
+  if (!place) {
+    return res.status(400).json({ error: 'Missing place parameter in URL' });
+  }
+
+  const prompt = `
+    I want 5 travel destinations that are similar to ${place}. Initially I want ${place} short description and relevant image URL. 
+    For each destination, give:
+    1. The name
+    2. A short description
+    3. Popular things to do there
+    4. A relevant image URL (free stock or publicly available)
+   
+    Format it as a list of JSON objects with keys: name, description, things_to_do, image_url
+  `;
+
+  try {
+    const response = await axios.post(`${GEMINI_URL}?key=${process.env.GEMINI_API_KEY}`, {
+      contents: [{ parts: [{ text: prompt }] }]
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const textOutput = response.data.candidates[0].content.parts[0].text;
+
+    // Try to safely parse JSON content
+    let result;
+    try {
+      result = JSON.parse(textOutput);
+    } catch (err) {
+      const match = textOutput.match(/\[.*\]/s);
+      result = match ? JSON.parse(match[0]) : [];
+    }
+
+    return res.json({ similar_places: result });
+  } catch (err) {
+    console.error('Gemini API Error:', err.response?.data || err.message);
+    return res.status(500).json({ 
+      error: 'Failed to get response from Gemini API',
+      details: err.response?.data || err.message
+    });
+  }
 });
