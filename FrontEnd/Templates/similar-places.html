@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Similar Places - ExploreLikeALocal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=GoogleTranslateElementInit"></script>
+    <script type="text/javascript">
+        function GoogleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,es,fr,de,zh-CN,ar,hi,ja,ru,pt,kn,ml,te,ta',
+                layout: google.translate.TranslateElement.InlineLayout.DROPDOWN,
+                autoDisplay: true
+            }, 'google_translate_element');
+        }
+    </script>
+    <link rel="stylesheet" href="/similar-places.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo">ExploreLikeALocal</a>
+        <button class="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links">
+            <li><a href="/map" class="nav-button">Maps</a></li>
+            <li><a href="/planning" class="nav-button">Planner</a></li>
+            <li><a href="/translate" class="nav-button">Translate</a></li>
+            <li><a href="/weather" class="nav-button">Weather</a></li>
+            <li><a href="/currency" class="nav-button">Wallet</a></li>
+            <li><a href="/news" class="nav-button">News</a></li>
+            <li><a href="/similar-places" class="nav-button active">Similar Places</a></li>
+            <li><a id="logoutBtn" class="signout"><i class="fas fa-sign-out-alt" style="font-size: 36px;color:red"></i></a></li>
+            <li id="google_translate_element"></li>
+        </ul>
+    </nav>
+
+    <main class="similar-places-container">
+        <section class="search-section">
+            <div class="search-container">
+                <h1>Discover Similar Places</h1>
+                <p>Enter a location to find similar travel destinations around the world</p>
+                <div class="search-box">
+                    <input type="text" id="place-search" placeholder="Enter a place (e.g., Ooty, Paris, New York)" />
+                    <button id="search-button"><i class="fas fa-search"></i> Find Similar Places</button>
+                </div>
+            </div>
+        </section>
+
+        <div id="loading-indicator" class="loading-indicator">
+            <div class="spinner"></div>
+            <p>Finding amazing places for you...</p>
+        </div>
+
+        <div id="error-message" class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Sorry, we couldn't find similar places. Please try another location.</p>
+        </div>
+
+        <section id="results-container" class="results-container">
+            <div id="original-place" class="original-place">
+                <!-- Original place details will be inserted here -->
+            </div>
+
+            <h2 class="similar-places-heading">Similar Destinations You Might Like</h2>
+            
+            <div id="similar-places-grid" class="similar-places-grid">
+                <!-- Similar places cards will be inserted here -->
+            </div>
+        </section>
+    </main>
+
+    <script src="/similar-places.js"></script>
+    <script>
+        // Mobile navigation toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+            this.classList.toggle('active');
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                const response = await fetch('/api/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
