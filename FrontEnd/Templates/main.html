@@ -55,8 +55,7 @@
             <span></span>
         </button>
         <ul class="nav-links">
-            
-            <li><a href="/map" class="nav-button">Maps</a></li>
+            <li><a href="/map" class="nav-button">Mapss</a></li>
             <li><a href="/planning" class="nav-button">Planner</a></li>
             <li><a href="/translate" class="nav-button">Translate</a></li>
             <li><a href="/similar" class="nav-button">Similar-places</a></li>
@@ -72,20 +71,27 @@
             <li id="google_translate_element"></li>
         </ul>
     </nav>
-    <div class="carousel">
+     <!-- carousel -->
+     <div class="carousel">
+        <!-- list item -->
         <div class="list">
-            <div class="item active">
-                <img src="/image/zoo.jpg" alt="Wildlife">
+            <div class="item">
+                <img src="image/zoo.jpg">
+
                 <div class="content">
+                    <div class="author">ExploreLikeALocal</div>
                     <div class="title">Wildlife</div>
                     <div class="topic">Step Into the Wild, A World of Wonder Awaits!</div>
                     <div class="des">
                         Explore vibrant wildlife and exotic animals in beautifully curated enclosures, perfect for family outings and educational adventures.
                     </div>
+                    <div class="buttons">
+                        <button onclick="sendCategory('Zoo')">SEE MORE</button>
+                    </div>
                 </div>
             </div>
             <div class="item">
-                <img src="/image/temple.jpg">
+                <img src="image/temple.jpg">
                 <div class="content">
                     <div class="author">ExploreLikeALocal</div>
                     <div class="title">TEMPLE</div>
@@ -93,10 +99,13 @@
                     <div class="des">
                         Discover serene sanctuaries of spirituality, showcasing intricate architecture and centuries-old traditions.
                     </div>
+                    <div class="buttons">
+                        <button onclick="sendCategory('Temple')">SEE MORE</button>
+                    </div>
                 </div>
             </div>
             <div class="item">
-                <img src="/image/museum.jpg">
+                <img src="image/museum.jpg">
                 <div class="content">
                     <div class="author">ExploreLikeALocal</div>
                     <div class="title">MUSEUM</div>
@@ -104,10 +113,13 @@
                     <div class="des">
                         Explore fascinating historical artifacts and exhibitions that bring the past to life.
                     </div>
+                    <div class="buttons">
+                        <button onclick="sendCategory('Museum')">SEE MORE</button>
+                    </div>
                 </div>
             </div>
             <div class="item">
-                <img src="/image/park.jpg">
+                <img src="image/park.jpg">
                 <div class="content">
                     <div class="author">ExploreLikeALocal</div>
                     <div class="title">PARK</div>
@@ -115,10 +127,13 @@
                     <div class="des">
                         Unwind in lush green spaces ideal for picnics, leisure walks, or just soaking in nature's tranquility.
                     </div>
+                    <div class="buttons">
+                        <button onclick="sendCategory('Park')">SEE MORE</button>
+                    </div>
                 </div>
             </div>
             <div class="item">
-                <img src="/image/viewpoint.jpg">
+                <img src="image/viewpoint.jpg">
                 <div class="content">
                     <div class="author">ExploreLikeALocal</div>
                     <div class="title">VIEWPOINT</div>
@@ -126,10 +141,13 @@
                     <div class="des">
                         Marvel at breathtaking panoramic vistas that capture the essence of the surrounding landscape.
                     </div>
+                    <div class="buttons">
+                        <button onclick="sendCategory('Viewpoint')">SEE MORE</button>
+                    </div>
                 </div>
             </div>
             <div class="item">
-                <img src="/image/beach.jpg">
+                <img src="image/beach.jpg">
                 <div class="content">
                     <div class="author">ExploreLikeALocal</div>
                     <div class="title">BEACH</div>
@@ -137,10 +155,13 @@
                     <div class="des">
                         Bask in golden sands and crystal-clear waters, a haven for relaxation and water sports.
                     </div>
+                    <div class="buttons">
+                        <button onclick="sendCategory('Beach')">SEE MORE</button>
+                    </div>
                 </div>
             </div>
             <div class="item">
-                <img src="/image/restaurant.jpg">
+                <img src="image/restaurant.jpg">
                 <div class="content">
                     <div class="author">ExploreLikeALocal</div>
                     <div class="title">RESTAURANT</div>
@@ -148,334 +169,91 @@
                     <div class="des">
                         Savor delectable cuisines in charming settings that cater to every palate and occasion.
                     </div>
+                    <div class="buttons">
+                        <button onclick="sendCategory('Restaurant')">SEE MORE</button>
+                    </div>
                 </div>
             </div>
         </div>
-    
+
         <!-- list thumbnail -->
         <div class="thumbnail">
             <div class="item">
-                <img src="/image/zoo.jpg">
+                <img src="image/zoo.jpg">
                 <div class="content">
                     <div class="title">ZOO</div>
                 </div>
             </div>
             <div class="item">
-                <img src="/image/temple.jpg">
+                <img src="image/temple.jpg">
                 <div class="content">
                     <div class="title">TEMPLE</div>
                 </div>
             </div>
             <div class="item">
-                <img src="/image/museum.jpg">
+                <img src="image/museum.jpg">
                 <div class="content">
                     <div class="title">MUSEUM</div>
                 </div>
             </div>
             <div class="item">
-                <img src="/image/park.jpg">
+                <img src="image/park.jpg">
                 <div class="content">
                     <div class="title">PARK</div>
                 </div>
             </div>
             <div class="item">
-                <img src="/image/viewpoint.jpg">
+                <img src="image/viewpoint.jpg">
                 <div class="content">
                     <div class="title">VIEWPOINT</div>
                 </div>
             </div>
             <div class="item">
-                <img src="/image/beach.jpg">
+                <img src="image/beach.jpg">
                 <div class="content">
                     <div class="title">BEACH</div>
                 </div>
             </div>
             <div class="item">
-                <img src="/image/restaurant.jpg">
+                <img src="image/restaurant.jpg">
                 <div class="content">
                     <div class="title">RESTAURANT</div>
                 </div>
             </div>
         </div>
-    
+
         <!-- next prev -->
         <div class="arrows">
             <button id="prev"><</button>
             <button id="next">></button>
-        </div>
-        <!-- time running -->
-        <div class="time"></div>
     </div>
-    <br>
-    <section class="categories-section">
-        <div class="categories-grid">
-            <div class="category-card">
-                <div class="category-icon">🏛️</div>
-                <h3 class="category-title">Cultural Heritage</h3>
-                <p class="category-description">Explore temples, museums, and historical landmarks that showcase local traditions.</p>
-            </div>
-            <div class="category-card">
-                <div class="category-icon">🌊</div>
-                <h3 class="category-title">Natural Wonders</h3>
-                <p class="category-description">Discover beaches, parks, and scenic viewpoints perfect for outdoor adventures.</p>
-            </div>
-            <div class="category-card">
-                <div class="category-icon">🍜</div>
-                <h3 class="category-title">Local Cuisine</h3>
-                <p class="category-description">Experience authentic flavors at carefully selected local restaurants.</p>
-            </div>
-            <div class="category-card">
-                <div class="category-icon">🎨</div>
-                <h3 class="category-title">Arts & Entertainment</h3>
-                <p class="category-description">Immerse yourself in local art galleries, theaters, and cultural shows.</p>
-            </div>
-        </div>
-    </section>
-    <section class="features-section">
-        <h2 style="text-align: center; margin-bottom: 40px; color: white;">Our Powerful Features</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🗺️</div>
-                <h3 class="feature-title">Interactive Maps</h3>
-                <p class="feature-description">Discover local attractions with our comprehensive, user-friendly map interface. Explore restaurants, parks, museums, and hidden gems with ease.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📅</div>
-                <h3 class="feature-title">Trip Planner</h3>
-                <p class="feature-description">Create personalized itineraries tailored to your interests, time, and budget. Seamlessly organize your entire trip with our intuitive planning tool.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🌐</div>
-                <h3 class="feature-title">Real-Time Translation</h3>
-                <p class="feature-description">Break language barriers with our instant translation feature. Communicate confidently and understand local signs, menus, and conversations.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🏆</div>
-                <h3 class="feature-title">Local Recommendations</h3>
-                <p class="feature-description">Get personalized suggestions based on your preferences, previous travels, and trending local experiences. Discover unique adventures off the beaten path.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📸</div>
-                <h3 class="feature-title">Memory Journal</h3>
-                <p class="feature-description">Document your travels with our digital journal. Add photos, notes, and memories to create a lasting record of your local explorations.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🤝</div>
-                <h3 class="feature-title">Community Insights</h3>
-                <p class="feature-description">Connect with fellow travelers, read authentic reviews, and share your own local discoveries. Learn from real experiences and global perspectives.</p>
-            </div>
-        </div>
-    </section>
-    <section class="featured-experiences">
-        <h2 style="text-align: center; margin-bottom: 40px; color: white;">Curated Experiences</h2>
-        <div class="experiences-grid">
-            <div class="experience-card">
-                <img src="/image/food-tour.jpg" alt="Food Tour" class="experience-image">
-                <div class="experience-content">
-                    <h3 style="color: #00ff88; margin-bottom: 10px;">Culinary Adventures</h3>
-                    <p>Embark on guided food tours that take you through local markets, street food havens, and hidden culinary gems.</p>
-                </div>
-            </div>
-            <div class="experience-card">
-                <img src="/image/adventure-sports.jpg" alt="Adventure Sports" class="experience-image">
-                <div class="experience-content">
-                    <h3 style="color: #00ff88; margin-bottom: 10px;">Thrilling Experiences</h3>
-                    <p>From hiking and kayaking to paragliding, discover adrenaline-pumping activities tailored to your adventure level.</p>
-                </div>
-            </div>
-            <div class="experience-card">
-                <img src="/image/cultural-workshop.jpg" alt="Cultural Workshop" class="experience-image">
-                <div class="experience-content">
-                    <h3 style="color: #00ff88; margin-bottom: 10px;">Cultural Immersion</h3>
-                    <p>Participate in local workshops: cooking classes, traditional craft making, and language exchange programs.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Travel Tips Section -->
-    <section class="travel-tips">
-        <h2 style="margin-bottom: 40px;">Travel Smart, Travel Local</h2>
-        <div class="tips-grid">
-            <div class="tip-card">
-                <h3>🌍 Sustainable Travel</h3>
-                <p>Minimize your environmental impact. Choose eco-friendly accommodations and respect local ecosystems.</p>
-            </div>
-            <div class="tip-card">
-                <h3>🤝 Cultural Respect</h3>
-                <p>Learn basic local customs, dress codes, and a few phrases in the local language to show respect.</p>
-            </div>
-            <div class="tip-card">
-                <h3>💰 Budget Wisely</h3>
-                <p>Use local transportation, eat at local eateries, and avoid tourist traps to save money and have authentic experiences.</p>
-            </div>
-            <div class="tip-card">
-                <h3>🔒 Safety First</h3>
-                <p>Stay informed about local conditions, keep important documents safe, and stay aware of your surroundings.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Newsletter Section -->
-    <section class="newsletter">
-        <h2>Stay Inspired, Stay Informed</h2>
-        <p style="margin-bottom: 20px;">Subscribe to our newsletter for travel tips, local insights, and exclusive deals!</p>
-        <form class="newsletter-form">
-            <input type="email" placeholder="Enter your email" class="newsletter-input" required>
-            <button type="submit" class="newsletter-button">Subscribe</button>
-        </form>
-    </section>
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>About ExploreLikeALocal</h3>
-                <p>Discover local attractions based on your preferences and location.</p>
-            </div>
-            <div class="footer-section">
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 ExploreLikeALocal. All rights reserved.</p>
-        </div>
-    </footer>
-    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        // Carousel functionality
-        const carousel = document.querySelector('.carousel');
-        const list = carousel.querySelector('.list');
-        const items = carousel.querySelectorAll('.list .item');
-        const thumbnails = carousel.querySelectorAll('.thumbnail .item');
-        const prevBtn = document.getElementById('prev');
-        const nextBtn = document.getElementById('next');
-        
-        // Hamburger menu elements
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        const navButtons = document.querySelectorAll('.nav-button');
-
-        // Hamburger menu functionality
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!hamburger.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains('active')) {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-
-        // Close menu when clicking nav links
-        navButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        });
-
-        // Handle escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Rest of the carousel code remains the same
-        let currentIndex = 0;
-        const totalItems = items.length;
-        
-        // Initialize first item as active and remove active from others
-        items.forEach((item, index) => {
-            if (index === 0) {
-                item.classList.add('active');
-            } else {
-                item.classList.remove('active');
-            }
-        });
-        thumbnails[currentIndex].classList.add('active');
-        
-        function updateCarousel() {
-            const newTransform = -currentIndex * 100 + '%';
-            list.style.transform = `translateX(${newTransform})`;
-            
-            // Update main carousel items active state
-            items.forEach((item, index) => {
-                if (index === currentIndex) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-            
-            // Update thumbnails
-            thumbnails.forEach((thumb, index) => {
-                if (index === currentIndex) {
-                    thumb.classList.add('active');
-                } else {
-                    thumb.classList.remove('active');
-                }
-            });
-        }
-        
-        // Event listeners remain the same
-        prevBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
-            updateCarousel();
-        });
-        
-        nextBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % totalItems;
-            updateCarousel();
-        });
-        
-        thumbnails.forEach((thumb, index) => {
-            thumb.addEventListener('click', () => {
-                currentIndex = index;
-                updateCarousel();
-            });
-        });
-    });
-
-    // Logout functionality
-    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('/api/logout', {
+        function sendCategory(category) {
+            fetch('/map', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const data = await response.json();
-            if (data.redirect) {
-                window.location.href = data.redirect;
-            }
-            else {
-                window.location.href = data.redirect;
-            }
-        } catch (error) {
-            console.error('Logout failed:', error);
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ category: category })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // Store the category in local storage
+                localStorage.setItem('category', category);
+                // Redirect to map.html
+                window.location.href = `./map.html`;
+            })
+            .catch(error => console.error('Error:', error));
         }
-    });
+
+        document.getElementById('categoryForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const category = document.getElementById('category').value;
+            sendCategory(category);
+        });
     </script>
-    <script src="//code.tidio.co/oozekqtd2hbna2coolqfjbw3affl27j3.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
