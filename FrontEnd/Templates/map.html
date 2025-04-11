@@ -9,12 +9,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
-    <div class="navbar">
-        <div class="navbar-content">
-            <h2 class="logo">Tourist Spot Explorer</h2>
-            <div class="tagline">Discover Local Attractions & Hidden Gems</div>
-        </div>
-    </div>
+    <nav class="navbar">
+        <a href="/main" class="logo">ExploreLikeALocal</a>
+        <button class="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links">
+            <li><a href="/map" class="nav-button">Maps</a></li>
+            <li><a href="/planning" class="nav-button">Planner</a></li>
+            <li><a href="/translate" class="nav-button">Translate</a></li>
+            <li><a href="/weather" class="nav-button">Weather</a></li>
+            <li><a href="/currency" class="nav-button">Wallet</a></li>
+            <li><a href="/news" class="nav-button">News</a></li>
+            <li><a href="/similar" class="nav-button">Similar-places</a></li>
+            <li><a id="logoutBtn" class="signout"><i class="fas fa-sign-out-alt" style="font-size: 36px;color:red"></i></a></li>
+            <li id="google_translate_element"></li>
+        </ul>
+    </nav>
+
     
     <div class="search-container">
         <div class="search-input-row">
@@ -62,6 +76,7 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 10px;
+           
         }
         
         .search-input-wrapper {
