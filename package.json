@@ -55,6 +55,7 @@
     "has-symbols": "^1.0.3",
     "hasown": "^2.0.2",
     "http-errors": "^2.0.0",
+    "i": "^0.3.7",
     "iconv-lite": "^0.4.24",
     "ignore-by-default": "^1.0.1",
     "inherits": "^2.0.4",
