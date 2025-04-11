@@ -6,6 +6,52 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultsContainer = document.getElementById('results-container');
     const originalPlaceContainer = document.getElementById('original-place');
     const similarPlacesGrid = document.getElementById('similar-places-grid');
+    
+    // Add modal elements to the DOM
+    const modalContainer = document.createElement('div');
+    modalContainer.className = 'image-modal-container';
+    modalContainer.innerHTML = `
+        <div class="image-modal">
+            <span class="close-modal">&times;</span>
+            <img class="modal-image" src="" alt="Place Image">
+            <div class="modal-caption"></div>
+        </div>
+    `;
+    document.body.appendChild(modalContainer);
+    
+    // Modal elements
+    const imageModal = document.querySelector('.image-modal-container');
+    const modalImage = document.querySelector('.modal-image');
+    const modalCaption = document.querySelector('.modal-caption');
+    const closeModal = document.querySelector('.close-modal');
+    
+    // Close modal when clicking the X
+    closeModal.addEventListener('click', () => {
+        imageModal.style.display = 'none';
+    });
+    
+    // Close modal when clicking outside the image
+    imageModal.addEventListener('click', (e) => {
+        if (e.target === imageModal) {
+            imageModal.style.display = 'none';
+        }
+    });
+    
+    // Function to open modal with image
+    function openImageModal(imgSrc, caption) {
+        modalImage.src = imgSrc;
+        modalCaption.textContent = caption;
+        imageModal.style.display = 'flex';
+    }
+    
+    // Add event delegation for image clicks
+    document.addEventListener('click', (e) => {
+        if (e.target.tagName === 'IMG' && 
+            (e.target.closest('.original-place-image') || 
+             e.target.closest('.place-image'))) {
+            openImageModal(e.target.src, e.target.alt);
+        }
+    });
 
     // Add event listener for search button
     searchButton.addEventListener('click', searchSimilarPlaces);
@@ -76,17 +122,23 @@ document.addEventListener('DOMContentLoaded', function() {
             showError('No similar places found');
             return; 
         }
-        // Create HTML for original place
-        // Display original place information
+        
+        // Create HTML for original place with image
         originalPlaceContainer.innerHTML = `
             <div class="original-place-info">
-                <h2>${searchInput.value}</h2>
-                <p class="place-description">${data.place_description}</p>  
+                <div class="original-place-image">
+                    <img src="${data.place_image || 'https://via.placeholder.com/400x300?text=No+Image'}" alt="${searchInput.value}" class="clickable-image" />
+                </div>
+                <div class="original-place-details">
+                    <h2>${searchInput.value}</h2>
+                    <p class="place-description">${data.place_description}</p>
+                    <p class="place-type"><strong>Type:</strong> ${data.user_type || 'Not specified'}</p>
+                </div>
             </div>
         `;
         
-        // Display similar places (skip the first one if it's the original place)
-        const similarPlaces = data.similar_places.slice(1);
+        // Display similar places
+        const similarPlaces = data.similar_places;
         
         if (similarPlaces.length === 0) {
             similarPlacesGrid.innerHTML = '<p class="no-results">No similar places found</p>';
@@ -96,13 +148,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 const placeCard = document.createElement('div');
                 placeCard.className = 'place-card';
                 
+                // Create things to do list if it's an array
+                let thingsToDoHTML = '';
+                if (Array.isArray(place.things_to_do)) {
+                    thingsToDoHTML = `
+                        <ul class="things-list">
+                            ${place.things_to_do.map(thing => `<li>${thing}</li>`).join('')}
+                        </ul>
+                    `;
+                } else {
+                    thingsToDoHTML = `<p>${place.things_to_do || 'Information not available'}</p>`;
+                }
+                
                 placeCard.innerHTML = `
+                    <div class="place-image">
+                        <img src="${place.image_url || 'https://via.placeholder.com/400x300?text=No+Image'}" alt="${place.name}" class="clickable-image" />
+                    </div>
                     <div class="place-card-content">
                         <h3>${place.name}</h3>
                         <p>${place.description}</p>
                         <div class="things-to-do">
                             <h4>Things to Do:</h4>
-                            <p>${place.things_to_do || 'Information not available'}</p>
+                            ${thingsToDoHTML}
                         </div>
                     </div>
                 `;

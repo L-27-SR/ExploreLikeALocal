@@ -558,10 +558,35 @@ app.get('/api/google-auth/callback', async (req, res) => {
 
 // Add the Gemini API endpoint for similar places
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+const UNSPLASH_API_KEY = process.env.UNSPLASH_API_KEY; // Make sure this is in your .env file
 
 // After the Gemini API endpoint
 app.post('/api/get_similar_places/:place', async (req, res) => {
   const { place } = req.params;
+
+  // Function to fetch image from Unsplash
+  const getImageFromUnsplash = async (query) => {
+    try {
+      const response = await axios.get('https://api.unsplash.com/search/photos', {
+        params: {
+          query: query + '${place}',
+          per_page: 1,
+          orientation: 'landscape'
+        },
+        headers: {
+          'Authorization': `Client-ID ${UNSPLASH_API_KEY}`
+        }
+      });
+      
+      if (response.data.results && response.data.results.length > 0) {
+        return response.data.results[0].urls.regular;
+      }
+      return null;
+    } catch (error) {
+      console.error(`Unsplash API error for ${query}:`, error.message);
+      return null;
+    }
+  };
 
   const prompt = `
     Analyze ${place} and provide:
@@ -580,14 +605,16 @@ app.post('/api/get_similar_places/:place', async (req, res) => {
       {
         "name": "Destination Name",
         "description": "Short description",
-        "things_to_do": ["Activity 1", "Activity 2", "Activity 3"],
-        "image_url": "https://example.com/image.jpg"
+        "things_to_do": ["Activity 1", "Activity 2", "Activity 3"]
       }
     ]
   `;
 
   try {
-    const response = await axios.post(`${GEMINI_URL}?key=${process.env.GEMINI_API_KEY}`, {
+    // Get main place image in parallel with Gemini API call
+    const mainPlaceImagePromise = getImageFromUnsplash(place);
+    
+    const geminiResponse = await axios.post(`${GEMINI_URL}?key=${process.env.GEMINI_API_KEY}`, {
       contents: [{ parts: [{ text: prompt }] }]
     }, {
       headers: {
@@ -595,7 +622,7 @@ app.post('/api/get_similar_places/:place', async (req, res) => {
       }
     });
 
-    const textOutput = response.data.candidates[0].content.parts[0].text;
+    const textOutput = geminiResponse.data.candidates[0].content.parts[0].text;
     
     // Split and parse response
     const [metadataSection, jsonSection] = textOutput.split('---');
@@ -613,31 +640,45 @@ app.post('/api/get_similar_places/:place', async (req, res) => {
     const descMatch = metadataSection.match(/Place Description:\s*(.+)/);
     const typeMatch = metadataSection.match(/User Type:\s*(.+)/);
     
+    // Get main place image
+    const mainPlaceImage = await mainPlaceImagePromise;
+    
+    // Get images for all destinations in parallel
+    const imagePromises = destinations.map(dest => getImageFromUnsplash(dest.name));
+    const destinationImages = await Promise.all(imagePromises);
+    
+    // Add images to destinations
+    destinations = destinations.map((dest, index) => ({
+      ...dest,
+      image_url: destinationImages[index] || 'https://via.placeholder.com/400x300?text=No+Image+Available'
+    }));
+    
     // Add user type tracking
     if (req.session.userId && !req.session.isGuest) {
-        try {
-            const types = data.user_type.split(', ');
-            await User.findByIdAndUpdate(req.session.userId, {
-                $inc: types.reduce((acc, type) => {
-                    acc[`userTypes.${type.toLowerCase()}`] = 1;
-                    return acc;
-                }, {})
-            });
-        } catch (error) {
-            console.error('User type tracking error:', error);
-        }
+      try {
+        const types = typeMatch ? typeMatch[1].split(', ') : [];
+        await User.findByIdAndUpdate(req.session.userId, {
+          $inc: types.reduce((acc, type) => {
+            acc[`userTypes.${type.toLowerCase()}`] = 1;
+            return acc;
+          }, {})
+        });
+      } catch (error) {
+        console.error('User type tracking error:', error);
+      }
     }
 
     return res.json({ 
       place_description: descMatch ? descMatch[1] : `${place} is a popular destination`,
       user_type: typeMatch ? typeMatch[1] : 'unknown',
+      place_image: mainPlaceImage || 'https://via.placeholder.com/400x300?text=No+Image+Available',
       similar_places: destinations 
     });
 
   } catch (err) {
-    console.error('Gemini API Error:', err.response?.data || err.message);
+    console.error('API Error:', err.response?.data || err.message);
     return res.status(500).json({ 
-      error: 'Failed to get response from Gemini API',
+      error: 'Failed to get response from API',
       details: err.response?.data || err.message
     });
   }
