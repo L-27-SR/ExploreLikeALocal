@@ -12,7 +12,6 @@ thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
 let timeRunning = 3000;
 let timeAutoNext = 7000;
 
-
 nextDom.onclick = function(){
     showSlider('next');    
 }
