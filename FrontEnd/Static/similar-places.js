@@ -71,23 +71,17 @@ document.addEventListener('DOMContentLoaded', function() {
         similarPlacesGrid.innerHTML = '';
         
         // Display original place (first item in the array)
-        const originalPlace = data.similar_places[0];
+        const originalPlace = data.place_description;
         if (!originalPlace) {
             showError('No similar places found');
             return; 
         }
         // Create HTML for original place
+        // Display original place information
         originalPlaceContainer.innerHTML = `
             <div class="original-place-info">
-               <h2>${originalPlace.name}</h2>
-                <p>${originalPlace.description}</p>
-                <div class="things-to-do">
-                    <h4>Things to Do:</h4>
-                    <p>${originalPlace.things_to_do || 'Information not available'}</p
-                </div>
-                <div class="keywords">
-                    ${data.keywords ? data.keywords.map(keyword => `<span class="keyword">${keyword}</span>`).join('') : ''}
-                </div>
+                <h2>${searchInput.value}</h2>
+                <p class="place-description">${data.place_description}</p>  
             </div>
         `;
         

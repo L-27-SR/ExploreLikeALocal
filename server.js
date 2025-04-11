@@ -70,6 +70,22 @@ const userSchema = new mongoose.Schema({
     totalLogins: {
         type: Number,
         default: 1
+    },
+    userTypes: {
+        type: Map,
+        of: Number,
+        default: {
+            adventurous: 0,
+            leisure: 0,
+            cultural: 0,
+            sightseeing: 0,
+            nature: 0,
+            foodie: 0,
+            spiritual: 0,
+            shopping: 0,
+            family: 0,
+            business: 0
+        }
     }
 });
 
@@ -543,22 +559,31 @@ app.get('/api/google-auth/callback', async (req, res) => {
 // Add the Gemini API endpoint for similar places
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
+// After the Gemini API endpoint
 app.post('/api/get_similar_places/:place', async (req, res) => {
   const { place } = req.params;
 
-  if (!place) {
-    return res.status(400).json({ error: 'Missing place parameter in URL' });
-  }
-
   const prompt = `
-    I want 5 travel destinations that are similar to ${place}. Initially I want ${place} short description and relevant image URL. 
-    For each destination, give:
-    1. The name
-    2. A short description
-    3. Popular things to do there
-    4. A relevant image URL (free stock or publicly available)
-   
-    Format it as a list of JSON objects with keys: name, description, things_to_do, image_url
+    Analyze ${place} and provide:
+    1. A detailed description focusing on its unique characteristics
+    2. Classification into these types (choose up to 3): 
+    adventurous, leisure, cultural, sightseeing, nature, foodie, spiritual, shopping, family, business
+    3. 5 similar destinations with their key features
+
+    Format response as:
+    Place Description: [brief-description]
+    User Type: [classified-type]
+    
+    ---
+    
+    [
+      {
+        "name": "Destination Name",
+        "description": "Short description",
+        "things_to_do": ["Activity 1", "Activity 2", "Activity 3"],
+        "image_url": "https://example.com/image.jpg"
+      }
+    ]
   `;
 
   try {
@@ -571,17 +596,44 @@ app.post('/api/get_similar_places/:place', async (req, res) => {
     });
 
     const textOutput = response.data.candidates[0].content.parts[0].text;
-
-    // Try to safely parse JSON content
-    let result;
+    
+    // Split and parse response
+    const [metadataSection, jsonSection] = textOutput.split('---');
+    
+    // Parse JSON destinations
+    let destinations;
     try {
-      result = JSON.parse(textOutput);
+      destinations = JSON.parse(jsonSection);
     } catch (err) {
-      const match = textOutput.match(/\[.*\]/s);
-      result = match ? JSON.parse(match[0]) : [];
+      const match = jsonSection.match(/\[.*\]/s);
+      destinations = match ? JSON.parse(match[0]) : [];
     }
 
-    return res.json({ similar_places: result });
+    // Extract place description and user type
+    const descMatch = metadataSection.match(/Place Description:\s*(.+)/);
+    const typeMatch = metadataSection.match(/User Type:\s*(.+)/);
+    
+    // Add user type tracking
+    if (req.session.userId && !req.session.isGuest) {
+        try {
+            const types = data.user_type.split(', ');
+            await User.findByIdAndUpdate(req.session.userId, {
+                $inc: types.reduce((acc, type) => {
+                    acc[`userTypes.${type.toLowerCase()}`] = 1;
+                    return acc;
+                }, {})
+            });
+        } catch (error) {
+            console.error('User type tracking error:', error);
+        }
+    }
+
+    return res.json({ 
+      place_description: descMatch ? descMatch[1] : `${place} is a popular destination`,
+      user_type: typeMatch ? typeMatch[1] : 'unknown',
+      similar_places: destinations 
+    });
+
   } catch (err) {
     console.error('Gemini API Error:', err.response?.data || err.message);
     return res.status(500).json({ 
@@ -589,4 +641,41 @@ app.post('/api/get_similar_places/:place', async (req, res) => {
       details: err.response?.data || err.message
     });
   }
+});
+
+app.get('/api/user/tagline', requireAuth, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.userId);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        // Get top user type
+        const types = Array.from(user.userTypes.entries());
+        const [maxType] = types.reduce(([maxName, maxVal], [name, val]) => 
+            val > maxVal ? [name, val] : [maxName, maxVal], ['', -1]);
+
+        // Gemini prompt for tagline
+        // In the /api/user/tagline endpoint, modify the prompt:
+        const prompt = `Generate a creative, personality-driven tagline (12-15 words) for a me who specializes in ${maxType} experiences. Use 2-3 relevant emojis and follow these examples:
+        - "Nature's true companion 🌿 | Trailblazer finding serenity in every mountain path 🏔️"
+        - "Culinary cartographer 🗺️ | Mapping the world through its flavors and food traditions 🍜"
+        - "Thrill-seeker with a map 🧭 | Converting adrenaline spikes into lifelong memories ⚡"
+        Focus on unique perspectives rather than generic phrases. Keep the same prompt but do not interact with me. Just give me the tagline as a response. I want the response to contain only the Tagline`;
+        
+        const response = await axios.post(`${GEMINI_URL}?key=${process.env.GEMINI_API_KEY}`, {
+            contents: [{ parts: [{ text: prompt }] }]
+        });
+
+// After getting the response, process it to ensure proper capitalization
+const rawTagline = response.data.candidates[0].content.parts[0].text.replace(/"/g, '').trim();
+const tagline = rawTagline.charAt(0).toUpperCase() + rawTagline.slice(1).toLowerCase();
+        
+        res.json({ 
+            maxType,
+            tagline,
+            typeCounts: Object.fromEntries(Array.from(user.userTypes.entries()))
+        });
+    } catch (error) {
+        console.error('Tagline generation error:', error);
+        res.status(500).json({ error: 'Failed to generate tagline' });
+    }
 });

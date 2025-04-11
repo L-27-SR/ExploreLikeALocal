@@ -237,6 +237,8 @@
                     <h1 id="profile-username">Username</h1>
                     <p id="profile-email">email@example.com</p>
                     <div id="profile-type" class="profile-badge">Standard Account</div>
+                    <h2 id="user-type" style="margin-top: 15px; font-size: 1.8rem;"></h2>
+                    <p id="tagline" style="font-style: italic; opacity: 0.9;"></p>
                 </div>
             </div>
 
@@ -441,6 +443,15 @@
                         day: 'numeric'
                     });
                     document.getElementById('last-login').textContent = formattedLastLogin;
+                    fetch('/api/user/tagline')
+                    .then(response => response.json())
+                    .then(({ maxType, tagline }) => {
+                        // Capitalize first letter of maxType
+                        const formattedType = maxType.charAt(0).toUpperCase() + maxType.slice(1).toLowerCase();
+                        document.getElementById('user-type').textContent = `${formattedType} Explorer`;
+                        document.getElementById('tagline').textContent = tagline;
+                    })
+                    .catch(error => console.error('Error loading tagline:', error));
                 })
                 .catch(error => {
                     console.error('Error:', error);
